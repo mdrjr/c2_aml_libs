@@ -1,0 +1,31 @@
+sbr_syntax.o: sbr_syntax.c common.h neaacdec.h structs.h cfft.h sbr_dec.h \
+ ps_dec.h bits.h analysis.h sbr_syntax.h syntax.h sbr_huff.h sbr_fbt.h \
+ sbr_tf_grid.h sbr_e_nf.h
+
+common.h:
+
+neaacdec.h:
+
+structs.h:
+
+cfft.h:
+
+sbr_dec.h:
+
+ps_dec.h:
+
+bits.h:
+
+analysis.h:
+
+sbr_syntax.h:
+
+syntax.h:
+
+sbr_huff.h:
+
+sbr_fbt.h:
+
+sbr_tf_grid.h:
+
+sbr_e_nf.h:

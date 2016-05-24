@@ -1,0 +1,1 @@
+amlogic_r30813_audio_ape_lib.o: amlogic_r30813_audio_ape_lib.c
