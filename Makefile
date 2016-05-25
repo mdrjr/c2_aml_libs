@@ -8,7 +8,7 @@ all:
 	-$(MAKE) -C amavutils all
 	-$(MAKE) -C amcodec all
 	-$(MAKE) -C example all
-	-cp aml.conf /etc/ld.so.conf.d
+
 install:
 	-$(MAKE) -C amadec install
 	-$(MAKE) -C amavutils install
@@ -16,4 +16,4 @@ install:
 	-$(MAKE) -C example install
 	-${MAKE} -C audio_codec install	
 	install -D -m 0644 amadec/firmware/*.bin /lib/firmware 
-	
+        -cp aml.conf /etc/ld.so.conf.d
