@@ -4,14 +4,14 @@ LIB_DIR?=$(M_PREFIX)/lib
 INSTALL_DIR	= $(LIB_DIR)/aml_libs
 SRC_PATH		= ./
 SRC_FILES		=  $(wildcard $(SRC_PATH)*.c)
-EXPORT_INCLUDE_FILES	= $(wildcard $(SRC_PATH)*.h) 
- 
-USING_LIBS		= 
-USING_INCLUDES_PATH	= 
+EXPORT_INCLUDE_FILES	= $(wildcard $(SRC_PATH)*.h)
 
-USING_LIBS_PATH		= 
+USING_LIBS		=
+USING_INCLUDES_PATH	=
+
+USING_LIBS_PATH		=
 DEBUG  		= YES
-DEFINES		= 
+DEFINES		=
 
 CROSS=$(CC:%gcc=%)
 G++		= g++
@@ -21,7 +21,7 @@ LD 		= ld
 DEBUG_CFLAGS     := -c -Wall -shared -fPIC -Wno-format -g -DDEBUG -fexceptions -fnon-call-exceptions
 RELEASE_CFLAGS   := -c -Wall -shared -fPIC -Wno-unknown-pragmas -Wno-format -O3 -fexceptions -fnon-call-exceptions
 
-DEBUG_LDFLAGS    := -g -shared -fPIC 
+DEBUG_LDFLAGS    := -g -shared -fPIC
 RELEASE_LDFLAGS  := -shared -fPIC
 
 
@@ -55,7 +55,7 @@ EXPORT_INCLUDE_FILES := $(addprefix $(SRC_PATH),$(EXPORT_INCLUDE_FILES))
 
 
 all:$(OUTPUT)
-	
+
 $(OUTPUT):$(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $^ $(USING_LIBS_PATH) $(USING_LIBS)
 
@@ -64,7 +64,7 @@ $(OUTPUT):$(OBJS)
 	@$(call make-depend,$<,$@,$(subst .o,.d,$@))
 	@$(GCC) $(CFLAGS) $< -o $@
 
-	
+
 %.o:%.cpp
 	@$(call make-depend,$<,$@,$(subst .o,.d,$@))
 	@$(G++) $(CFLAGS) $< -o $@
@@ -74,7 +74,7 @@ $(OUTPUT):$(OBJS)
 
 install:
 	-install -m 555 ${OUTPUT} $(INSTALL_DIR)
-	
+
 rebuild:clean all
 
 clean:

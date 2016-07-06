@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: statname.h,v 1.6 2005/04/27 19:20:50 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2002 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
@@ -46,14 +46,14 @@
 #ifndef _STATNAME_H
 #define _STATNAME_H
 
-/* define STAT_PREFIX to a unique name for static linking 
+/* define STAT_PREFIX to a unique name for static linking
  * all the C functions and global variables will be mangled by the preprocessor
  *   e.g. void FFT(int *fftbuf) becomes void cook_FFT(int *fftbuf)
  */
 #define STAT_PREFIX		cook
 
 #define STATCC1(x,y,z)	STATCC2(x,y,z)
-#define STATCC2(x,y,z)	x##y##z  
+#define STATCC2(x,y,z)	x##y##z
 
 #ifdef STAT_PREFIX
 #define STATNAME(func)	STATCC1(STAT_PREFIX, _, func)

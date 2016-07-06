@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: fft.c,v 1.4 2005/04/27 19:20:50 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2002 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
@@ -40,7 +40,7 @@
  * Ken Cooke (kenc@real.com), Jon Recker(jrecker@real.com)
  * October 2003
  *
- * fft.c - Ken's highly optimized radix-4 DIT FFT, with optional radix-8 first pass 
+ * fft.c - Ken's highly optimized radix-4 DIT FFT, with optional radix-8 first pass
  *           for odd powers of 2
  **************************************************************************************/
 
@@ -78,7 +78,7 @@ static void BitReverse(int *inout, int tabidx)
 
 	part0 = inout;
     part1 = inout + (1<<nbits);
-	
+
 	while ((a = *tab++) != 0) {
         b = *tab++;
 
@@ -105,13 +105,13 @@ static void BitReverse(int *inout, int tabidx)
  *
  * Return:      none
  *
- * Notes:       assumes 3 guard bits, gains no integer bits, 
+ * Notes:       assumes 3 guard bits, gains no integer bits,
  *                guard bits out = guard bits in - 3
  **************************************************************************************/
 static void R4FirstPass(int *x, int bg)
 {
     int ar, ai, br, bi, cr, ci, dr, di;
-	
+
 	for (; bg != 0; bg--) {
 
 		ar = x[0] + x[2];
@@ -148,7 +148,7 @@ static void R4FirstPass(int *x, int bg)
  *
  * Return:      none
  *
- * Notes:       assumes 3 guard bits, gains 1 integer bit, 
+ * Notes:       assumes 3 guard bits, gains 1 integer bit,
  *                guard bits out = guard bits in - 3
  **************************************************************************************/
 static void R8FirstPass(int *x, int bg)
@@ -240,7 +240,7 @@ static void R8FirstPass(int *x, int bg)
  * Return:      none
  *
  * Notes:       gain 2 integer bits per pass (see notes on R4FFT for scaling info)
- *              for final multiply, can use SMLAL (if it pays off - needs extra 
+ *              for final multiply, can use SMLAL (if it pays off - needs extra
  *                mov rLO, #0 before SMLAL if using inline asm from C)
  *              uses 3-mul, 3-add butterflies instead of 4-mul, 2-add
  **************************************************************************************/
@@ -265,7 +265,7 @@ static void R4Core(int *x, int bg, int gp, int *wtab)
 				ar = xptr[0];
 				ai = xptr[1];
 				xptr += step;
-				
+
 				ws = wptr[0];
 				wi = wptr[1];
 				br = xptr[0];
@@ -275,7 +275,7 @@ static void R4Core(int *x, int bg, int gp, int *wtab)
 				br = MULSHIFT32(wd, br) - tr;
 				bi = MULSHIFT32(ws, bi) + tr;
 				xptr += step;
-				
+
 				ws = wptr[2];
 				wi = wptr[3];
 				cr = xptr[0];
@@ -285,7 +285,7 @@ static void R4Core(int *x, int bg, int gp, int *wtab)
 				cr = MULSHIFT32(wd, cr) - tr;
 				ci = MULSHIFT32(ws, ci) + tr;
 				xptr += step;
-				
+
 				ws = wptr[4];
 				wi = wptr[5];
 				dr = xptr[0];
@@ -296,7 +296,7 @@ static void R4Core(int *x, int bg, int gp, int *wtab)
 				di = MULSHIFT32(ws, di) + tr;
 				wptr += 6;
 
-				/* have now gained 1 bit for br,bi,cr,ci,dr,di 
+				/* have now gained 1 bit for br,bi,cr,ci,dr,di
 				 *   gain 1 more bit for by skipping 2*br,bi,cr,ci,dr,di in additions
 				 * manually >> 2 on ar,ai to normalize (trivial case, no mul)
 				 * net gain = 2 int bits per x[i], per R4 pass

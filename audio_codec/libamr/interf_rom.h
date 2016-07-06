@@ -47,7 +47,7 @@
 #define PRMNO_MRDTX 5
 
 #ifdef ENABLE_CPU2_DECODER
-CPU2_DATA_START 
+CPU2_DATA_START
 #endif
 
 /*

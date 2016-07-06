@@ -100,7 +100,7 @@ int amsysfs_set_sysfs_int16(const char *path, int val)
     } else {
         //LOGE("unable to open file %s,err: %s", path, strerror(errno));
     }
-    
+
     return -1;
 }
 

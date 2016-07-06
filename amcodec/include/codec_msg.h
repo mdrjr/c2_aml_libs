@@ -7,7 +7,7 @@
 */
 /* Copyright (C) 2007-2011, Amlogic Inc.
 * All right reserved
-* 
+*
 */
 #ifndef CODEC_MSG_H
 #define CODEC_MSG_H

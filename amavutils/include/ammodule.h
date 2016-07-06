@@ -30,7 +30,7 @@ typedef struct ammodule_t {
 #define version_minor hal_api_version
     const char *id;
     const char *name;/*a simple name.*/
-    const char *author; 
+    const char *author;
     const char *descript;/*functions..*/
     struct ammodule_methods_t* methods;
     void* dso;
@@ -59,5 +59,5 @@ int ammodule_match_check(const char* allmodstr,const char* modname);
 #ifdef __cplusplus
 }
 #endif
-#endif 
+#endif
 

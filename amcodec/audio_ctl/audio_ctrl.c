@@ -98,7 +98,7 @@ int dummy_codec_set_mute(int mute)
     CODEC_PRINT("dumyy codec set mute =%d\n",mute);
     /* 1: mut output. 0: unmute output */
     ret = dummy_decode_set_mute(mute);
-    
+
     return ret;
 }
 
@@ -129,7 +129,7 @@ int dummy_codec_get_volume(int *val)
     int ret;
     ret = dummy_decode_get_volume(val);
     return ret;
-}	
+}
 /* --------------------------------------------------------------------------*/
 /**
 * @brief  codec_set_mute  Set audio mute

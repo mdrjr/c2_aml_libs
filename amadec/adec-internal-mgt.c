@@ -61,7 +61,7 @@ audio_type_t audio_type[] = {
 
     {ACODEC_FMT_ADPCM,"adpcm"},
     {ACODEC_FMT_NULL, "null"},
-   
+
 };
 
 static int audio_decoder = AUDIO_ARC_DECODER;
@@ -145,8 +145,8 @@ static void start_adec(aml_audio_dec_t *audec)
 			}
             usleep(100000);
         }
-         /*Since audio_track->start consumed too much time 
-        *for the first time after platform restart, 
+         /*Since audio_track->start consumed too much time
+        *for the first time after platform restart,
         *so execute start cmd before adec_pts_start
         */
         aout_ops->start(audec);
@@ -155,7 +155,7 @@ static void start_adec(aml_audio_dec_t *audec)
         ret = adec_pts_start(audec);
 
         //adec_pts_droppcm(audec);
-		
+
         if (audec->auto_mute) {
             avsync_en(0);
             audiodsp_automute_on(dsp_ops);
@@ -285,7 +285,7 @@ static void adec_flag_check(aml_audio_dec_t *audec)
     if (audec->auto_mute && (audec->state > INITTED) &&(audec->state != PAUSED)) {
         aout_ops->pause(audec);
         adec_print("automute, pause audio out!\n");
-	 usleep(10000);			
+	 usleep(10000);
         while ((!audec->need_stop) && track_switch_pts(audec)) {
             usleep(1000);
         }
@@ -325,7 +325,7 @@ static void *adec_message_loop(void *args)
             start_adec(audec);
             if(dtsenc_init()!=-1)
                 dtsenc_start();
-            
+
             break;
         }
 
@@ -333,7 +333,7 @@ static void *adec_message_loop(void *args)
             usleep(100000);
 	    }
     }
-            
+
     do {
         //if(message_pool_empty(audec))
         //{
@@ -349,7 +349,7 @@ static void *adec_message_loop(void *args)
             usleep(100000);
             continue;
         }
-        
+
         switch (msg->ctrl_cmd) {
         case CMD_START:
 
@@ -401,8 +401,8 @@ static void *adec_message_loop(void *args)
             if (msg->has_arg) {
                 adec_set_lrvolume(audec, msg->value.volume,msg->value_ext.volume);
             }
-            break;	 	
-		
+            break;
+
         case CMD_CHANL_SWAP:
 
             adec_print("Receive Channels Swap Command!");
@@ -488,12 +488,12 @@ int match_types(const char *filetypestr,const char *typesetting)
 static int set_audio_decoder(aml_audio_dec_t *audec)
 {
 	int audio_id;
-	int i;	
+	int i;
     int num;
 	int ret;
     audio_type_t *t;
 	char value[PROPERTY_VALUE_MAX];
-	
+
 
 	audio_id = audec->format;
 
@@ -504,17 +504,17 @@ static int set_audio_decoder(aml_audio_dec_t *audec)
             break;
         }
     }
-	
+
 	ret = property_get("media.arm.audio.decoder",value,NULL);
 	adec_print("media.amplayer.audiocodec = %s, t->type = %s\n", value, t->type);
 	if (ret>0 && match_types(t->type,value))
-	{	
+	{
 		char type_value[] = "ac3,eac3";
 		if(match_types(t->type,type_value))
-		{   
+		{
             #ifdef DOLBY_USE_ARMDEC
 			adec_print("DOLBY_USE_ARMDEC=%d",DOLBY_USE_ARMDEC);
-			audio_decoder = AUDIO_ARM_DECODER;					  
+			audio_decoder = AUDIO_ARM_DECODER;
             #else
 			audio_decoder = AUDIO_ARC_DECODER;
             adec_print("<DOLBY_USE_ARMDEC> is not DEFINED,use ARC_Decoder\n!");
@@ -523,40 +523,40 @@ static int set_audio_decoder(aml_audio_dec_t *audec)
             audio_decoder = AUDIO_ARM_DECODER;
         }
 		return 0;
-	} 
-	
+	}
+
 	ret = property_get("media.arc.audio.decoder",value,NULL);
 	adec_print("media.amplayer.audiocodec = %s, t->type = %s\n", value, t->type);
 	if (ret>0 && match_types(t->type,value))
-	{	
+	{
 		if(audec->dspdec_not_supported == 0)
 			audio_decoder = AUDIO_ARC_DECODER;
 		else{
-			audio_decoder = AUDIO_ARM_DECODER;	
+			audio_decoder = AUDIO_ARM_DECODER;
 			adec_print("[%s:%d]arc decoder not support this audio yet,switch to ARM decoder \n",__FUNCTION__, __LINE__);
 		}
 		return 0;
-	} 
-	
+	}
+
 	ret = property_get("media.ffmpeg.audio.decoder",value,NULL);
 	adec_print("media.amplayer.audiocodec = %s, t->type = %s\n", value, t->type);
 	if (ret>0 && match_types(t->type,value))
-	{	
+	{
 		audio_decoder = AUDIO_FFMPEG_DECODER;
 		return 0;
-	} 
-	
+	}
+
 	audio_decoder = AUDIO_ARC_DECODER; //set arc decoder as default
 	if(audec->dspdec_not_supported == 1){
-		audio_decoder = AUDIO_ARM_DECODER;	
+		audio_decoder = AUDIO_ARM_DECODER;
 		adec_print("[%s:%d]arc decoder not support this audio yet,switch to ARM decoder \n",__FUNCTION__, __LINE__);
-	}	
+	}
 	return 0;
 }
 static int set_linux_audio_decoder(aml_audio_dec_t *audec)
 {
     int audio_id;
-    int i;	
+    int i;
     int num;
     int ret;
     audio_type_t *t;
@@ -569,17 +569,17 @@ static int set_linux_audio_decoder(aml_audio_dec_t *audec)
         if (t->audio_id == audio_id) {
             break;
         }
-    }	
+    }
     value = getenv("media_arm_audio_decoder");
     adec_print("media.armdecode.audiocodec = %s, t->type = %s\n", value, t->type);
     if (value!=NULL && match_types(t->type,value))
-    {	
+    {
         char type_value[] = "ac3,eac3";
         if(match_types(t->type,type_value))
-        {   
+        {
         #ifdef DOLBY_USE_ARMDEC
             adec_print("DOLBY_USE_ARMDEC=%d",DOLBY_USE_ARMDEC);
-            audio_decoder = AUDIO_ARM_DECODER;					  
+            audio_decoder = AUDIO_ARM_DECODER;
         #else
             #if 0
             audio_decoder = AUDIO_ARC_DECODER;
@@ -591,34 +591,34 @@ static int set_linux_audio_decoder(aml_audio_dec_t *audec)
         #endif
         }else{
             audio_decoder = AUDIO_ARM_DECODER;
-        }		 
+        }
         return 0;
-    } 
-	
+    }
+
    value= getenv("media_arc_audio_decoder");
     adec_print("media.arcdecode.audiocodec = %s, t->type = %s\n", value, t->type);
     if (value!=NULL && match_types(t->type,value))
-    {	
+    {
         if(audec->dspdec_not_supported == 0)
             audio_decoder = AUDIO_ARC_DECODER;
         else{
-            audio_decoder = AUDIO_ARM_DECODER;	
+            audio_decoder = AUDIO_ARM_DECODER;
             adec_print("[%s:%d]arc decoder not support this audio yet,switch to ARM decoder \n",__FUNCTION__, __LINE__);
         }
         return 0;
-    } 
-	
+    }
+
     value = getenv("media.ffmpeg.audio.decoder");
     adec_print("media.amplayer.audiocodec = %s, t->type = %s\n", value, t->type);
     if (value!=NULL && match_types(t->type,value))
-    {	
+    {
         audio_decoder = AUDIO_FFMPEG_DECODER;
         return 0;
-    } 
-	
+    }
+
     audio_decoder = AUDIO_ARC_DECODER; //set arc decoder as default
     if(audec->dspdec_not_supported == 1){
-        audio_decoder = AUDIO_ARM_DECODER;	
+        audio_decoder = AUDIO_ARM_DECODER;
     }
     return 0;
 }
@@ -636,7 +636,7 @@ int vdec_pts_pause(void)
 int audiodec_init(aml_audio_dec_t *audec)
 {
     int ret = 0;
-    int res = 0;	
+    int res = 0;
     pthread_t    tid;
 	char value[PROPERTY_VALUE_MAX]={0};
     adec_print("audiodec_init!\n");
@@ -650,17 +650,17 @@ int audiodec_init(aml_audio_dec_t *audec)
 
 #endif
     audec->format_changed_flag=0;
-		
+
     if (get_audio_decoder() == AUDIO_ARC_DECODER) {
     		audec->adsp_ops.dsp_file_fd = -1;
 		ret = pthread_create(&tid, NULL, (void *)adec_message_loop, (void *)audec);
 		//pthread_setname_np(tid,"AmadecMsgloop");
     }
-    else 
-    {   
+    else
+    {
         int codec_type=get_audio_decoder();
         res=RegisterDecode(audec,codec_type);
-        if(!res){ 		
+        if(!res){
         ret = pthread_create(&tid, NULL, (void *)adec_armdec_loop, (void *)audec);
         //pthread_setname_np(tid,"AmadecArmdecLP");
         }else{
@@ -669,7 +669,7 @@ int audiodec_init(aml_audio_dec_t *audec)
         audec->adec_ops=NULL;
         ret = pthread_create(&tid, NULL, (void *)adec_message_loop, (void *)audec);
         //pthread_setname_np(tid,"AmadecMsgloop");
-	}   
+	}
     }
     if (ret != 0) {
         adec_print("Create adec main thread failed!\n");

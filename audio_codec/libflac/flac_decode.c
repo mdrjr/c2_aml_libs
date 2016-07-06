@@ -1,6 +1,6 @@
 /*
 * filename: flac_decode.c
-* 
+*
 *
 *
 *
@@ -232,7 +232,7 @@ void ff_flac_parse_streaminfo(AVCodecContext *avctx, struct FLACStreaminfo *s,
 
 	audio_codec_print("## METADATA sp=%d, ch=%d, bps=%d,-------------\n",
 		s->samplerate, s->channels, s->bps);
-	
+
     avctx->channels = s->channels;
     avctx->sample_rate = s->samplerate;
     avctx->bits_per_raw_sample = s->bps;
@@ -689,12 +689,12 @@ int audio_dec_decode(audio_decoder_operations_t *adec_ops, char *outbuf, int *ou
 		//audio_codec_print("##inlen=%d, diff=%d,-------------------\n", inlen, pinbufptr-inbuf);
 		return -1;
 	}
-	
+
 decodecontinue:
 	s->bitstream = inbuf;
 	s->bitstream_size += inlen;
 	s->bitstream_index = 0;
-	
+
 	buf = s->bitstream;
 	buf_size = s->bitstream_size;
 
@@ -767,9 +767,9 @@ FIND_SYNC_WORD:
 	case FLAC_CHMODE_INDEPENDENT:
 		if (s->channels <= 2)
 		{
-			for (j = 0; j < s->blocksize; j++) 
+			for (j = 0; j < s->blocksize; j++)
 			{
-				for (i = 0; i < s->channels; i++) 
+				for (i = 0; i < s->channels; i++)
 				{
 					if (s->is32)
 						*samples_32++ = s->decoded[i][j] << s->sample_shift;
@@ -783,11 +783,11 @@ FIND_SYNC_WORD:
 			}
 		}else{
 			float sum0=0,sum1=0;
-		    for (j = 0; j < s->blocksize; j++) 
-			{   
+		    for (j = 0; j < s->blocksize; j++)
+			{
 				sum0=s->decoded[0][j];
 				sum1=s->decoded[1][j];
-				for (i = 2; i <s->channels; i++) 
+				for (i = 2; i <s->channels; i++)
 				{
 					if (s->is32){
 						sum0+= s->decoded[i][j] << s->sample_shift;
@@ -802,14 +802,14 @@ FIND_SYNC_WORD:
 	                	}
 	            	}
 				}
-				
+
 				if (s->is32){
 					*samples_32++=av_clipf1(sum0,-0x80000000,0x7fffffff);
 					*samples_32++=av_clipf1(sum1,-0x80000000,0x7fffffff);
 				}else{
 					*samples_16++=av_clipf1(sum0,-32768,32767);
 					*samples_16++=av_clipf1(sum1,-32768,32767);
-				}					
+				}
 			}
 		}
 		break;
@@ -835,7 +835,7 @@ end:
 	}
 
 	*outlen = output_size;
-	
+
 	return bytes_read;
 }
 
@@ -848,13 +848,13 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
     uint8_t *streaminfo;
     AVCodecContext *avctx	 = &acodec;
     FLACContext *s = &flactext;
-    s->avctx = &acodec;	
+    s->avctx = &acodec;
     audio_codec_print("\n\n[%s]BuildDate--%s  BuildTime--%s\n",__FUNCTION__,__DATE__,__TIME__);
     adec_ops->nInBufSize=DefaultReadSize;
     adec_ops->nOutBufSize=DefaultOutBufSize;
     avctx->sample_fmt = SAMPLE_FMT_S16;
     avctx->extradata = adec_ops->extradata;
-    avctx->extradata_size = adec_ops->extradata_size;	
+    avctx->extradata_size = adec_ops->extradata_size;
     if (!avctx->extradata_size)
         return 0;
     res= test_ff_flac_is_extradata_valid(avctx, &format, &streaminfo);
@@ -869,7 +869,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
     allocate_buffers(s);
     s->got_streaminfo = 1;
     avctx->channels=(avctx->channels>2?2:avctx->channels);
-    audio_codec_print("applied flac  sr %d,ch num %d\n",avctx->sample_rate,avctx->channels);	
+    audio_codec_print("applied flac  sr %d,ch num %d\n",avctx->sample_rate,avctx->channels);
     audio_codec_print("ape_Init.--------------------------------\n");
 
 	return 0;
@@ -883,12 +883,12 @@ int audio_dec_release(audio_decoder_operations_t *adec_ops)
 	if(outbuffer.outb == NULL) {
 		av_freep(&outbuffer.outb);
 	}
-	
+
 	for (i = 0; i < flactext.channels; i++) {
     	av_freep(&flactext.decoded[i]);
 	}
 //	av_free(flactext.bitstream);
-	
+
 	return 0;
 }
 

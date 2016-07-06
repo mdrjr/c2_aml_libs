@@ -1,39 +1,39 @@
-/* ***** BEGIN LICENSE BLOCK *****  
- * Source last modified: $Id: bitstream.c,v 1.2 2005/09/27 20:31:11 jrecker Exp $ 
- *   
- * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
- *       
- * The contents of this file, and the files included with this file, 
- * are subject to the current version of the RealNetworks Public 
- * Source License (the "RPSL") available at 
- * http://www.helixcommunity.org/content/rpsl unless you have licensed 
- * the file under the current version of the RealNetworks Community 
- * Source License (the "RCSL") available at 
- * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
- * will apply. You may also obtain the license terms directly from 
- * RealNetworks.  You may not use this file except in compliance with 
- * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
- * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
- * the rights, obligations and limitations governing use of the 
- * contents of the file. 
- *   
- * This file is part of the Helix DNA Technology. RealNetworks is the 
- * developer of the Original Code and owns the copyrights in the 
- * portions it created. 
- *   
- * This file, and the files included with this file, is distributed 
- * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
- * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
- * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
- * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
- * ENJOYMENT OR NON-INFRINGEMENT. 
- *  
- * Technology Compatibility Kit Test Suite(s) Location:  
- *    http://www.helixcommunity.org/content/tck  
- *  
- * Contributor(s):  
- *   
- * ***** END LICENSE BLOCK ***** */  
+/* ***** BEGIN LICENSE BLOCK *****
+ * Source last modified: $Id: bitstream.c,v 1.2 2005/09/27 20:31:11 jrecker Exp $
+ *
+ * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.
+ *
+ * The contents of this file, and the files included with this file,
+ * are subject to the current version of the RealNetworks Public
+ * Source License (the "RPSL") available at
+ * http://www.helixcommunity.org/content/rpsl unless you have licensed
+ * the file under the current version of the RealNetworks Community
+ * Source License (the "RCSL") available at
+ * http://www.helixcommunity.org/content/rcsl, in which case the RCSL
+ * will apply. You may also obtain the license terms directly from
+ * RealNetworks.  You may not use this file except in compliance with
+ * the RPSL or, if you have a valid RCSL with RealNetworks applicable
+ * to this file, the RCSL.  Please see the applicable RPSL or RCSL for
+ * the rights, obligations and limitations governing use of the
+ * contents of the file.
+ *
+ * This file is part of the Helix DNA Technology. RealNetworks is the
+ * developer of the Original Code and owns the copyrights in the
+ * portions it created.
+ *
+ * This file, and the files included with this file, is distributed
+ * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY
+ * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS
+ * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET
+ * ENJOYMENT OR NON-INFRINGEMENT.
+ *
+ * Technology Compatibility Kit Test Suite(s) Location:
+ *    http://www.helixcommunity.org/content/tck
+ *
+ * Contributor(s):
+ *
+ * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
  * Fixed-point HE-AAC decoder
@@ -56,7 +56,7 @@
 
 #else
 #define raac_print printf
-#endif 
+#endif
 static unsigned int iCache0 = 0;
 static unsigned int iCache1 = 0;
 static int cacheBit0 = 0;
@@ -74,7 +74,7 @@ void InitBitStream()
     cacheBit1 = 0;
     bitsUsed = 0;
 }
-  
+
 unsigned char GetByte()
 {
 	unsigned int val=0;//read_byte();
@@ -176,7 +176,7 @@ static  void RefillBitstreamCache(BitStreamInfo *bsi)
  * Return:      the next nBits bits of data from bitstream buffer
  *
  * Notes:       nBits must be in range [0, 31], nBits outside this range masked by 0x1f
- *              for speed, does not indicate error if you overrun bit buffer 
+ *              for speed, does not indicate error if you overrun bit buffer
  *              if nBits == 0, returns 0
  **************************************************************************************/
 unsigned int GetBits(BitStreamInfo *bsi, int nBits)
@@ -196,7 +196,7 @@ unsigned int GetBits(BitStreamInfo *bsi, int nBits)
 			lowBits = -bsi->cachedBits;
 			RefillBitstreamCache(bsi);
 			data |= bsi->iCache >> (32 - lowBits);		/* get the low-order bits */
-	
+
 			bsi->cachedBits -= lowBits;			/* how many bits have we drawn from the cache so far */
 			bsi->iCache <<= lowBits;			/* left-justify cache */
 		}
@@ -214,7 +214,7 @@ unsigned int GetBits(BitStreamInfo *bsi, int nBits)
 	        {
 	            if(cacheBit1==0)    // if shift above 32, the instruction shift 0
 	                data = 0;
-	            else 
+	            else
 	                data = iCache1>>(32-cacheBit1);
 	            nBits -= cacheBit1;
 	            data <<= nBits;
@@ -229,7 +229,7 @@ unsigned int GetBits(BitStreamInfo *bsi, int nBits)
 	            return data;
 	        }
 	    }
-  
+
 	    if(nBits>cacheBit0)
 	    {
 	        if(cacheBit0)
@@ -258,12 +258,12 @@ unsigned int GetBits(BitStreamInfo *bsi, int nBits)
  * Inputs:      pointer to initialized BitStreamInfo struct
  *              number of bits to get from bitstream
  *
- * Outputs:     none (state of BitStreamInfo struct left unchanged) 
+ * Outputs:     none (state of BitStreamInfo struct left unchanged)
  *
  * Return:      the next nBits bits of data from bitstream buffer
  *
  * Notes:       nBits must be in range [0, 31], nBits outside this range masked by 0x1f
- *              for speed, does not indicate error if you overrun bit buffer 
+ *              for speed, does not indicate error if you overrun bit buffer
  *              if nBits == 0, returns 0
  **************************************************************************************/
 unsigned int GetBitsNoAdvance(BitStreamInfo *bsi,int nBits)
@@ -278,7 +278,7 @@ unsigned int GetBitsNoAdvance(BitStreamInfo *bsi,int nBits)
     	data = bsi->iCache >> (31 - nBits);		/* unsigned >> so zero-extend */
     	data >>= 1;								/* do as >> 31, >> 1 so that nBits = 0 works okay (returns 0) */
     	lowBits = nBits - bsi->cachedBits;		/* how many bits do we have left to read */
-    
+
     	/* if we cross an int boundary, read next bytes in buffer */
     	if (lowBits > 0) {
     		iCache = 0;
@@ -302,21 +302,21 @@ unsigned int GetBitsNoAdvance(BitStreamInfo *bsi,int nBits)
 	    if(nBits>(cacheBit0+cacheBit1))
 	    {
 	        data = ((iCache1>>(32-cacheBit1))<<cacheBit0);
-        
+
 	        if(cacheBit0)
 	            data |= (iCache0>>(32-cacheBit0));
-            
+
 	        iCache1 = data<<(32-cacheBit0-cacheBit1);
 	        cacheBit1 = cacheBit0+cacheBit1;
 	        nBits -= cacheBit1;
 	        data <<= nBits;
-        
+
 	        iCache0  = GetByte(); iCache0 <<= 8;
 	        iCache0 |= GetByte(); iCache0 <<= 8;
 	        iCache0 |= GetByte(); iCache0 <<= 8;
 	        iCache0 |= GetByte();
-        
-	        cacheBit0 = 32;        
+
+	        cacheBit0 = 32;
 	    }
 	    else if(nBits>cacheBit1)
 	    {
@@ -335,7 +335,7 @@ unsigned int GetBitsNoAdvance(BitStreamInfo *bsi,int nBits)
 	    }
 	    if(nBits)
 	        data |= (iCache0>>(32-nBits));
-        
+
 	    return data;
 	}
 }
@@ -407,7 +407,7 @@ void AdvanceBitstream(BitStreamInfo *bsi,int nBits)
  *
  * Inputs:      pointer to initialized BitStreamInfo struct
  *              pointer to start of bitstream buffer
- *              bit offset into first byte of startBuf (0-7) 
+ *              bit offset into first byte of startBuf (0-7)
  *
  * Outputs:     none
  *

@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: aac_decode.c,v 1.2.2.1 2005/05/04 18:21:58 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2005 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 #include <string.h>
@@ -212,12 +212,12 @@ aac_decode_init(void*              pInitParams,
 
     /* set decoder to handle raw data blocks */
     AACSetRawBlockParams(pDec->pDecoder, 0, frameInfo);
-	
+
 
     return HXR_OK;
 }
 
-HX_RESULT 
+HX_RESULT
 aac_decode_reset(void*   pDecode,
                  UINT16* pSamplesOut,
                  UINT32  ulNumSamplesAvail,
@@ -293,7 +293,7 @@ aac_decode_decode(void*       pDecode,
     }
 
     retVal = AACDecode(pDec->pDecoder, &inBuf,
-                       (INT32*)&ulNumBytesRemaining, (INT16*)outBuf); 
+                       (INT32*)&ulNumBytesRemaining, (INT16*)outBuf);
     if (retVal == ERR_AAC_NONE)
     {
         AACGetLastFrameInfo(pDec->pDecoder, frameInfo);
@@ -313,7 +313,7 @@ aac_decode_decode(void*       pDecode,
     {
         retVal = HXR_FAIL;
     }
-    
+
     /* Zero out invalid output samples */
     if (*pNumSamplesOut == 0)
     {
@@ -389,7 +389,7 @@ aac_decode_getdelay(void*   pDecode,
     return HXR_OK;
 }
 
-HX_RESULT 
+HX_RESULT
 aac_decode_close(void* pDecode,
                  void* pUserMem,
                  rm_free_func_ptr fpFree)

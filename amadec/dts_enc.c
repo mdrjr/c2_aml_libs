@@ -24,7 +24,7 @@ typedef struct{
     int dts_flag;
 }dtsenc_info_t;
 
-    
+
 static dtsenc_info_t dtsenc_info;
 static void *dts_enc_loop();
 
@@ -38,7 +38,7 @@ static int get_dts_mode(void)
     amsysfs_get_sysfs_str(DIGITAL_RAW_PATH, bcmd, 28);
     val=bcmd[21]&0xf;
     return val;
-    
+
 }
 
 static int get_dts_format(void)
@@ -82,9 +82,9 @@ int dtsenc_init()
         return -1;
     if(!get_cpu_type()) //if cpu !=m6 ,skip
         return -1;
-    
+
    //adec_print("====dts_flag:%d raw_mode:%d \n",dtsenc_info.dts_flag,dtsenc_info.raw_mode);
-    
+
     ret=dts_transenc_init();
     if(ret!=1)
     {
@@ -99,7 +99,7 @@ int dtsenc_init()
            dtsenc_release();
            return -1;
        }
-	pthread_setname_np(tid,"AmadecDtsEncLP");	
+	pthread_setname_np(tid,"AmadecDtsEncLP");
        dtsenc_info.thread_pid = tid;
     adec_print("====dts_enc init success \n");
     return 0;

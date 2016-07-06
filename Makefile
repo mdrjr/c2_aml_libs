@@ -14,6 +14,6 @@ install:
 	-$(MAKE) -C amavutils install
 	-$(MAKE) -C amcodec install
 	-$(MAKE) -C example install
-	-${MAKE} -C audio_codec install	
-	install -D -m 0644 amadec/firmware/*.bin /lib/firmware 
+	-${MAKE} -C audio_codec install
+	install -D -m 0644 amadec/firmware/*.bin /lib/firmware
 	-cp aml.conf /etc/ld.so.conf.d

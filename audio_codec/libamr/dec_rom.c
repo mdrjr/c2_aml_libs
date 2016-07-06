@@ -31,7 +31,7 @@
 
 /* 16-byte align start */
 #ifdef ENABLE_CPU2_DECODER
-CPU2_DATA_START 
+CPU2_DATA_START
 #endif
 /*
  * isf codebooks:  two-stage VQ with split-by-5 in 2nd stage

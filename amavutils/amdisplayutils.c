@@ -38,7 +38,7 @@ void get_display_mode(char *mode)
     }
     fd = open(path, O_RDONLY);
     if (fd >= 0) {
-        memset(mode, 0, 16); // clean buffer and read 15 byte to avoid strlen > 15	
+        memset(mode, 0, 16); // clean buffer and read 15 byte to avoid strlen > 15
         read(fd, mode, 15);
         LOGI("[get_display_mode]mode=%s strlen=%d\n", mode, strlen(mode));
         mode[strlen(mode)] = '\0';
@@ -106,17 +106,17 @@ int amdisplay_utils_set_scale_mode(int scale_wx, int scale_hx)
         LOGI("unsupport scaling mode,x1,x2 only\n", scale_wx, scale_hx);
         return -1;
     }
-    
+
     if(scale_wx==2)
         ret = amsysfs_set_sysfs_str(SCALE_REQUEST, "1");
     else if(scale_wx==1)
-        ret = amsysfs_set_sysfs_str(SCALE_REQUEST, "2");   
-  
+        ret = amsysfs_set_sysfs_str(SCALE_REQUEST, "2");
+
     if (ret < 0) {
         LOGI("set [%s]=[%s] failed\n", SCALE_AXIS_PATH, buf);
         return -2;
     }
-    
+
     return ret;
 }
 

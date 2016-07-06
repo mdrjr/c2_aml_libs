@@ -113,7 +113,7 @@
 #endif
 #ifndef inline
 #define inline
-#endif 
+#endif
 //rounded division & shift
 #define RSHIFT(a,b) ((a) > 0 ? ((a) + ((1<<(b))>>1))>>(b) : ((a) + ((1<<(b))>>1)-1)>>(b))
 /* assume b>0 */
@@ -242,7 +242,7 @@ static inline av_const int av_ceil_log2(int x)
 {
     return av_log2((x - 1) << 1);
 }
-#endif 
+#endif
 #define MKTAG(a,b,c,d) (a | (b << 8) | (c << 16) | (d << 24))
 #define MKBETAG(a,b,c,d) (d | (c << 8) | (b << 16) | (a << 24))
 

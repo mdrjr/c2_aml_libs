@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: gainctrl.c,v 1.6 2005/04/27 19:20:50 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2002 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
@@ -114,17 +114,17 @@ int DecodeGainInfo(Gecko2Info *gi, GAINC *gainc, int availbits)
 	if (gainc->nats > 0) {
 		for (i = 0; i < gainc->nats; i++) {
 			/* location */
-			gainc->loc[i] = GetBits(bsi, LOCBITS, 1);	
+			gainc->loc[i] = GetBits(bsi, LOCBITS, 1);
 			availbits -= LOCBITS;
 
 			/* gain code */
-			code = GetBits(bsi, 1, 1);	
+			code = GetBits(bsi, 1, 1);
 			availbits--;
 
 			if (!code) {
 				gainc->gain[i] = -1;
 			} else {
-				code = GetBits(bsi, GAINBITS, 1);	
+				code = GetBits(bsi, GAINBITS, 1);
 				availbits -= GAINBITS;
 				gainc->gain[i] = CODE2GAIN(code);
 			}
@@ -150,7 +150,7 @@ int DecodeGainInfo(Gecko2Info *gi, GAINC *gainc, int availbits)
  *
  * Return:      none
  *
- * Notes:       this prevents compiler from generating a memcpy for gainc0 = gainc1 
+ * Notes:       this prevents compiler from generating a memcpy for gainc0 = gainc1
  *                (we want to avoid a CRT lib call, for portability of asm)
  **************************************************************************************/
 void CopyGainInfo(GAINC *gaincDest, GAINC *gaincSource)
@@ -169,14 +169,14 @@ void CopyGainInfo(GAINC *gaincDest, GAINC *gaincSource)
  *
  * Description: reconstruct segmented gain window
  *
- * Inputs:      pointer to uninitialized exgain array 
+ * Inputs:      pointer to uninitialized exgain array
  *              pointer to old (overlap) and current gain info structs
  *
  * Outputs:     exgain[0, ... 2*NPARTS] with expanded gains at each switch point
  *
  * Return:      none
  *
- * Notes:       each frame is divided into NPARTS segments, with 
+ * Notes:       each frame is divided into NPARTS segments, with
  *                npsamps = nSamples / NPARTS samples in each one
  *              the gain window can only change at these boundaries
  *              if exgain[i] != exgain[i-1] the gain is interpolated logarithmically
@@ -196,11 +196,11 @@ static void CalcGainChanges(short *exgain, GAINC *gainc0, GAINC *gainc1)
 			exgain[i+NPARTS] = exgain[i+NPARTS+1];		/* repeat last gain */
 	}
 
-	/* pull any discontinuity through first half by offsetting all 
-	 *   gains with starting gain of second half 
+	/* pull any discontinuity through first half by offsetting all
+	 *   gains with starting gain of second half
 	 */
 	offset = exgain[NPARTS];
-	
+
 	/* first half - expand gains, working backwards */
 	nats = gainc0->nats;								/* gain changes left */
 	for (i = NPARTS-1; i >= 0; i--) {
@@ -295,11 +295,11 @@ static void InterpolatePCM(int tabidx, short *exgain, int *buf, int *overlap, sh
 		gainHi1 = gainHi0;
 		gainHi0 = exgain[NPARTS - part - 1];
 
-		currGainHi =  gainHi1 << MAX_LOGNPSAMPS;			
+		currGainHi =  gainHi1 << MAX_LOGNPSAMPS;
 		gainDiffHi = (gainHi0 - gainHi1) << (MAX_LOGNPSAMPS - nplog2Tab[tabidx]);
 		currGainHi += gainDiffHi;
 
-		currGainLo =  gainLo0 << MAX_LOGNPSAMPS;			
+		currGainLo =  gainLo0 << MAX_LOGNPSAMPS;
 		gainDiffLo = (gainLo1 - gainLo0) << (MAX_LOGNPSAMPS - nplog2Tab[tabidx]);
 
 		/* interpolate the gain window: in = in * 2^(gain0) * 2^((gain1 - gain0)*i/npsamps) */
@@ -357,7 +357,7 @@ static void InterpolatePCM(int tabidx, short *exgain, int *buf, int *overlap, sh
  *                synthesis window has not yet been applied
  *              max exgain for second half of current frame
  *
- * Outputs:     nSamples samples of gain windowed data for overlap 
+ * Outputs:     nSamples samples of gain windowed data for overlap
  *                (stored at buf + MAXNMLT)
  *
  * Return:      none
@@ -387,11 +387,11 @@ static void InterpolateOverlap(int tabidx, short *exgain, int *buf, int *overlap
 		gainHi1 = gainHi0;
 		gainHi0 = exgain[NPARTS - part - 1];
 
-		currGainHi =  gainHi1 << MAX_LOGNPSAMPS;			
+		currGainHi =  gainHi1 << MAX_LOGNPSAMPS;
 		gainDiffHi = (gainHi0 - gainHi1) << (MAX_LOGNPSAMPS - nplog2Tab[tabidx]);
 		currGainHi += gainDiffHi;
 
-		currGainLo =  gainLo0 << MAX_LOGNPSAMPS;			
+		currGainLo =  gainLo0 << MAX_LOGNPSAMPS;
 		gainDiffLo = (gainLo1 - gainLo0) << (MAX_LOGNPSAMPS - nplog2Tab[tabidx]);
 
 		/* interpolate the gain window: in = in * 2^(gain0) * 2^((gain1 - gain0)*i/npsamps) */
@@ -434,9 +434,9 @@ static void InterpolateOverlap(int tabidx, short *exgain, int *buf, int *overlap
 /**************************************************************************************
  * Function:    DecWindowWithAttacks
  *
- * Description: apply synthesis window, perform gain windowing of current frame, 
- *                do overlap-add, and produce one frame of decoded PCM 
- *              (general case - either gain window has attacks or the default Q format 
+ * Description: apply synthesis window, perform gain windowing of current frame,
+ *                do overlap-add, and produce one frame of decoded PCM
+ *              (general case - either gain window has attacks or the default Q format
  *                is not being used)
  *
  * Inputs:      table index (for transform size)
@@ -496,15 +496,15 @@ void DecWindowWithAttacks(int tabidx, int *buf, int *overlap, short *pcm, int nC
 		//	buf[i] >>= s;
 	}
 
-	return;	
+	return;
 }
 
 /**************************************************************************************
  * Function:    DecWindowNoAttacks
  *
- * Description: apply synthesis window, perform gain windowing of current frame, 
- *                do overlap-add, and produce one frame of decoded PCM 
- *              (fast case - no gain window attacks and the data is in the default 
+ * Description: apply synthesis window, perform gain windowing of current frame,
+ *                do overlap-add, and produce one frame of decoded PCM
+ *              (fast case - no gain window attacks and the data is in the default
  *                Q format with FBITS_OUT_IMLT fraction bits in input)
  *
  * Inputs:      table index (for transform size)
@@ -518,7 +518,7 @@ void DecWindowWithAttacks(int tabidx, int *buf, int *overlap, short *pcm, int nC
  *
  * Notes:       this processes one channel at a time, but skips every other sample in
  *                the output buffer (pcm) for stereo interleaving
- *              this should fit in registers on ARM - make sure compiler does this 
+ *              this should fit in registers on ARM - make sure compiler does this
  *                correctly!
  **************************************************************************************/
 void DecWindowNoAttacks(int tabidx, int *buf0, int *overlap, short *pcm0, int nChans)
@@ -544,7 +544,7 @@ void DecWindowNoAttacks(int tabidx, int *buf0, int *overlap, short *pcm0, int nC
 		/* load window coefficients */
 		w0 = *wnd++;
 		w1 = *wnd++;
-		
+
 		/* apply window to generate first N samples */
 		in = *buf1--;
 		f0 = MULSHIFT32(w0, in);
@@ -560,5 +560,5 @@ void DecWindowNoAttacks(int tabidx, int *buf0, int *overlap, short *pcm0, int nC
 		*over1-- = -MULSHIFT32(w0, in);
 	}
 
-	return;	
+	return;
 }

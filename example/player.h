@@ -22,18 +22,18 @@
 
 #define PRINT  printf
 typedef enum
-{      
+{
 	/******************************
-	* 0x1000x: 
+	* 0x1000x:
 	* player do parse file
 	* decoder not running
 	******************************/
 	PLAYER_INITING  	= 0x10001,
 	PLAYER_TYPE_REDY    = 0x10002,
-	PLAYER_INITOK   	= 0x10003,	
-        
+	PLAYER_INITOK   	= 0x10003,
+
 	/******************************
-	* 0x2000x: 
+	* 0x2000x:
 	* playback status
 	* decoder is running
 	******************************/
@@ -41,24 +41,24 @@ typedef enum
 	PLAYER_BUFFERING 	= 0x20002,
 	PLAYER_PAUSE    	= 0x20003,
 	PLAYER_SEARCHING	= 0x20004,
-	
+
 	PLAYER_SEARCHOK 	= 0x20005,
-	PLAYER_START    	= 0x20006,	
+	PLAYER_START    	= 0x20006,
 	PLAYER_FF_END   	= 0x20007,
 	PLAYER_FB_END   	= 0x20008,
 
-	PLAYER_PLAY_NEXT	= 0x20009,	
-	PLAYER_BUFFER_OK	= 0x2000a,	
-	PLAYER_FOUND_SUB	= 0x2000b,	
+	PLAYER_PLAY_NEXT	= 0x20009,
+	PLAYER_BUFFER_OK	= 0x2000a,
+	PLAYER_FOUND_SUB	= 0x2000b,
 
 	/******************************
-	* 0x3000x: 
-	* player will exit	
+	* 0x3000x:
+	* player will exit
 	******************************/
 	PLAYER_ERROR		= 0x30001,
-	PLAYER_PLAYEND  	= 0x30002,	
-	PLAYER_STOPED   	= 0x30003,  
-	PLAYER_EXIT   		= 0x30004, 
+	PLAYER_PLAYEND  	= 0x30002,
+	PLAYER_STOPED   	= 0x30003,
+	PLAYER_EXIT   		= 0x30004,
 }player_status_t;
 
 typedef enum
@@ -107,15 +107,15 @@ typedef struct player_start_params_s
     pstream_type_t      stream_type;
     int                 video_pid;
     int                 audio_pid;
-    int                 pcr_pid; 
+    int                 pcr_pid;
 }player_start_params_t;
 
 
-typedef struct play_para_s 
-{ 
+typedef struct play_para_s
+{
     int                     player_id;
     player_start_params_t   start_params;
-    codec_para_t            *codec;    
+    codec_para_t            *codec;
     player_thread_mgt_t     thread_mgt;
 }play_para_t;
 

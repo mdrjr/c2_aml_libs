@@ -46,7 +46,7 @@ static int set_avsync_enable(int enable)
         close(fd);
         return 0;
     }
-    
+
     return -1;
 }
 
@@ -133,7 +133,7 @@ static int set_display_axis(int recovery)
             count = parse_para(str, 8, axis);
         }
         if (recovery) {
-            sprintf(str, "%d %d %d %d %d %d %d %d", 
+            sprintf(str, "%d %d %d %d %d %d %d %d",
                 axis[0],axis[1], axis[2], axis[3], axis[4], axis[5], axis[6], axis[7]);
         } else {
             sprintf(str, "0 0 1920 1080 720 576 0 0");
@@ -160,7 +160,7 @@ static int check_audiodsp_fatal_err()
     int val = 0;
     char  bcmd[16];
     fd = open(AUDIODSP_FILE, O_RDONLY);
-    
+
     if (fd >= 0) {
         read(fd, bcmd, sizeof(bcmd));
         val = strtol(bcmd, NULL, 16);
@@ -195,7 +195,7 @@ static int player_get_play_status(codec_para_t *p)
 {
 #if 0
     if(check_audiodsp_fatal_err() == AUDIO_DSP_FATAL_ERROR) {
-        codec_reset(p); 
+        codec_reset(p);
 	set_sysfs_str(AUDIODSP_FILE, "0");
         printf("fatal error to reset\n");
     }
@@ -221,12 +221,12 @@ player_play_task(play_para_t *player)
     unsigned int rp_move_count = 40,count=0;
     unsigned int last_rp = 0;
     player_start_params_t *start_params = &player->start_params;
-		
+
     osd_blank("/sys/class/graphics/fb0/blank",1);
     osd_blank("/sys/class/graphics/fb1/blank",0);
     set_display_axis(0);
     set_stb_source_hiu();
-    set_stb_demux_source_hiu();  
+    set_stb_demux_source_hiu();
     do
     {
         file_fd = open(start_params->source_name, O_RDWR, 0666);
@@ -237,7 +237,7 @@ player_play_task(play_para_t *player)
         }
         sleep(2);
     }while(file_fd < 0);
-    
+
     PRINT("open file:%s ok!\n", start_params->source_name);
 
     lseek(file_fd, 0, SEEK_SET);
@@ -254,7 +254,7 @@ player_play_task(play_para_t *player)
              player->codec->video_type = VFORMAT_H264;
              break;
     }
-		
+
     switch (start_params->audio_codec_type)
     {
         case PLAYER_AUD_CODEC_MPEG2:
@@ -267,7 +267,7 @@ player_play_task(play_para_t *player)
             player->codec->audio_type = AFORMAT_AAC;
             break;
     }
-		
+
     player->codec->has_video = 1;
 
     if ((start_params->audio_codec_type == PLAYER_AUD_CODEC_MPEG2)
@@ -279,7 +279,7 @@ player_play_task(play_para_t *player)
     {
         player->codec->has_audio = 0;
     }
-    
+
     switch(start_params->stream_type)
     {
         case STREAM_TS:
@@ -308,7 +308,7 @@ player_play_task(play_para_t *player)
         return -1;
     }
     while(player_get_play_status( player->codec))
-    { 
+    {
         len = read(file_fd, buffer, size);
         if (len > 0) {
             size = 0;
@@ -340,7 +340,7 @@ player_play_task(play_para_t *player)
 	    /*check buffer level*/
 	    do {
 		if(count>2000)//avoid infinite loop
-		  break;	
+		  break;
 		ret = codec_get_vbuf_state(player->codec, &vbuf);
 		if (ret != 0) {
 		  PRINT("codec_get_vbuf_state error: %x\n", -ret);
@@ -350,22 +350,22 @@ player_play_task(play_para_t *player)
 		  last_rp = vbuf.read_pointer;
 		  rp_move_count = 40;
 		}else
-		  rp_move_count--;				
+		  rp_move_count--;
 		  usleep(1000*30);
-		  count++;	
+		  count++;
 		} while (vbuf.data_len > 0x100 && rp_move_count > 0);
 
             if (replay == TRUE)
-            {             
-                lseek(file_fd, 0, SEEK_SET);		  		
+            {
+                lseek(file_fd, 0, SEEK_SET);
                 ret = codec_close(player->codec);
 		usleep(1000);
                 ret = codec_init(player->codec);
                 if (ret != CODEC_ERROR_NONE) {
                      PRINT("codec init failed, ret=0x%x", ret);
                      return -1;
-                }	
-                size = PLAYER_READ_SIZE; 
+                }
+                size = PLAYER_READ_SIZE;
                 continue;
             }
             break;
@@ -373,16 +373,16 @@ player_play_task(play_para_t *player)
             PRINT("read failed! len=%d errno=%d\n", len, errno);
             break;
         }
-        
+
     }
 
     free(buffer);
     buffer = NULL;
     PRINT("will exit!!!!!!!!!!!!\n");
     codec_close(player->codec);
-		
+
     pthread_detach(pthread_self());
-    pthread_exit(NULL);		
+    pthread_exit(NULL);
 
     return;
 }
@@ -390,38 +390,38 @@ player_play_task(play_para_t *player)
 static int player_thread_create(play_para_t *player)
 {
     int ret = 0;
-    
+
     ret = pthread_attr_init(&mgt.pthread_attr);
     if (ret != 0) {
 	PRINT("player_thread_create pthread_attr_init failed.\n");
 	return -1;
-    } 
-		
+    }
+
     ret = pthread_attr_setstacksize(&mgt.pthread_attr, 32*1024);   //default stack size maybe better
     if (ret != 0) {
 	PRINT("set static size  failed.\n");
 	return -1;
     }
-		
+
     pthread_mutex_init(&mgt.pthread_mutex, NULL);
     pthread_cond_init(&mgt.pthread_cond, NULL);
-     
+
     ret = pthread_create(&mgt.pthread_id, &mgt.pthread_attr, (void*)&player_play_task, (void*)player);
     if (ret != 0) {
         PRINT("creat player thread failed !\n");
         return ret;
     }
-		
+
     PRINT("[player_thread_create:%d]creat thread success,tid=%lu\n", __LINE__, mgt.pthread_id);
     pthread_setname_np(mgt.pthread_id,"am_player_task");
-    
-    pthread_attr_destroy(&mgt.pthread_attr);	
+
+    pthread_attr_destroy(&mgt.pthread_attr);
     return 0;
 
 }
 
 
-static int 
+static int
 player_start(player_start_params_t * start_params)
 {
     int ret = 0;
@@ -433,14 +433,14 @@ player_start(player_start_params_t * start_params)
 
     memcpy(&s_player_params.start_params, start_params, sizeof(player_start_params_t));
     s_player_params.codec = calloc(1, sizeof(codec_para_t));
-		 
+
     ret = player_thread_create(&s_player_params);
     if (ret != 0)
     {
         PRINT("Error--%s-- player id is in use!!\r\n", __FUNCTION__);
         return -1;
     }
-		
+
     return 0;
 }
 
@@ -487,16 +487,16 @@ int main(int argc , char *argv[])
         PRINT("Corret command: tsplay <filename> <vid> <vformat(0x11 for mpeg2, 0x12 for h264, ox13 for mpeg4)> <aid> <aformat(0x1 for mp3, 0x4 for aac, 0x5 for pcm)> \n");
         return -1;
     }
-		
+
     player_start_params_t  player_start_params;
     memcpy(player_start_params.source_name , argv[1], strlen(argv[1])+1);
     player_start_params.video_pid = player_strtoHex(argv[2]);
     player_start_params.video_codec_type = player_strtoHex(argv[3]);
     player_start_params.audio_pid = player_strtoHex(argv[4]);
     player_start_params.audio_codec_type = player_strtoHex(argv[5]);
-		 			
+
     player_start(&player_start_params);
-		PRINT("video_type:[%#x] audio_type:[%#x]\n", player_start_params.video_codec_type, player_start_params.audio_codec_type); 
+		PRINT("video_type:[%#x] audio_type:[%#x]\n", player_start_params.video_codec_type, player_start_params.audio_codec_type);
 
     while(run) {
         PRINT("select 'q' to quit: \n");

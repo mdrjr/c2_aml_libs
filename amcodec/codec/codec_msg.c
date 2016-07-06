@@ -7,7 +7,7 @@
 */
 /* Copyright (C) 2007-2011, Amlogic Inc.
 * All right reserved
-* 
+*
 */
 #include <stdio.h>
 #include <stdio.h>
@@ -47,7 +47,7 @@ int system_error_to_codec_error(int error)
     }
 }
 
-typedef struct 
+typedef struct
 {
 	int error_no;
 	char buf[256];
@@ -57,7 +57,7 @@ const codec_errors_t codec_errno[] =
 {
 	//codec error
 	{CODEC_ERROR_NONE, "codec no errors"},
-	{-CODEC_ERROR_INVAL, "invalid handle or parameter"}, 
+	{-CODEC_ERROR_INVAL, "invalid handle or parameter"},
 	{-CODEC_ERROR_BUSY, "codec is busy"},
 	{-CODEC_ERROR_NOMEM, "no enough memory for codec"},
 	{-CODEC_ERROR_IO, "codec io error"},
@@ -127,7 +127,7 @@ const codec_errors_t codec_errno[] =
 	{EBADRQC, "Invalid request code"},			// 56
 	{EBADSLT, "Invalid slot"},					// 57
 	{EDEADLOCK,"dead lock/link"},				// 58
-	{EBFONT, "Bad font file format"},			// 59 
+	{EBFONT, "Bad font file format"},			// 59
 	{ENOSTR, "Device not a stream"},			// 60
 	{ENODATA, "No data available"},				// 61
 	{ETIME, "Timer expired"},					// 62
@@ -151,7 +151,7 @@ const codec_errors_t codec_errno[] =
 	{ELIBBAD, "Accessing a corrupted shared library"},		// 80
 	{ELIBSCN, ".lib section in a.out corrupted"},			// 81
 	{ELIBMAX, "Attempting to link in too many shared libraries"},	// 82
-	{ELIBEXEC, "Cannot exec a shared library directly"}, 	// 83	
+	{ELIBEXEC, "Cannot exec a shared library directly"}, 	// 83
 	{EILSEQ, "Illegal byte sequence"},						// 84
 	{ERESTART, "Interrupted system call should be restarted"},	// 85
 	{ESTRPIPE, "Streams pipe error "},						// 86
@@ -168,7 +168,7 @@ const codec_errors_t codec_errno[] =
 	{EAFNOSUPPORT, "Address family not supported by protocol"},		// 97
 	{EADDRINUSE, "Address already in use"},					// 98
 	{EADDRNOTAVAIL, "Cannot assign requested address"},		// 99
-	{ENETDOWN, "Network is down"},							// 100	
+	{ENETDOWN, "Network is down"},							// 100
     {ENETUNREACH, "Network is unreachable"},				// 101
 	{ENETRESET, "Network dropped connection because of reset"},		// 102
 	{ECONNABORTED, "Software caused connection abort"},		// 103
@@ -210,9 +210,9 @@ const char * codec_error_msg(int error)
 	for(i = 0; i < (sizeof(codec_errno)/sizeof(codec_errors_t)); i ++)
 	{
 		if (error == codec_errno[i].error_no)
-			return codec_errno[i].buf;		
-	} 
-    return "invalid operate";   
+			return codec_errno[i].buf;
+	}
+    return "invalid operate";
 }
 
 /* --------------------------------------------------------------------------*/

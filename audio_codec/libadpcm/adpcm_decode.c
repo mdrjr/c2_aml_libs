@@ -10,9 +10,9 @@
 #include <android/log.h>
 #define  LOG_TAG    "AdpcmDecoder"
 #define  PRINTF(...) __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
-#else 
-#define  PRINTF  printf  
-#endif 
+#else
+#define  PRINTF  printf
+#endif
 
 typedef struct
 {
@@ -120,7 +120,7 @@ static int adpcm_init(aml_audio_dec_t *audec)
 	g_mgr.ch = adec_ops->channels;
 	g_mgr.sr = adec_ops->samplerate;
 	g_mgr.wr = 0;
-	g_mgr.last_rd = 0;	
+	g_mgr.last_rd = 0;
 	g_mgr.totalSample = 0;
 	g_mgr.totalSamplePlayed = 0;
 	g_mgr.totalSampleDecoded = 0;
@@ -138,7 +138,7 @@ static int adpcm_init(aml_audio_dec_t *audec)
            PRINTF("[%s %d]NOTE--> no enough data\n",__FUNCTION__,__LINE__);\
            (Ctl)->UsedDataLen-=(UsedSetIfNo);                              \
            return -1;                                                      \
-      }                                                                    \              
+      }                                                                    \
 }
 
 #define CHECK_DATA_ENOUGH_SET(Ctl,NeedBytes,UsedSetIfNo)    {              \
@@ -146,7 +146,7 @@ static int adpcm_init(aml_audio_dec_t *audec)
            PRINTF("[%s %d]NOTE--> no enough data\n",__FUNCTION__,__LINE__);\
            (Ctl)->UsedDataLen=(UsedSetIfNo);                              \
            return -1;                                                      \
-      }                                                                    \              
+      }                                                                    \
 }
 
 static int refill(aml_audio_dec_t *audec,pcm_read_ctl_t *pcm_read_ctx,unsigned char* buf, int len)
@@ -163,9 +163,9 @@ static int refill(aml_audio_dec_t *audec,pcm_read_ctl_t *pcm_read_ctx,unsigned c
 	{
 		unsigned char timestamp[4] = {0};
 		unsigned char block_length[4] = {0};
-        
-        CHECK_DATA_ENOUGH_SET(pcm_read_ctx,4,0) 
-		pcm_read(pcm_read_ctx,&tmp_a,1);	
+
+        CHECK_DATA_ENOUGH_SET(pcm_read_ctx,4,0)
+		pcm_read(pcm_read_ctx,&tmp_a,1);
 		pcm_read(pcm_read_ctx,&tmp_p,1);
 		pcm_read(pcm_read_ctx,&tmp_t,1);
 		pcm_read(pcm_read_ctx,&tmp_s,1);
@@ -176,17 +176,17 @@ static int refill(aml_audio_dec_t *audec,pcm_read_ctl_t *pcm_read_ctx,unsigned c
              pcm_read(pcm_read_ctx,timestamp,4);
 			 wave_timestamp = (timestamp[0]<<24)|(timestamp[1]<<16)|(timestamp[2]<<8)|(timestamp[3]);
              pcm_read(pcm_read_ctx,block_length,4);
-			 wave_timestamplen = (block_length[0]<<24)|(block_length[1]<<16)|(block_length[2]<<8)|(block_length[3]);	
+			 wave_timestamplen = (block_length[0]<<24)|(block_length[1]<<16)|(block_length[2]<<8)|(block_length[3]);
 			 refill_timestamp_len = wave_timestamplen;
 
-             CHECK_DATA_ENOUGH_SET(pcm_read_ctx,refill_timestamp_len,0)	
-	
-		}else if(tmp_a == 'R' && tmp_p == 'I' && tmp_t == 'F' && tmp_s == 'F'){	
+             CHECK_DATA_ENOUGH_SET(pcm_read_ctx,refill_timestamp_len,0)
+
+		}else if(tmp_a == 'R' && tmp_p == 'I' && tmp_t == 'F' && tmp_s == 'F'){
 			 if((audec->codec_id==CODEC_ID_ADPCM_IMA_WAV)||(audec->codec_id==CODEC_ID_ADPCM_MS))
 			 {
 				  tmp=len;
 				  while(tmp){
-                       CHECK_DATA_ENOUGH_SET(pcm_read_ctx,8,0)	
+                       CHECK_DATA_ENOUGH_SET(pcm_read_ctx,8,0)
 					   pcm_read(pcm_read_ctx,&timestamp[0],1);
 					   tmp --;
 					   if(timestamp[0] == 'd'){
@@ -200,7 +200,7 @@ static int refill(aml_audio_dec_t *audec,pcm_read_ctl_t *pcm_read_ctx,unsigned c
 				  wave_timestamplen = 0;
 				  wave_timestamp = 0xffffffff;
 
-                  CHECK_DATA_ENOUGH_SUB(pcm_read_ctx,len,0)	
+                  CHECK_DATA_ENOUGH_SUB(pcm_read_ctx,len,0)
 			  }else{
 				  *pbuf++ = tmp_a;
 				  *pbuf++ = tmp_p;
@@ -210,7 +210,7 @@ static int refill(aml_audio_dec_t *audec,pcm_read_ctl_t *pcm_read_ctx,unsigned c
 				  wave_timestamplen = 0;
 				  wave_timestamp = 0xffffffff;
 
-                  CHECK_DATA_ENOUGH_SET(pcm_read_ctx,len,0)	
+                  CHECK_DATA_ENOUGH_SET(pcm_read_ctx,len,0)
 			  }
 		}else{
 			*pbuf++ = tmp_a;
@@ -218,7 +218,7 @@ static int refill(aml_audio_dec_t *audec,pcm_read_ctl_t *pcm_read_ctx,unsigned c
 			*pbuf++ = tmp_t;
 			*pbuf++ = tmp_s;
             len -= 4;
-            CHECK_DATA_ENOUGH_SET(pcm_read_ctx,len,0)	
+            CHECK_DATA_ENOUGH_SET(pcm_read_ctx,len,0)
 			wave_timestamplen = 0;
 			wave_timestamp = 0xffffffff;
 		}
@@ -350,7 +350,7 @@ static int ima_adpcm_decode_block(unsigned short *output,
       }
     }
   }
-  
+
   decode_nibbles(output,
     (block_size - MS_IMA_ADPCM_PREAMBLE_SIZE * channels) * 2,
     channels,
@@ -411,7 +411,7 @@ static int ms_adpcm_decode_block(short *pcm_buf, unsigned char *buf, int channel
         idelta[0] = buf[1]|buf[2]<<8;
         idelta[1] = 0;
 
-        s1 = buf[3]|buf[4]<<8;        
+        s1 = buf[3]|buf[4]<<8;
         s0 = buf[5]|buf[6]<<8;
 
         blockindx = 7;
@@ -422,13 +422,13 @@ static int ms_adpcm_decode_block(short *pcm_buf, unsigned char *buf, int channel
         bpred[0] = buf[0];
         bpred[1] = buf[1];
         if(bpred[0]>=7 || bpred[1]>=7)
-        {        
+        {
             //printf("sync error\n");
             //goto _exit;
         }
         idelta[0] = buf[2]|buf[3]<<8;
         idelta[1] = buf[4]|buf[5]<<8;
- 
+
         s2 = buf[6]|buf[7]<<8;
         s3 = buf[8]|buf[9]<<8;
         s0 = buf[10]|buf[11]<<8;
@@ -441,20 +441,20 @@ static int ms_adpcm_decode_block(short *pcm_buf, unsigned char *buf, int channel
     This was left over from a time when calculations were done
     as ints rather than shorts. Keep this around as a reminder
     in case I ever find a file which decodes incorrectly.
-    
+
       if (chan_idelta [0] & 0x8000)
       chan_idelta [0] -= 0x10000 ;
       if (chan_idelta [1] & 0x8000)
       chan_idelta [1] -= 0x10000 ;
     --------------------------------------------------------*/
-    
+
     /* Pull apart the packed 4 bit samples and store them in their
     ** correct sample positions.
     */
 
     /* Decode the encoded 4 bit samples. */
     int chan;
-    
+
     for(i=channel*2;/*i<channel*sampleblk&&*/(blockindx < block);i++)
     {
         if(sampleindx<=i)
@@ -463,7 +463,7 @@ static int ms_adpcm_decode_block(short *pcm_buf, unsigned char *buf, int channel
             {
                 bytecode = buf[blockindx++];
 
-          
+
                 if(channel==1)
                 {
                     s2 = (bytecode>>4)&0x0f;
@@ -480,7 +480,7 @@ static int ms_adpcm_decode_block(short *pcm_buf, unsigned char *buf, int channel
             }
         }
         chan = (channel>1)?(i%2):0;
-   
+
         if(channel==1)
         {
             bytecode = s2&0x0f;
@@ -513,8 +513,8 @@ static int ms_adpcm_decode_block(short *pcm_buf, unsigned char *buf, int channel
         }
 
         predict>>=8;
-        current = bytecode*delta+predict;        
-#if 1       
+        current = bytecode*delta+predict;
+#if 1
         if (current > 32767)
             current = 32767 ;
         else if (current < -32768)
@@ -531,7 +531,7 @@ static int ms_adpcm_decode_block(short *pcm_buf, unsigned char *buf, int channel
         {
             s4 = current;
 				}
- 
+
 		pcm_buf[j++] = s0;
 
         if(channel==1)
@@ -630,14 +630,14 @@ int runalawdecoder(aml_audio_dec_t *audec,pcm_read_ctl_t *pcm_read_ctx,unsigned 
 {
 	int i= 0;
 	int tmp = 0;
-	short *pcm_buf = (short*)wave_decoder_buffer[1].addr;	
+	short *pcm_buf = (short*)wave_decoder_buffer[1].addr;
 
 	tmp = refill(audec,pcm_read_ctx,pwavebuf, WAVE_BLOCK_SIZE);
 	if(tmp<0)
        return -1;
 	for(i=0; i<tmp; i++)
 	{
-		pcm_buf[i] = alaw2linear(pwavebuf[i]);			
+		pcm_buf[i] = alaw2linear(pwavebuf[i]);
 	}
 	memcpy(buf,(char*)pcm_buf,2*WAVE_BLOCK_SIZE);
 	return (WAVE_BLOCK_SIZE)*2;
@@ -653,7 +653,7 @@ int runulawdecoder(aml_audio_dec_t *audec,pcm_read_ctl_t *pcm_read_ctx,unsigned 
        return -1;
 	for(i=0; i<tmp; i++)
 	{
-		pcm_buf[i] = ulaw2linear(pwavebuf[i]);			
+		pcm_buf[i] = ulaw2linear(pwavebuf[i]);
 	}
 	memcpy(buf,(char*)pcm_buf,2*WAVE_BLOCK_SIZE);
 	return (WAVE_BLOCK_SIZE)*2;
@@ -668,18 +668,18 @@ int runimaadpcmdecoder(aml_audio_dec_t *audec,pcm_read_ctl_t *pcm_read_ctx,unsig
 	unsigned  block_size = 0;
     int UsedDataLenSave=0;
 	if (!block_align)
-	{   
-         CHECK_DATA_ENOUGH_SET(pcm_read_ctx,4,0)	
+	{
+         CHECK_DATA_ENOUGH_SET(pcm_read_ctx,4,0)
          pcm_read(pcm_read_ctx,buffer,4);
 		 while(1){
 			 if((buffer[0] == 0x11)&&(buffer[1] == 0x22)&&(buffer[2] == 0x33)&&(buffer[3] == 0x44)){//sync word
 				break;
 			 }
-             CHECK_DATA_ENOUGH_SUB(pcm_read_ctx,1,3)	
+             CHECK_DATA_ENOUGH_SUB(pcm_read_ctx,1,3)
 			 pcm_read(pcm_read_ctx,&buffer[4],1);
 			 memmove(buffer,&buffer[1],4);
 		 }
-         CHECK_DATA_ENOUGH_SUB(pcm_read_ctx,2,4)	
+         CHECK_DATA_ENOUGH_SUB(pcm_read_ctx,2,4)
 		 pcm_read(pcm_read_ctx,buffer,2);
 
 		 block_size = (buffer[0]<< 8) | buffer[1];
@@ -688,12 +688,12 @@ int runimaadpcmdecoder(aml_audio_dec_t *audec,pcm_read_ctl_t *pcm_read_ctx,unsig
 		 block_size = block_align;
          CHECK_DATA_ENOUGH_SET(pcm_read_ctx,block_size,0)
     }
-    
+
 	if(block_size < 4){
 		PRINTF("[%s %d]imaadpcm block align not valid: %d\n",__FUNCTION__,__LINE__,block_size);
 		return 0;
 	}
-	
+
     UsedDataLenSave=pcm_read_ctx->UsedDataLen;
 	tmp = refill(audec,pcm_read_ctx,pwavebuf, block_size);
     if(tmp<0){
@@ -718,7 +718,7 @@ int runmsadpcmdecoder(aml_audio_dec_t *audec,pcm_read_ctl_t *pcm_read_ctx,unsign
 	unsigned  block_size = 0;
 	int UsedDataLenSave=0;
 	if (!block_align)
-	{   
+	{
         CHECK_DATA_ENOUGH_SET(pcm_read_ctx,4,0)
         pcm_read(pcm_read_ctx,buffer,4);
 		while(1){
@@ -746,7 +746,7 @@ int runmsadpcmdecoder(aml_audio_dec_t *audec,pcm_read_ctl_t *pcm_read_ctx,unsign
 
     UsedDataLenSave=pcm_read_ctx->UsedDataLen;
 	tmp = refill(audec,pcm_read_ctx,pwavebuf, block_size);
-    if(tmp<0){ 
+    if(tmp<0){
          pcm_read_ctx->UsedDataLen=UsedDataLenSave;
          return -1;
 
@@ -755,7 +755,7 @@ int runmsadpcmdecoder(aml_audio_dec_t *audec,pcm_read_ctl_t *pcm_read_ctx,unsign
 		PRINTF("[%s %d]msadpcm: data missalign\n",__FUNCTION__,__LINE__);
 
 	Output_Size = ms_adpcm_decode_block(pcm_buf, pwavebuf, g_mgr.ch, block_size);
-	Output_Size = Output_Size - Output_Size%g_mgr.ch; 
+	Output_Size = Output_Size - Output_Size%g_mgr.ch;
 	memcpy(buf,(char*)pcm_buf,2*Output_Size);
 	return Output_Size*2;
 
@@ -803,25 +803,25 @@ static int adpcm_decode_frame(aml_audio_dec_t *audec,pcm_read_ctl_t *pcm_read_ct
 	pwavebuf = (unsigned char*)wave_decoder_buffer[0].addr;
 
 	switch(audec->codec_id)
-	{		
+	{
 		case CODEC_ID_PCM_ALAW:
 			buf_size=runalawdecoder(audec,pcm_read_ctx,buf,len);
 			break;
-		
+
 		case CODEC_ID_PCM_MULAW:
 			buf_size=runulawdecoder(audec,pcm_read_ctx,buf,len);
 			break;
-		
+
 		case CODEC_ID_ADPCM_IMA_WAV:
 			buf_size=runimaadpcmdecoder(audec,pcm_read_ctx,buf,len);
 			break;
-			
+
 		case CODEC_ID_ADPCM_MS:
 			buf_size=runmsadpcmdecoder(audec,pcm_read_ctx,buf,len);
 			break;
 		default:
 			buf_size=runpcmdecoder(audec,pcm_read_ctx,buf,len);
-			break;		
+			break;
 	}
 	return  buf_size;
 }

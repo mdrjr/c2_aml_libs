@@ -29,7 +29,7 @@ typedef enum {
     CMD_LEFT_MONO = 1 << 8,
     CMD_RIGHT_MONO = 1 << 9,
     CMD_STEREO = 1 << 10,
-    CMD_SET_LRVOL = 1<<20,    
+    CMD_SET_LRVOL = 1<<20,
     CMD_RELEASE = 1 << 31,
 } ctrl_cmd_t;
 
@@ -45,7 +45,7 @@ typedef struct {
     union {
         int en;
         float volume;
-    } value_ext;	
+    } value_ext;
 } adec_cmd_t;
 
 typedef struct {

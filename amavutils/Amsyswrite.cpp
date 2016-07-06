@@ -105,7 +105,7 @@ long amSystemWriteGetPropertyLong(const char* key, long def)
 int amSystemWriteGetPropertyBool(const char* key, int def)
 {
     const sp<ISystemWriteService>& sws = getSystemWriteService();
-    if(sws != 0) { 
+    if(sws != 0) {
         if(sws->getPropertyBoolean(String16(key), def)) {
             return 1;
         } else {
@@ -121,7 +121,7 @@ void amSystemWriteSetProperty(const char* key, const char* value)
     const sp<ISystemWriteService>& sws = getSystemWriteService();
     if(sws != 0){
         sws->setProperty(String16(key), String16(value));
-    }  
+    }
 }
 
 int amSystemWriteReadSysfs(const char* path, char* value)

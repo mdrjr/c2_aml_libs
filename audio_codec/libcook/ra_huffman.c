@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: huffman.c,v 1.6 2005/04/27 19:20:50 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2002 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
@@ -66,7 +66,7 @@ int DecodeHuffmanScalar(const unsigned short *huffTab, const HuffInfo *huffTabIn
 
 	map = huffTab + huffTabInfo->offset;
 	countPtr = huffTabInfo->count;
-	cache = (unsigned int)(bitBuf << (17 - MAX_HUFF_BITS));	
+	cache = (unsigned int)(bitBuf << (17 - MAX_HUFF_BITS));
 
 	total = 0;
 	count = *countPtr++;

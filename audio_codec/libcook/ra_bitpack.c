@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: bitpack.c,v 1.6 2005/04/27 19:20:50 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2002 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
@@ -62,11 +62,11 @@ const unsigned char pkkey[4] =	{ 0x37, 0xc5, 0x11, 0xf2 };
  * Return:      the next nBits bits of data from bitstream buffer (right-justified)
  *
  * Notes:       nBits must be in range [0, 31], nBits outside this range masked by 0x1f
- *              for speed, does not indicate error if you overrun bit buffer 
+ *              for speed, does not indicate error if you overrun bit buffer
  *              if nBits = 0, returns 0
  *              applies XOR key when reading (rather than using out-of-place buffer)
  *              reads byte-at-a-time (not cached 32-bit ints) so not designed to be
- *                especially fast (i.e. handy for Huffman decoding of a few symbols, 
+ *                especially fast (i.e. handy for Huffman decoding of a few symbols,
  *                but not optimal for decoding long sequences of codewords)
  **************************************************************************************/
 unsigned int GetBits(BitStreamInfo *bsi, int nBits, int advanceFlag)
@@ -136,7 +136,7 @@ void AdvanceBitstream(BitStreamInfo *bsi, int nBits)
 /**************************************************************************************
  * Function:    DecodeSideInfo
  *
- * Description: parse bitstream and decode gain info, coupling info, power envelope, 
+ * Description: parse bitstream and decode gain info, coupling info, power envelope,
  *                and categorization code
  *
  * Inputs:      pointer to initialized Gecko2Info struct
@@ -145,12 +145,12 @@ void AdvanceBitstream(BitStreamInfo *bsi, int nBits)
  *              channel index
  *
  * Outputs:     filled-in dgainc structs, channel coupling indices (if joint stereo),
- *                power envelope index for each region, 
+ *                power envelope index for each region,
  *                and rate code (selected categorization)
  *
  * Return:      number of bits remaining in bitstream, -1 if out-of-bits
- * 
- * Notes:       encoder guarantees that gain, couple, envelope, and rateCode do 
+ *
+ * Notes:       encoder guarantees that gain, couple, envelope, and rateCode do
  *                not run out of bits
  **************************************************************************************/
 int DecodeSideInfo(Gecko2Info *gi, unsigned char *buf, int availbits, int ch)
@@ -184,7 +184,7 @@ int DecodeSideInfo(Gecko2Info *gi, unsigned char *buf, int availbits, int ch)
 	/* decode rate code (return error if runs out of bits) */
 	if (availbits < gi->rateBits)
 		return -1;
-	gi->rateCode = GetBits(bsi, gi->rateBits, 1);	
+	gi->rateCode = GetBits(bsi, gi->rateBits, 1);
 	availbits -= gi->rateBits;
 
 	return availbits;

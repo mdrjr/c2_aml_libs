@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: rdtpck.h,v 1.1.1.1.2.1 2005/05/04 18:20:57 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2005 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 #ifndef RDTPACKET_H
@@ -46,14 +46,14 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
+
 
 /*
- * 
+ *
  * Packet util functions and types
  *
  */
-    
+
 #define RDT_ASM_ACTION_PKT       0xFF00
 #define RDT_BW_REPORT_PKT        0xFF01
 #define RDT_ACK_PKT              0xFF02
@@ -70,7 +70,7 @@ extern "C" {
 #define RDT_DATA_PACKET          0xFFFE
 #define RDT_UNKNOWN_TYPE         0xFFFF
 
-    
+
 
 /*
  *
@@ -131,13 +131,13 @@ UINT16 GetRDTPacketType(UINT8* pBuf, UINT32 nLen);
 
 
 
-/* 
+/*
  * Marshalling inline funcs.
  */
 
 UINT8 getbyte(UINT8* data);
 UINT16 getshort(UINT8* data);
-INT32 getlong(UINT8* data);                           
+INT32 getlong(UINT8* data);
 void putbyte(UINT8* data, INT8 v);
 void putshort(UINT8* data, UINT16 v);
 void putlong(UINT8* data, UINT32 v);
@@ -148,6 +148,6 @@ UINT8* addstring(UINT8* cp, const UINT8* string, int len);
 
 #ifdef __cplusplus
 }
-#endif 
+#endif
 
 #endif /* RDTPACKET_H */

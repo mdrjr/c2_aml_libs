@@ -22,9 +22,9 @@
 
 #define  LOG_TAG    "RaacDecoder"
 #define raac_print(...) __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
-#else 
+#else
 #define raac_print printf
-#endif 
+#endif
 #define DefaultReadSize  32*1024
 #define DefaultOutBufSize 370*1024
 
@@ -407,14 +407,14 @@ int audio_dec_decode(audio_decoder_operations_t *adec_ops, char *outbuf, int *ou
 			break;
 		}
 	}
-	
+
 	*outlen = 0;
 	if(cook_output.buf_len > 0){
 		memcpy(outbuf, cook_output.buf, cook_output.buf_len);
 		(*outlen) = cook_output.buf_len;
 		cook_output.buf_len = 0;
 	}
-	
+
 	int ret = 0;
 	//ret = ra_dec_info.decoded_size + cook_input.cousume;
 	ret = cook_input.cousume;
@@ -432,11 +432,11 @@ UINT32 rm_io_read(void* pUserRead, BYTE* pBuf, UINT32 ulBytesToRead)
     memcpy(pBuf,cur_read_ptr,ulBytesToRead);
     cur_read_ptr = cur_read_ptr + ulBytesToRead;
     if((unsigned)(cur_read_ptr - file_header) > AUDIO_EXTRA_DATA_SIZE){
-		//trans_err_code(DECODE_INIT_ERR);			
+		//trans_err_code(DECODE_INIT_ERR);
 		raac_print("warning :: raac.read byte exceed the the buffer then sent,%d \n",(unsigned)(cur_read_ptr - file_header) );
 		while(1);
-    }		
-    return ulBytesToRead;	
+    }
+    return ulBytesToRead;
 }
 void rm_io_seek(void* pUserRead, UINT32 ulOffset, UINT32 ulOrigin)
 {
@@ -447,19 +447,19 @@ void rm_io_seek(void* pUserRead, UINT32 ulOffset, UINT32 ulOrigin)
         else if (ulOrigin == HX_SEEK_ORIGIN_END)
                 cur_read_ptr = sizeof(file_header)+(char *)pUserRead-ulOffset;
    	if((unsigned)(cur_read_ptr - file_header) > AUDIO_EXTRA_DATA_SIZE){
-		//trans_err_code(DECODE_INIT_ERR);	
+		//trans_err_code(DECODE_INIT_ERR);
 		raac_print("warning :: raac.seek buffer pos exceed the the buffer then sent,%d \n",(unsigned)(cur_read_ptr - file_header) );
 		while(1);
-   	}	
+   	}
 
 }
 unsigned rm_ab_read(void* pUserRead, BYTE* pBuf, UINT32 ulBytesToRead)
-{	
+{
 	int ret = 0;
 #if 0
 	if(pBuf&&ulBytesToRead)
 		ret =  read_buffer(pBuf,ulBytesToRead);
-	return ret;	
+	return ret;
 #endif
 	if(pBuf && ulBytesToRead){
 		ret = (ulBytesToRead > cook_input.buf_len) ? cook_input.buf_len : ulBytesToRead;
@@ -471,11 +471,11 @@ unsigned rm_ab_read(void* pUserRead, BYTE* pBuf, UINT32 ulBytesToRead)
 	}
 	cook_input.cousume += ret;
 	cook_input.all_consume += ret;
-	return ret;	
+	return ret;
 }
 void rm_ab_seek(void* pUserRead, UINT32 ulOffset, UINT32 ulOrigin)
 {
-    int i;	
+    int i;
 #if 0
     if (ulOrigin == HX_SEEK_ORIGIN_CUR){
     	for(i = 0;i <ulOffset;i++)
@@ -493,7 +493,7 @@ void rm_ab_seek(void* pUserRead, UINT32 ulOffset, UINT32 ulOrigin)
 			raac_print("rm_ab_seek failed\n");
 		}
 	}
-	
+
 }
 HX_RESULT _raac_block_available(void* pAvail, UINT32 ulSubStream, ra_block* pBlock)
 {
@@ -592,7 +592,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 	for(i = 0; i < real_data.extradata_size; i++){
 		real_data.extradata[i] = adec_ops->extradata[i];
 	}
-	
+
 	raac_print("raac audioinfo four data [0x%x],	[0x%x],[0x%x],[0x%x],[0x%x],[0x%x],[0x%x],[0x%x],\n",real_data.extradata[0],\
 	real_data.extradata[1],real_data.extradata[2],real_data.extradata[3], \
 	real_data.extradata[4],real_data.extradata[5],real_data.extradata[6],real_data.extradata[7]);
@@ -629,7 +629,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 	if(cook_input.buf == NULL || cook_output.buf == NULL){
 		raac_print("malloc buf failed\n");
 		return -1;
-	
+
 	}
 	//dsp_cache_wback((unsigned)file_header,AUDIO_EXTRA_DATA_SIZE);
 	cur_frame.offset = 0;
@@ -637,9 +637,9 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 	unsigned ulCodec4CC = 0;
 	//int i;
 	/*clear up the decoder structure */
-	memset(&raac_dec_info,0,sizeof(raac_decoder_info_t));	
+	memset(&raac_dec_info,0,sizeof(raac_decoder_info_t));
 	memset(&raac_info,0,sizeof(rm_info_t));
-	cur_read_ptr = file_header;	
+	cur_read_ptr = file_header;
 
 	/* Create the parser struct */
 	pParser = rm_parser_create(NULL, rm_error);
@@ -708,7 +708,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 					return -1;
 				}
 				/*
-				* Get the codec 4CC of substream 0. We 
+				* Get the codec 4CC of substream 0. We
 				* arbitrarily choose substream 0 here.
 				*/
 				ulCodec4CC = ra_depack_get_codec_4cc(pRADpack, 0);
@@ -717,7 +717,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 					retVal = ra_depack_get_codec_init_info(pRADpack, 0, &pRAInfo);
 					raac_info.pRaInfo = pRAInfo;
 				}
-				else if ((ulCodec4CC == 0x72616163)||(ulCodec4CC == 0x72616370)) 
+				else if ((ulCodec4CC == 0x72616163)||(ulCodec4CC == 0x72616370))
 				/* raac racp */
 				{
 					retVal = ra_depack_get_codec_init_info(pRADpack, 0, &pRAInfo);
@@ -727,7 +727,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 			}
 			rm_parser_destroy_stream_header(pParser, &pHdr);
 		}
-		raac_print("raac rm_parser_get_stream_header finished\n");		
+		raac_print("raac rm_parser_get_stream_header finished\n");
 	}
 	/* Set the stream into the parser */
 	retVal = rm_parser_init_io(pParser, 0, rm_ab_read, rm_ab_seek);
@@ -740,10 +740,10 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 			rm_parser_destroy(&pParser);
 		}
 		raac_print("[raac decode],rm_parser_init_io failed,errid %d\n",retVal);
-		return -1;		
+		return -1;
 	}
 	raac_info.pParser = pParser;
-	rm_parser_set_stream(&pParser, 0); 
+	rm_parser_set_stream(&pParser, 0);
 	rm_parser_file_seek(pParser, 0);
 	raac_dec_info.pDecode = ra_decode_create(HXNULL, rm_error);
 	if (retVal != HXR_OK){
@@ -755,7 +755,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 			rm_parser_destroy(&pParser);
 		}
 		raac_print("[raac decode],ra_decode_create failed,errid %d\n",retVal);
-		return -1;		
+		return -1;
 	}
 	raac_dec_info.ulStatus = RADEC_PLAY;
 	raac_dec_info.ulTotalSample = 0;
@@ -787,7 +787,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 			raac_info.pParser = NULL;
 		}
 		raac_print("[raac decode],ra_decode_init failed,errid %d\n",retVal);
-		return -1;		
+		return -1;
 	}
 	//fmt->valid=CHANNEL_VALID | SAMPLE_RATE_VALID | DATA_WIDTH_VALID;
 	//fmt->channel_num = raac_info.pRaInfo->usNumChannels;
@@ -801,7 +801,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 		//fmt->sample_rate = pdec->ulSampleRateCore;
 		raac_print("ac sr %d, sr %d,sbr %d,core sr %d,aac sr %d \n",raac_info.pRaInfo->ulActualRate, \
 			raac_info.pRaInfo->ulSampleRate,pdec->bSBR,\
-		      pdec->ulSampleRateCore,pdec->ulSampleRateOut);	
+		      pdec->ulSampleRateCore,pdec->ulSampleRateOut);
 	}
 #endif
 
@@ -827,9 +827,9 @@ void ra_depack_cleanup(void)
     }
     if(raac_info.pParser)
    	 rm_parser_destroy(&raac_info.pParser);
-    memset(&raac_info,0,sizeof(raac_info));	
+    memset(&raac_info,0,sizeof(raac_info));
 }
-    
+
 
 //static int raac_decode_release(void)
 int audio_dec_release(audio_decoder_operations_t *adec_ops)

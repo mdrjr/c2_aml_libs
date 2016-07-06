@@ -1,39 +1,39 @@
-/* ***** BEGIN LICENSE BLOCK *****  
- * Source last modified: $Id: aacdec.c,v 1.1 2005/02/26 01:47:31 jrecker Exp $ 
- *   
- * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
- *       
- * The contents of this file, and the files included with this file, 
- * are subject to the current version of the RealNetworks Public 
- * Source License (the "RPSL") available at 
- * http://www.helixcommunity.org/content/rpsl unless you have licensed 
- * the file under the current version of the RealNetworks Community 
- * Source License (the "RCSL") available at 
- * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
- * will apply. You may also obtain the license terms directly from 
- * RealNetworks.  You may not use this file except in compliance with 
- * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
- * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
- * the rights, obligations and limitations governing use of the 
- * contents of the file. 
- *   
- * This file is part of the Helix DNA Technology. RealNetworks is the 
- * developer of the Original Code and owns the copyrights in the 
- * portions it created. 
- *   
- * This file, and the files included with this file, is distributed 
- * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
- * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
- * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
- * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
- * ENJOYMENT OR NON-INFRINGEMENT. 
- *  
- * Technology Compatibility Kit Test Suite(s) Location:  
- *    http://www.helixcommunity.org/content/tck  
- *  
- * Contributor(s):  
- *   
- * ***** END LICENSE BLOCK ***** */  
+/* ***** BEGIN LICENSE BLOCK *****
+ * Source last modified: $Id: aacdec.c,v 1.1 2005/02/26 01:47:31 jrecker Exp $
+ *
+ * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.
+ *
+ * The contents of this file, and the files included with this file,
+ * are subject to the current version of the RealNetworks Public
+ * Source License (the "RPSL") available at
+ * http://www.helixcommunity.org/content/rpsl unless you have licensed
+ * the file under the current version of the RealNetworks Community
+ * Source License (the "RCSL") available at
+ * http://www.helixcommunity.org/content/rcsl, in which case the RCSL
+ * will apply. You may also obtain the license terms directly from
+ * RealNetworks.  You may not use this file except in compliance with
+ * the RPSL or, if you have a valid RCSL with RealNetworks applicable
+ * to this file, the RCSL.  Please see the applicable RPSL or RCSL for
+ * the rights, obligations and limitations governing use of the
+ * contents of the file.
+ *
+ * This file is part of the Helix DNA Technology. RealNetworks is the
+ * developer of the Original Code and owns the copyrights in the
+ * portions it created.
+ *
+ * This file, and the files included with this file, is distributed
+ * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY
+ * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS
+ * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET
+ * ENJOYMENT OR NON-INFRINGEMENT.
+ *
+ * Technology Compatibility Kit Test Suite(s) Location:
+ *    http://www.helixcommunity.org/content/tck
+ *
+ * Contributor(s):
+ *
+ * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
  * Fixed-point HE-AAC decoder
@@ -151,7 +151,7 @@ int AACFindSyncWord(unsigned char *buf, int nBytes)
     }
 	return -1;
     }
-    else {	
+    else {
     /* find byte-aligned syncword (12 bits = 0xFFF) */
 	for (i = 0; i < nBytes - 1; i++) {
 		if ( (buf[i+0] & SYNCWORDH) == SYNCWORDH && (buf[i+1] & SYNCWORDL) == SYNCWORDL )
@@ -186,7 +186,7 @@ int AACFindSyncWordRaw(unsigned char *buf, int nBytes)
 /**************************************************************************************
  * Function:    AACGetLastFrameInfo
  *
- * Description: get info about last AAC frame decoded (number of samples decoded, 
+ * Description: get info about last AAC frame decoded (number of samples decoded,
  *                sample rate, bit rate, etc.)
  *
  * Inputs:      valid AAC decoder instance pointer (HAACDecoder)
@@ -260,11 +260,11 @@ void AACGetDecoderInfo(HAACDecoder hAACDecoder, AACFrameInfo *aacFrameInfo)
  *              AACFrameInfo struct, with the members nChans, sampRate, and profile
  *                optionally filled-in
  *
- * Outputs:     updated codec state 
+ * Outputs:     updated codec state
  *
  * Return:      0 if successful, error code (< 0) if error
  *
- * Notes:       if copyLast == 1, then the codec sets up its internal state (for 
+ * Notes:       if copyLast == 1, then the codec sets up its internal state (for
  *                decoding raw blocks) based on previously-decoded ADTS header info
  *              if copyLast == 0, then the codec uses the values passed in
  *                aacFrameInfo to configure its internal state (useful when the
@@ -304,7 +304,7 @@ int AACFlushCodec(HAACDecoder hAACDecoder)
 	if (!aacDecInfo)
 		return ERR_AAC_NULL_POINTER;
 	/* reset common state variables which change per-frame
-	 * don't touch state variables which are (usually) constant for entire clip 
+	 * don't touch state variables which are (usually) constant for entire clip
 	 *   (nChans, sampRate, profile, format, sbrEnabled)
 	 */
 	aacDecInfo->prevBlockID = AAC_ID_INVALID;
@@ -363,7 +363,7 @@ int AACDecode(HAACDecoder hAACDecoder, unsigned char **inbuf, int *bytesLeft, sh
         if(aac_need_align_bitstream){
             ByteAlignBitstream(0);
             aac_need_align_bitstream=0;
-        }    
+        }
     }
 	if (!aacDecInfo)
 		{
@@ -371,7 +371,7 @@ int AACDecode(HAACDecoder hAACDecoder, unsigned char **inbuf, int *bytesLeft, sh
 		}
 	/* make local copies (see "Notes" above) */
     if (AACDataSource==1){
-		inptr = *inbuf;		
+		inptr = *inbuf;
 		bitOffset = 0;
 		bitsAvail = (*bytesLeft) << 3;
     }
@@ -393,14 +393,14 @@ int AACDecode(HAACDecoder hAACDecoder, unsigned char **inbuf, int *bytesLeft, sh
 			tmp2 = GetBits(NULL, 8);
 			tmp3 = GetBits(NULL, 8);
 			set_timestamp((tmp0<<24)|(tmp1<<16)|(tmp2<<8)|(tmp3));
-			
+
 			// length
 			tmp0 = GetBits(NULL, 8);
 			tmp1 = GetBits(NULL, 8);
 			tmp2 = GetBits(NULL, 8);
 			tmp3 = GetBits(NULL, 8);
-			set_timestamp_len((tmp0<<24)|(tmp1<<16)|(tmp2<<8)|(tmp3));			
-			
+			set_timestamp_len((tmp0<<24)|(tmp1<<16)|(tmp2<<8)|(tmp3));
+
 			data = GetBitsNoAdvance(NULL, 32);
 	        buf[0] = data>>24;
 	        buf[1] = data>>16;
@@ -427,7 +427,7 @@ int AACDecode(HAACDecoder hAACDecoder, unsigned char **inbuf, int *bytesLeft, sh
 			/* assume ADTS by default */
 			aacDecInfo->format = AAC_FF_ADTS;
 		}
-	} 
+	}
 	/* if ADTS, search for start of next frame */
 	if (aacDecInfo->format == AAC_FF_ADTS) {
 		/* can have 1-4 raw data blocks per ADTS frame (header only present for first one) */
@@ -452,10 +452,10 @@ int AACDecode(HAACDecoder hAACDecoder, unsigned char **inbuf, int *bytesLeft, sh
 		}
 		aacDecInfo->adtsBlocksLeft--;
 	} else if (aacDecInfo->format == AAC_FF_RAW) {
-        if (AACDataSource==0){   	    
-            /* skip raw header*/	
+        if (AACDataSource==0){
+            /* skip raw header*/
 	        if(aacDecInfo->audio_send_by_frame)
-	        {    
+	        {
 	    	    offset = AACFindSyncWordRaw(inptr, bitsAvail>>3);
 	    	}
         }
@@ -483,7 +483,7 @@ int AACDecode(HAACDecoder hAACDecoder, unsigned char **inbuf, int *bytesLeft, sh
 		err = DecodeNextElement(aacDecInfo, &inptr, &bitOffset, &bitsAvail);
 		if (err)
 			return err;
-		
+
 		elementChans = elementNumChans[aacDecInfo->currBlockID];
 		if (baseChan + elementChans > AAC_MAX_NCHANS)
 			return ERR_AAC_NCHANS_TOO_HIGH;
@@ -515,7 +515,7 @@ int AACDecode(HAACDecoder hAACDecoder, unsigned char **inbuf, int *bytesLeft, sh
 					return ERR_AAC_SHORT_BLOCK_DEINT;
 				aacDecInfo->sbDeinterleaveReqd[ch] = 0;
 			}
-	
+
 			if (TNSFilter(aacDecInfo, ch))
 				return ERR_AAC_TNS;
 
@@ -529,9 +529,9 @@ int AACDecode(HAACDecoder hAACDecoder, unsigned char **inbuf, int *bytesLeft, sh
 				elementChansSBR = elementNumChans[AAC_ID_LFE];
 			else if (aacDecInfo->currBlockID == AAC_ID_FIL && (aacDecInfo->prevBlockID == AAC_ID_SCE || aacDecInfo->prevBlockID == AAC_ID_CPE))
 				elementChansSBR = elementNumChans[aacDecInfo->prevBlockID];
-			else 
+			else
 				elementChansSBR = 0;
-			
+
 			if (baseChanSBR + elementChansSBR > AAC_MAX_NCHANS)
 				{
 				return ERR_AAC_SBR_NCHANS_TOO_HIGH;
@@ -552,7 +552,7 @@ int AACDecode(HAACDecoder hAACDecoder, unsigned char **inbuf, int *bytesLeft, sh
 			baseChanSBR += elementChansSBR;
 		}
 #endif
-		
+
 		baseChan += elementChans;
 	} while (aacDecInfo->currBlockID != AAC_ID_END);
     if (AACDataSource==1){
@@ -580,15 +580,15 @@ int AACDecode(HAACDecoder hAACDecoder, unsigned char **inbuf, int *bytesLeft, sh
 		*inbuf = inptr;
 	}
 	else
-	{		
+	{
 		aacDecInfo->frameCount++;
 		aacDecInfo->byteParsed = CalcBitsUsed(0,0,0)>>3;
 		aacDecInfo->sampleDecoded += AAC_MAX_NSAMPS * (aacDecInfo->sbrEnabled ? 2 : 1);
 		*bytesLeft -= (CalcBitsUsed(0,0,0)>>3);
 	//	*inbuf = *inbuf+;
 	}
-	
-	
+
+
 
 	return ERR_AAC_NONE;
 }

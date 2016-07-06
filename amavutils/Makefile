@@ -22,13 +22,13 @@ CFLAGS+=-I$(SRC) -I$(SRC)/include -I$(SRC)/../amcodec/include -L${LIB_DIR} -I$(H
 
 export CC CFLAGS
 
-all: $(TARGET) 
+all: $(TARGET)
 
 $(TARGET): $(TARGET_OBJS)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(TARGET_OBJS:%.o=%.c) -o $@  
+	$(CC) $(CFLAGS) $(LDFLAGS) $(TARGET_OBJS:%.o=%.c) -o $@
 
-    
-    
+
+
 
 install:
 	-install -m 555 ${TARGET} $(INSTALL_DIR)
@@ -39,5 +39,5 @@ force:
 clean:
 	-rm -rf *.o ${AMADEC_DIST} ${MP3LIB} $(PCMLIB) $(ADPCMLIB) $(AACLIB) $(A52LIB)
 
-    
+
 

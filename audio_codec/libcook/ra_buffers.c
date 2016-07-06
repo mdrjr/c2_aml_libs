@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: buffers.c,v 1.2 2005/04/27 19:20:50 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2002 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
@@ -42,8 +42,8 @@
  *
  * buffers.c - allocation and freeing of internal RA8 decoder buffers
  *
- * All memory allocation for the codec is done in this file, so if you want 
- *   to use something other the default malloc() and free() this is the only file 
+ * All memory allocation for the codec is done in this file, so if you want
+ *   to use something other the default malloc() and free() this is the only file
  *   you'll need to change.
  **************************************************************************************/
 
@@ -97,7 +97,7 @@ Gecko2Info *AllocateBuffers(void)
 	gi = (Gecko2Info *)malloc(sizeof(Gecko2Info));
 	if (!gi)
 		return 0;
-	ClearBuffer(gi, sizeof(Gecko2Info));	
+	ClearBuffer(gi, sizeof(Gecko2Info));
 
 	return gi;
 }

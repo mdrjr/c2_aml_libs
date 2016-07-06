@@ -3,7 +3,7 @@
 #define DTSTRANSCODE1M5_H_INCLUDED
 
 /*typedef struct pcm51_encoded_info_s
-{ 
+{
   unsigned int InfoValidFlag;
 	unsigned int SampFs;
 	unsigned int NumCh;

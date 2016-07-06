@@ -74,7 +74,7 @@ HX_RESULT ra_depacki_init(ra_depack_internal* pInt, rm_stream_header* hdr)
         {
             pInt->ulStreamDuration = pInt->ulEndTime;
         }
-        if (pInt->ulStreamDuration==0) 
+        if (pInt->ulStreamDuration==0)
             pInt->ulStreamDuration = 0x7fffffff;
         /* Check if we have a "RMFF 1.0 Flags" property */
         retVal = rm_stream_get_property_buf(hdr, "RMFF 1.0 Flags", &pTmp, &ulTmp);
@@ -198,7 +198,7 @@ HX_RESULT ra_depacki_unpack_opaque_data(ra_depack_internal* pInt,
                 if (pInt->bStreamSwitchable)
                 {
                     /*
-                     * If this is a multistream header, then there 
+                     * If this is a multistream header, then there
                      * is a 4-byte length in front of every substream header
                      */
                     if (ulLen >= 4)
@@ -261,7 +261,7 @@ HX_RESULT ra_depacki_unpack_opaque_data(ra_depack_internal* pInt,
                         {
                             /* Init the last sent block end time */
                             pHdr->ulLastSentEndTime = 0;
-                            /*                            
+                            /*
                              * Init the frag buffer members. The frag buffer
                              * willl be set up the first time it is needed.
                              */
@@ -489,7 +489,7 @@ HX_RESULT ra_depacki_unpack_raformat4(ra_depack_internal* pInt,
             pHdr->ucStreamType          = rm_unpack8(&pBuf, &ulLen);
             /*
              * If the bIsInterleaved flag says we are
-             * not interleaved, then make sure the 
+             * not interleaved, then make sure the
              * interleaverID is set to no interleaver.
              */
             if (!pHdr->bIsInterleaved)
@@ -608,7 +608,7 @@ HX_RESULT ra_depacki_unpack_raformat5(ra_depack_internal* pInt,
                             retVal = HXR_OK;
                             /*
                              * If the bIsInterleaved flag says we are
-                             * not interleaved, then make sure the 
+                             * not interleaved, then make sure the
                              * interleaverID is set to no interleaver.
                              */
                             if (!pHdr->bIsInterleaved)
@@ -980,7 +980,7 @@ HX_RESULT ra_depacki_add_non_vbr_packet(ra_depack_internal* pInt,
                         if (bKey)
                         {
                             /*
-                             * This packet is a keyframe packet, so 
+                             * This packet is a keyframe packet, so
                              * we simply assign the new time and set
                              * the block index to 0.
                              */

@@ -1,19 +1,19 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
 ** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
-**  
+**
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
-** 
+**
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software 
+** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 ** Any non-GPL usage of this software or parts of this software is strictly
@@ -254,7 +254,7 @@ static int  latm_check_internal(unsigned char *buffer,unsigned buffer_size,unsig
     	bitfile ld;
     	int byte_consumed = 0;
     	int byte_left = buffer_size;
-retry:    	
+retry:
     	memset(&l, 0, sizeof(latm_header));
     	faad_initbits(&ld, buffer+byte_consumed, buffer_size-byte_consumed);
     	is_latm = latmCheck(&l, &ld);
@@ -264,14 +264,14 @@ retry:
     		is_latm = 0;
     		byte_consumed += SKIP_LATM_BYTE;
     		byte_left -= SKIP_LATM_BYTE;
-    		
-    	}	
+
+    	}
     	if(is_latm == 0 && byte_left > 400){
     		goto retry;
-	}		 	
-exit:    
-	*byte_cost = 	byte_consumed;	
-    	return	is_latm;			
+	}
+exit:
+	*byte_cost = 	byte_consumed;
+    	return	is_latm;
 }
 int set_latm_frame_score(int score)
 {
@@ -300,9 +300,9 @@ long NEAACDECAPI NeAACDecInit(NeAACDecHandle hpDecoder,
     *channels = 1;
     *samplerate = 0;
     *channels = 0;
-    int latm_audio = 0;	
+    int latm_audio = 0;
     unsigned byte_cost = 0;
-#if 0    
+#if 0
     if(latm_check_internal(buffer,buffer_size,&byte_cost)){
     	internal_latm_aac_score = 3;
     	buffer += byte_cost;
@@ -310,7 +310,7 @@ long NEAACDECAPI NeAACDecInit(NeAACDecHandle hpDecoder,
     }
     else
     	printk("not fetch latm header\n");
-#endif    		
+#endif
     if (buffer != NULL)
     {
 #if 1
@@ -319,7 +319,7 @@ long NEAACDECAPI NeAACDecInit(NeAACDecHandle hpDecoder,
 #endif
 
         faad_initbits(&ld, buffer, buffer_size);
- 
+
 #if 1
         memset(l, 0, sizeof(latm_header));
         is_latm = latmCheck(l, &ld);
@@ -333,10 +333,10 @@ long NEAACDECAPI NeAACDecInit(NeAACDecHandle hpDecoder,
             x = NeAACDecInit2(hDecoder, l->ASC, (l->ASCbits+7)/8, samplerate, channels);
             if(x!=0)
                 hDecoder->latm_header_present = 0;
-#ifdef SBR_DEC			
+#ifdef SBR_DEC
     	   if(hDecoder->sbr_present_flag == 1 && *samplerate > 24000)
-    		*samplerate /= 2;               
-#endif		   
+    		*samplerate /= 2;
+#endif
             return x;
         } //else
 #endif
@@ -390,9 +390,9 @@ long NEAACDECAPI NeAACDecInit(NeAACDecHandle hpDecoder,
 			        {
 			            	faad_getbits(&ld, 8
 			                	DEBUGVAR(0,0,""));
-			        } 
+			        }
 					else {
-					    bits = bit2byte(faad_get_processed_bits(&ld));	
+					    bits = bit2byte(faad_get_processed_bits(&ld));
 				            hDecoder->adts_header_present = 1;
 					//		printk("resync and got ADTS header\r\n");
 				            adts.old_format = hDecoder->config.useOldADTSFormat;
@@ -400,12 +400,12 @@ long NEAACDECAPI NeAACDecInit(NeAACDecHandle hpDecoder,
 					    if(adts_err == 5){
 					    	internal_latm_aac_score++;
 					    	return -1;
-					    }	
+					    }
 				            hDecoder->sf_index = adts.sf_index;
 				            hDecoder->object_type = adts.profile + 1;
 	     					last_sf_index = hDecoder->sf_index;
 	     					last_ch_configure = adts.channel_configuration;
-					
+
 				            *samplerate = get_sample_rate(hDecoder->sf_index);
 				            if(*samplerate > 48000 || adts.channel_configuration > 6){
 				            	internal_latm_aac_score++;
@@ -421,7 +421,7 @@ long NEAACDECAPI NeAACDecInit(NeAACDecHandle hpDecoder,
 			    	//printk("sync for adts frame failed\n");
 			    	internal_latm_aac_score++;
 			    	return -1;
-			    }	
+			    }
 		}
         if (ld.error)
         {
@@ -470,7 +470,7 @@ long NEAACDECAPI NeAACDecInit(NeAACDecHandle hpDecoder,
         return -1;
 	faad_log_info("aac init finished. cost bits%d\r\n",bits);
 
-    		
+
     return bits;
 }
 
@@ -486,12 +486,12 @@ char NEAACDECAPI NeAACDecInit2(NeAACDecHandle hpDecoder,
     mp4AudioSpecificConfig mp4ASC;
 	faad_log_info("enter NeAACDecInit2 \r\n");
 	faad_log_info("extra data size%d.extra data:\r\n");
-#ifndef __ROM_	
+#ifndef __ROM_
 	int ii;
 	for( ii = 0;ii<SizeOfDecoderSpecificInfo;ii++){
 		faad_log_info("0x%x ",pBuffer[ii]);
 	}
-#endif	
+#endif
     if((hDecoder == NULL)
         || (pBuffer == NULL)
         || (SizeOfDecoderSpecificInfo < 2)
@@ -1053,7 +1053,7 @@ static void* aac_frame_decode(NeAACDecStruct *hDecoder,
             DEBUGVAR(1,1,"NeAACDecDecode(): skip CRC"));
     }
 #endif
-        
+
     if (hDecoder->adts_header_present)
     {
         adts_header adts;
@@ -1068,7 +1068,7 @@ static void* aac_frame_decode(NeAACDecStruct *hDecoder,
          * so not needed to actually do it.
          */
     }
-#if 0	
+#if 0
     else if(!hDecoder->adts_header_present && !hDecoder->adif_header_present)
     {
     	if(hDecoder->israw){
@@ -1087,7 +1087,7 @@ static void* aac_frame_decode(NeAACDecStruct *hDecoder,
 
     	}
    }
-#endif	
+#endif
 
 #ifdef ANALYSIS
     dbg_count = 0;
@@ -1114,7 +1114,7 @@ static void* aac_frame_decode(NeAACDecStruct *hDecoder,
 	    	  latm_payload[2] = latm_payload[3];
 	    	  latm_payload[3] = latm_payload[4];
 	    	  latm_payload[4] =payload_bits;
-    	  }	  
+    	  }
         endbit = faad_get_processed_bits(&ld);
         if(endbit-startbit > payload_bits)
             ;//printk( "\r\nERROR, too many payload bits read: %u > %d. Please. report with a link to a sample\n",
@@ -1173,7 +1173,7 @@ static void* aac_frame_decode(NeAACDecStruct *hDecoder,
     }
     if(output_channels >2){
         output_channels = 2;
-    }		
+    }
 #if 0//(defined(PS_DEC) || defined(DRM_PS))
     hDecoder->upMatrix = 0;
     /* check if we have a mono file */
@@ -1314,7 +1314,7 @@ static void* aac_frame_decode(NeAACDecStruct *hDecoder,
 #if 0
         if (hDecoder->frame <= 1)
             hInfo->samples = 0;
-#endif		
+#endif
 #ifdef LD_DEC
     } else {
         /* LD encoders will give lower delay */
@@ -1365,7 +1365,7 @@ error:
     }
 #endif
 
-    
+
     faad_endbits(&ld);
 
     /* cleanup */
@@ -1497,15 +1497,15 @@ static void* aac_frame_decode(NeAACDecStruct *hDecoder,
         adts.old_format = hDecoder->config.useOldADTSFormat;
         if ((hInfo->error = adts_frame(&adts, &ld)) > 0)
             goto error;
-	hDecoder->sf_index = adts.sf_index;	
+	hDecoder->sf_index = adts.sf_index;
 	if(adts.sf_index != last_sf_index && adts.channel_configuration != last_ch_configure){
 		hInfo->error = 34;
-     	 	audio_codec_print("	last sf_index %d,ch %d,now %d %d\n",last_sf_index,last_ch_configure,adts.sf_index,adts.channel_configuration);		
+     	 	audio_codec_print("	last sf_index %d,ch %d,now %d %d\n",last_sf_index,last_ch_configure,adts.sf_index,adts.channel_configuration);
 		last_sf_index = hDecoder->sf_index;
-		last_ch_configure = adts.channel_configuration;	
+		last_ch_configure = adts.channel_configuration;
 		goto error;
-	}	
-					
+	}
+
         /* MPEG2 does byte_alignment() here,
          * but ADTS header is always multiple of 8 bits in MPEG2
          * so not needed to actually do it.
@@ -1795,7 +1795,7 @@ error:
 int is_latm_aac(NeAACDecHandle hpDecoder)
 {
 	NeAACDecStruct* hDecoder = (NeAACDecStruct*)hpDecoder;
-	return  hDecoder->latm_header_present;   
+	return  hDecoder->latm_header_present;
 
 }
 int  latm_frame_length()

@@ -7,7 +7,7 @@
 */
 /* Copyright (C) 2007-2011, Amlogic Inc.
 * All right reserved
-* 
+*
 */
 #include <stdio.h>
 
@@ -28,7 +28,7 @@
 //--------------------------------
 /* --------------------------------------------------------------------------*/
 /**
-* @brief  codec_h_open  Open codec devices by file name 
+* @brief  codec_h_open  Open codec devices by file name
 *
 * @param[in]  port_addr  File name of codec device
 * @param[in]  flags      Open flags
@@ -86,7 +86,7 @@ CODEC_HANDLE codec_h_open_rd(const char *port_addr)
 *
 * @param[in]  h  Handler of codec device
 *
-* @return     0 for success 
+* @return     0 for success
 */
 /* --------------------------------------------------------------------------*/
 int codec_h_close(CODEC_HANDLE h)
@@ -95,7 +95,7 @@ int codec_h_close(CODEC_HANDLE h)
     if (h >= 0) {
         r = close(h);
 		if (r < 0) {
-        	CODEC_PRINT("close failed,handle=%d,ret=%d errno=%d\n", h, r, errno);  
+        	CODEC_PRINT("close failed,handle=%d,ret=%d errno=%d\n", h, r, errno);
     	}
     }
     return 0;
@@ -521,7 +521,7 @@ int codec_h_read(CODEC_HANDLE handle, void *buffer, int size)
     int r;
     r = read(handle, buffer, size);
 	if (r < 0) {
-        CODEC_PRINT("read failed,handle=%d,ret=%d errno=%d\n", handle, r, errno);  
+        CODEC_PRINT("read failed,handle=%d,ret=%d errno=%d\n", handle, r, errno);
     }
     return r;
 }
@@ -542,7 +542,7 @@ int codec_h_write(CODEC_HANDLE handle, void *buffer, int size)
     int r;
     r = write(handle, buffer, size);
 	if (r < 0 && errno != EAGAIN) {
-        CODEC_PRINT("write failed,handle=%d,ret=%d errno=%d\n", handle, r, errno);  
+        CODEC_PRINT("write failed,handle=%d,ret=%d errno=%d\n", handle, r, errno);
     }
     return r;
 }

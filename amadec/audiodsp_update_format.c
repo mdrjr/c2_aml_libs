@@ -111,11 +111,11 @@ int audiodsp_format_update(aml_audio_dec_t *audec)
     int ret = -1;
     unsigned long val;
     dsp_operations_t *dsp_ops = &audec->adsp_ops;
-	
+
     if (dsp_ops->dsp_file_fd < 0 || get_audio_decoder()!=AUDIO_ARC_DECODER) {
         return ret;
     }
-	
+
     ret=0;
     if(1/*audiodsp_get_format_changed_flag()*/)
     {
@@ -146,7 +146,7 @@ int audiodsp_format_update(aml_audio_dec_t *audec)
             }
         }
         #endif
-		//audiodsp_set_format_changed_flag(0);        
+		//audiodsp_set_format_changed_flag(0);
         if (am_getconfig_bool("media.libplayer.wfd")) {
 	    ret = ioctl(dsp_ops->dsp_file_fd, AUDIODSP_GET_PCM_LEVEL, &val);
             if (ret == 0) {
@@ -155,12 +155,12 @@ int audiodsp_format_update(aml_audio_dec_t *audec)
                 //    adec_print("disable pcm down resample");
                 //    audiodsp_set_pcm_resample_enable(0);
                 }
-            } 
+            }
         }
     }
     if(ret>0){
         audec->format_changed_flag=ret;
-        adec_print("dsp_format_update: audec->format_changed_flag = %d \n", audec->format_changed_flag); 
+        adec_print("dsp_format_update: audec->format_changed_flag = %d \n", audec->format_changed_flag);
     }
     return ret;
 }

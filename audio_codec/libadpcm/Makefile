@@ -8,7 +8,7 @@ TARGET=libadpcm.so
 
 INSTALL_DIR=${LIB_DIR}/aml_libs
 
-LDFLAGS += -shared 
+LDFLAGS += -shared
 
 TOPDIR=$(shell pwd)
 SRC?=$(TOPDIR)
@@ -20,13 +20,13 @@ CFLAGS+=-I$(SRC)  -I$(SRC)/../../amadec/include -I$(SRC)/../../amadec/
 
 export CC CFLAGS
 
-all: $(TARGET) 
+all: $(TARGET)
 
 $(TARGET): $(TARGET_OBJS)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(TARGET_OBJS:%.o=%.c) -o $@  
+	$(CC) $(CFLAGS) $(LDFLAGS) $(TARGET_OBJS:%.o=%.c) -o $@
 
-    
-    
+
+
 
 install:
 	-install -m 555 ${TARGET} $(INSTALL_DIR)
@@ -36,7 +36,7 @@ force:
 clean:
 	-rm  $(TARGET) $(TARGET_OBJS)
 
-    
+
 
 
 

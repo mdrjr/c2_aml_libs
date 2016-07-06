@@ -18,7 +18,7 @@
 #else
 #define printk printf
 #define  audio_codec_print printf
-#endif 
+#endif
 
 #define ASTREAM_DEV "/dev/uio0"
 #define ASTREAM_ADDR "/sys/class/astream/astream-dev/uio0/maps/map0/addr"
@@ -51,7 +51,7 @@ volatile unsigned* reg_base = 0;
 #define min(x,y) ((x<y)?(x):(y))
 static int fd_uio = -1;
 static volatile int exit_flag = 0;
-static char *memmap = MAP_FAILED;	
+static char *memmap = MAP_FAILED;
 static int phys_size;
 static unsigned enable_debug_print = 0;
 
@@ -93,13 +93,13 @@ static int uio_init(){
 
 	phys_size = (phys_size + pagesize -1) & (~ (pagesize-1));
 	memmap = mmap(NULL, phys_size, PROT_READ|PROT_WRITE, MAP_SHARED, fd_uio, 0* pagesize);
-	
+
 	audio_codec_print("memmap = %x , pagesize = %x\n", memmap,pagesize);
 	if(memmap == MAP_FAILED){
 		audio_codec_print("map /dev/uio0 failed\n");
 		return -1;
-	}	 
-	 
+	}
+
 	reg_base = memmap + phys_offset;
 	return 0;
 }
@@ -111,10 +111,10 @@ static inline void waiting_bits(int bits)
 	int bytes;
 	bytes=READ_MPEG_REG(AIU_MEM_AIFIFO_BYTES_AVAIL);
 	while(bytes*8<bits && !exit_flag){
-		printk("waiting_bits \n"); 
+		printk("waiting_bits \n");
 		usleep(1000);
 		bytes=READ_MPEG_REG(AIU_MEM_AIFIFO_BYTES_AVAIL);
-	}	
+	}
 }
 static unsigned stream_in_offset = 0;
 
@@ -122,51 +122,51 @@ int read_buffer(unsigned char *buffer,int size)
 {
 	int bytes;
 	int len;
-	unsigned char *p=buffer; 
+	unsigned char *p=buffer;
 	int tmp;
 	int space;
 	int i;
 	int wait_times=0,fifo_ready_wait = 0;
-	
+
 	int iii;
 
 	iii = READ_MPEG_REG(AIU_MEM_AIFIFO_LEVEL)-EXTRA_DATA_SIZE;
 	while(size > iii && (!exit_flag)){
 		iii = READ_MPEG_REG(AIU_MEM_AIFIFO_LEVEL)-EXTRA_DATA_SIZE;
-		
+
 	}
 	if(exit_flag){
 		printk("exit flag set.exit dec\n");
 		return 0;
-	}	
+	}
 	//if(( size >=  iii))
 	//    return 0;
-	
+
 //	adec_print("read_buffer start while iii= %d!!\n", iii);
 	for(len=0;len<size;)
-	{	
+	{
 			space=(size-len);
 			bytes=READ_MPEG_REG(AIU_MEM_AIFIFO_BYTES_AVAIL);
 			//printk("read_buffer start AIU_MEM_AIFIFO_BYTES_AVAIL bytes= %d!!,exit %d \n", bytes,exit_flag);
 			if(exit_flag){
 				printk("exit 1 \n");
 				return 0;
-			}	
+			}
 			wait_times=0;
 			while(bytes==0)
 			{
 				waiting_bits((space>128)?128*8:(space*8));	/*wait 32 bytes,if the space is less than 32 bytes,wait the space bits*/
 				bytes=READ_MPEG_REG(AIU_MEM_AIFIFO_BYTES_AVAIL);
-				
+
 //				audio_codec_print("read_buffer while AIU_MEM_AIFIFO_BYTES_AVAIL = %d!!\n", bytes);
 				wait_times++;
-				if(wait_times>10 || exit_flag) {					
+				if(wait_times>10 || exit_flag) {
 					audio_codec_print("goto out!!\n");
 					goto out;
 				}
 			}
 			bytes=min(space,bytes);
-			
+
 			//adec_print("read_buffer while bytes = %d!!\n", bytes);
 			for(i=0;i<bytes;i++)
 			{
@@ -174,7 +174,7 @@ int read_buffer(unsigned char *buffer,int size)
 									printk("exit 2 \n");
 
 					return 0;
-				}	
+				}
 				while(!AIFIFO_READY){
 					fifo_ready_wait++;
 					usleep(1000);
@@ -182,12 +182,12 @@ int read_buffer(unsigned char *buffer,int size)
 					if(fifo_ready_wait > 100){
 						audio_codec_print("FATAL err,AIFIFO is not ready,check!!\n");
 						return 0;
-					}	
+					}
 				}
 				WRITE_MPEG_REG(AIU_AIFIFO_GBIT,8);
 				tmp=READ_MPEG_REG(AIU_AIFIFO_GBIT);
 				//adec_print("read_buffer while tmp = %d!!\n", tmp);
-				
+
 				*p++=tmp&0xff;
 				fifo_ready_wait = 0;
 
@@ -197,8 +197,8 @@ int read_buffer(unsigned char *buffer,int size)
 out:
 	stream_in_offset+=len;
 	return len;
-}  
- int get_audiobuf_level()    
+}
+ int get_audiobuf_level()
  {
  	int level = 0;
  	level =  READ_MPEG_REG(AIU_MEM_AIFIFO_LEVEL)-EXTRA_DATA_SIZE;
@@ -207,7 +207,7 @@ out:
 	return level;
  }
 
- 
+
 
 #define	pcm_buffer_size		(1024*6)
 #define bluray_pcm_size		(1024*17)
@@ -253,7 +253,7 @@ static int parse_wifi_display_pcm_header(char *header, int *bps)
 {
     char number_of_frame_header, audio_emphasis, quant, sample, channel;
     int frame_size = -1;
-    
+
     //check sub id
     if (header[0] == 0xa0)
     {
@@ -262,7 +262,7 @@ static int parse_wifi_display_pcm_header(char *header, int *bps)
         quant  = header[3] >> 6;
         sample = (header[3] >> 3) & 7;
         channel = header[3] & 7;
-        
+
         if (quant == Quantization_Word_16bit)
         {
             *bps = 16;
@@ -271,7 +271,7 @@ static int parse_wifi_display_pcm_header(char *header, int *bps)
         {
             printk("using reserved bps %d\n", *bps);
         }
-        
+
         if (sample == Audio_Sampling_44_1)
         {
             pcm_samplerate = 44100;
@@ -284,7 +284,7 @@ static int parse_wifi_display_pcm_header(char *header, int *bps)
         {
             printk("using reserved sample_rate %d\n",pcm_samplerate);
         }
-        
+
         if (channel == Audio_channel_Dual_Mono)
         {
             pcm_channels = 1;   //note: this is not sure
@@ -297,19 +297,19 @@ static int parse_wifi_display_pcm_header(char *header, int *bps)
         {
             printk("using reserved channel %d\n", pcm_channels);
         }
-        
-        
+
+
 	    frame_size = FramesPerAU * (*bps >> 3) * pcm_channels * number_of_frame_header;
-	    
+
 	}
     else
     {
         printk("unknown sub id\n");
     }
-    
+
     return frame_size;
 }
-	
+
 int frame_size_check_flag=0;
 int frame_size_check=0;
 int jump_read_head_flag=0;
@@ -317,7 +317,7 @@ int audio_dec_init(audio_decoder_operations_t *adp)
 {
        printk("\n\n[%s]WFD LPCMDEC BuildDate--%s  BuildTime--%s",__FUNCTION__,__DATE__,__TIME__);
 #ifdef ANDROID
-	char value[PROPERTY_VALUE_MAX];		
+	char value[PROPERTY_VALUE_MAX];
 	if( property_get("media.wfd.debug_dec",value,NULL) > 0)
 	{
 		enable_debug_print = atoi(value);
@@ -368,15 +368,15 @@ resync:
 	while(get_audiobuf_level()*1000 /(4*48000)  > 300){
 		printk("skip byte buffer level %d \n",get_audiobuf_level());
 		read_buffer(pcm_buffer,1024);
-	 }	
+	 }
 	 */
 	 if(exit_flag == 1){
-		printk("exit flag set.exit dec1\n");	 	
+		printk("exit flag set.exit dec1\n");
 	 	return 0;
 	 }
 	 if(enable_debug_print)
         	printk("wifi display: pcm read size%d %x-%x-%x-%x\n", size, pcm_buffer[0], pcm_buffer[1],pcm_buffer[2],pcm_buffer[3]);
-        
+
         if (pcm_buffer[0] == 0xa0)
         {
     	     frame_size = parse_wifi_display_pcm_header( pcm_buffer, &bps);
@@ -389,18 +389,18 @@ resync:
         }
         else
         {
-skipbyte:   
+skipbyte:
 	     pcm_buffer[0] = pcm_buffer[1];
 	     pcm_buffer[1] = pcm_buffer[2];
-	     pcm_buffer[2] = pcm_buffer[3];		 
+	     pcm_buffer[2] = pcm_buffer[3];
 	     read_buffer(&pcm_buffer[3],1);
-	     skip_bytes++; 
+	     skip_bytes++;
 	     goto resync;
             frame_size = Wifi_Display_Private_Header_Size;    //transimit error or something?
         }
-	if(enable_debug_print)	
+	if(enable_debug_print)
        	printk("wifi display: pcm read size%d %x-%x-%x-%x,skip bytes %d \n", size, pcm_buffer[0], pcm_buffer[1],pcm_buffer[2],pcm_buffer[3],skip_bytes);
-	 	
+
         if(bps == 16){
             if(pcm_channels == 1){
                 for(i=0,j=0; i<frame_size; ){
@@ -416,11 +416,11 @@ skipbyte:
             }
             *outlen = frame_size;
 
-	 
+
 		/*
-			before output the audio frame,check the audio buffer level to see if we need drop pcm 
-			
-		*/		
+			before output the audio frame,check the audio buffer level to see if we need drop pcm
+
+		*/
 	     unsigned audio_latency = get_audiobuf_level()*1000/(48000*4);
 	    // printk("audio latency %d \n",audio_latency);
 	     memcpy(inbuf,&audio_latency,sizeof( audio_latency));
@@ -429,14 +429,14 @@ skipbyte:
 	    if(pcm_samplerate > 0 && pcm_channels > 0  ){
 			adec_ops->channels= pcm_channels;
 			adec_ops->samplerate = pcm_samplerate;
-	    }			
+	    }
             return stream_in_offset;
         }
         else{
             printk("wifi display:unimplemented bps %d\n", bps);
         }
-        
-	
+
+
     return stream_in_offset;
 }
 

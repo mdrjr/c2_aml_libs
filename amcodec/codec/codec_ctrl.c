@@ -40,7 +40,7 @@
 * @brief  codec_set_demux_source  set ts demux source
 *
 * @param[in]  pcodec    Pointer of codec parameter structure
-* @param[in]  source    set 1 for player     
+* @param[in]  source    set 1 for player
 *
 * @return     0 for success, or fail type if < 0
 */
@@ -321,7 +321,7 @@ static inline int codec_video_es_init(codec_para_t *pcodec)
 		CODEC_PRINT("OPEN es DEVICE\n");
       handle = codec_h_open(CODEC_VIDEO_ES_DEVICE, flags);
     }
-    
+
     if (handle < 0) {
         codec_r = system_error_to_codec_error(handle);
         print_error_msg(codec_r, errno, __FUNCTION__, __LINE__);
@@ -696,17 +696,17 @@ int codec_init(codec_para_t *pcodec)
     int ret;
     //if(pcodec->has_audio)
     //  audio_stop();
-    
+
     int fd_m;
     struct fb_var_screeninfo info;
-    
+
     fd_m = open("/dev/fb0", O_RDWR);
-    
+
     if(ioctl(fd_m, FBIOGET_VSCREENINFO, &info) == -1) {
 		printf("CODEC ERROR -14\n");
 		return -1;
 	}
-	
+
     info.reserved[0] = 0;
     info.reserved[1] = 0;
     info.reserved[2] = 0;
@@ -721,13 +721,13 @@ int codec_init(codec_para_t *pcodec)
     info.blue.offset = 0;
     info.blue.length = 8;
     info.transp.offset = 24;
-    info.transp.length = 8; 
+    info.transp.length = 8;
     info.nonstd = 1;
     info.yres_virtual = info.yres * 2;
-    ioctl(fd_m, FBIOPUT_VSCREENINFO, &info);	
+    ioctl(fd_m, FBIOPUT_VSCREENINFO, &info);
     close(fd_m);
-    
-    
+
+
     pcodec->handle = -1;
     pcodec->cntl_handle = -1;
     pcodec->sub_handle = -1;
@@ -775,7 +775,7 @@ int codec_init(codec_para_t *pcodec)
 
         return -CODEC_ERROR_INIT_FAILED;
     }
-    
+
     if (pcodec->has_audio) {
         arm_audio_info a_ainfo;
         memset(&a_ainfo,0,sizeof(arm_audio_info));
@@ -807,7 +807,7 @@ int codec_init(codec_para_t *pcodec)
                  asfinfo.sample_rate=pcodec->audio_info.sample_rate;
                  asfinfo.valid      =pcodec->audio_info.valid;
                  if(pcodec->audio_info.extradata_size<=512){
-                     memcpy(asfinfo.extradata,pcodec->audio_info.extradata,pcodec->audio_info.extradata_size);  
+                     memcpy(asfinfo.extradata,pcodec->audio_info.extradata,pcodec->audio_info.extradata_size);
                      asfinfo.extradata_size=pcodec->audio_info.extradata_size;
                  }
                  memcpy((char*)a_ainfo.extradata,&asfinfo,sizeof(Asf_audio_info_t));
@@ -868,12 +868,12 @@ int codec_read(codec_para_t *pcodec, void *buffer, int len)
 */
 /* --------------------------------------------------------------------------*/
 int codec_close(codec_para_t *pcodec)
-{	
+{
     int res = 0;
-    
+
     int fd_m;
     struct fb_var_screeninfo info;
-    
+
     fd_m = open("/dev/fb0", O_RDWR);
     ioctl(fd_m, FBIOGET_VSCREENINFO, &info);
     info.reserved[0] = 0;
@@ -892,7 +892,7 @@ int codec_close(codec_para_t *pcodec)
     info.transp.length = 0;
     info.nonstd = 1;
     info.yres_virtual = info.yres * 2;
-    ioctl(fd_m, FBIOPUT_VSCREENINFO, &info);	
+    ioctl(fd_m, FBIOPUT_VSCREENINFO, &info);
     close(fd_m);
 
     if (pcodec->has_audio) {
@@ -921,7 +921,7 @@ int codec_close(codec_para_t *pcodec)
 void codec_close_audio(codec_para_t *pcodec)
 {
     if (pcodec) {
-        pcodec->has_audio = 0;		
+        pcodec->has_audio = 0;
     }
     audio_stop(&pcodec->adec_priv);
     return;
@@ -973,7 +973,7 @@ void codec_resume_audio(codec_para_t *pcodec, unsigned int orig)
                  asfinfo.sample_rate=pcodec->audio_info.sample_rate;
                  asfinfo.valid	   =pcodec->audio_info.valid;
                  if(pcodec->audio_info.extradata_size<=512){
-                     memcpy(asfinfo.extradata,pcodec->audio_info.extradata,pcodec->audio_info.extradata_size);  
+                     memcpy(asfinfo.extradata,pcodec->audio_info.extradata,pcodec->audio_info.extradata_size);
                      asfinfo.extradata_size=pcodec->audio_info.extradata_size;
                  }
                  memcpy((char*)a_ainfo.extradata,&asfinfo,sizeof(Asf_audio_info_t));
@@ -1106,7 +1106,7 @@ int codec_get_adec_state(codec_para_t *p, struct adec_status *adec)
             memcpy(adec, &am_io.astatus, sizeof(*adec));
         }
 
-    } 
+    }
     return system_error_to_codec_error(r);
 }
 
@@ -1156,7 +1156,7 @@ int codec_pause(codec_para_t *p)
         CODEC_PRINT("[codec_pause]p->has_audio=%d\n", p->has_audio);
         if(p->has_audio) {
             audio_pause(p->adec_priv);
-        } 
+        }
 		if(p->has_video){
             ret = video_pause(p);
         }
@@ -1181,7 +1181,7 @@ int codec_resume(codec_para_t *p)
         CODEC_PRINT("[codec_resume]p->has_audio=%d\n", p->has_audio);
         if(p->has_audio){
             audio_resume(p->adec_priv);
-        } 
+        }
 		if(p->has_video){
             ret = video_resume(p);
         }
@@ -1503,7 +1503,7 @@ int codec_init_cntl(codec_para_t *pcodec)
     }
 
     pcodec->cntl_handle = cntl;
-    
+
     return CODEC_ERROR_NONE;
 }
 
@@ -1767,9 +1767,9 @@ int codec_audio_get_nb_frames(codec_para_t *p)
         CODEC_PRINT("[%s]ERROR invalid pointer!\n", __FUNCTION__);
         return -1;
     }
-	
+
     if (p->has_audio) {
-        audio_nb_frames = audio_get_decoded_nb_frames(p->adec_priv);		
+        audio_nb_frames = audio_get_decoded_nb_frames(p->adec_priv);
     }
 	//CODEC_PRINT("[%s]get audio decoded frame number[%d]!\n", __FUNCTION__, audio_nb_frames);
     return audio_nb_frames;
@@ -1788,7 +1788,7 @@ int codec_get_apts(codec_para_t *pcodec)
 {
     unsigned int apts;
     int ret;
-    
+
     if (!pcodec) {
         CODEC_PRINT("[%s]ERROR invalid pointer!\n", __FUNCTION__);
         return -1;
@@ -1816,7 +1816,7 @@ int codec_get_vpts(codec_para_t *pcodec)
 {
     unsigned int vpts;
     int ret;
-    
+
     if (!pcodec) {
         CODEC_PRINT("[%s]ERROR invalid pointer!\n", __FUNCTION__);
         return -1;
@@ -1844,7 +1844,7 @@ int codec_get_pcrscr(codec_para_t *pcodec)
 {
     unsigned int pcrscr;
     int ret;
-    
+
     if (!pcodec) {
         CODEC_PRINT("[%s]ERROR invalid pointer!\n", __FUNCTION__);
         return -1;
@@ -1873,7 +1873,7 @@ int codec_set_pcrscr(codec_para_t *pcodec, int val)
 {
     unsigned int pcrscr;
     int ret;
-    
+
     if (!pcodec) {
         CODEC_PRINT("[%s]ERROR invalid pointer!\n", __FUNCTION__);
         return -1;
@@ -1950,8 +1950,8 @@ int codec_get_sync_audio_discont(codec_para_t *pcodec)
     ret = codec_h_control(pcodec->cntl_handle, AMSTREAM_IOC_GET_SYNC_ADISCON, (unsigned long)&discontinue);
     if (ret < 0) {
         return ret;
-    }	
-    return discontinue;   
+    }
+    return discontinue;
 }
 
 /* --------------------------------------------------------------------------*/
@@ -1971,8 +1971,8 @@ int codec_get_sync_video_discont(codec_para_t *pcodec)
     ret = codec_h_control(pcodec->cntl_handle, AMSTREAM_IOC_GET_SYNC_VDISCON, (unsigned long)&discontinue);
     if (ret < 0) {
         return ret;
-    }	
-    return discontinue;   
+    }
+    return discontinue;
 }
 
 /* --------------------------------------------------------------------------*/
@@ -1992,8 +1992,8 @@ unsigned long codec_get_sync_audio_discont_diff(codec_para_t *pcodec)
     ret = codec_h_control(pcodec->cntl_handle, AMSTREAM_IOC_GET_SYNC_ADISCON_DIFF, (unsigned long)&discontinue_diff);
     if (ret < 0) {
         return ret;
-    }	
-    return discontinue_diff;   
+    }
+    return discontinue_diff;
 }
 
 /* --------------------------------------------------------------------------*/
@@ -2013,8 +2013,8 @@ unsigned long codec_get_sync_video_discont_diff(codec_para_t *pcodec)
     ret = codec_h_control(pcodec->cntl_handle, AMSTREAM_IOC_GET_SYNC_VDISCON_DIFF, (unsigned long)&discontinue_diff);
     if (ret < 0) {
         return ret;
-    }	
-    return discontinue_diff;   
+    }
+    return discontinue_diff;
 }
 
 /* --------------------------------------------------------------------------*/
@@ -2079,7 +2079,7 @@ int codec_get_sub_num(codec_para_t *pcodec)
 */
 /* --------------------------------------------------------------------------*/
 int codec_get_sub_info(codec_para_t *pcodec, subtitle_info_t *sub_info)
-{    
+{
     int ret = 0;
     int i;
     if (!sub_info) {
@@ -2111,7 +2111,7 @@ int codec_set_av_threshold(codec_para_t *pcodec, int threshold)
         CODEC_PRINT("[codec_set_av_threshold] error, no audio!\n");
         ret = -1;
     }
-    
+
     return ret;
 }
 
@@ -2176,7 +2176,7 @@ int codec_init_audio_utils(codec_para_t *pcodec)
     }
 
     pcodec->audio_utils_handle = audio_utils;
-    
+
     return CODEC_ERROR_NONE;
 }
 
@@ -2197,7 +2197,7 @@ int codec_release_audio_utils(codec_para_t *pcodec)
     }
 
     pcodec->audio_utils_handle = -1;
-    
+
     return CODEC_ERROR_NONE;
 }
 

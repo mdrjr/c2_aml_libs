@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: mlt.c,v 1.5 2005/04/27 19:20:50 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2002 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
@@ -72,16 +72,16 @@ static void PreMultiply(int tabidx, int *zbuf1)
 	int *zbuf2;
 	const int *csptr;
 
-	nmlt = nmltTab[tabidx];		
+	nmlt = nmltTab[tabidx];
 	zbuf2 = zbuf1 + nmlt - 1;
 	csptr = cos4sin4tab + cos4sin4tabOffset[tabidx];
 
 	/* whole thing should fit in registers - verify that compiler does this */
 	for (i = nmlt >> 2; i != 0; i--) {
 		/* cps2 = (cos+sin), sin2 = sin, cms2 = (cos-sin) */
-		cps2a = *csptr++;	
+		cps2a = *csptr++;
 		sin2a = *csptr++;
-		cps2b = *csptr++;	
+		cps2b = *csptr++;
 		sin2b = *csptr++;
 
 		ar1 = *(zbuf1 + 0);
@@ -106,13 +106,13 @@ static void PreMultiply(int tabidx, int *zbuf1)
 
 	}
 
-	/* Note on scaling... 
-	 * assumes 1 guard bit in, gains (1 + tabidx) fraction bits 
+	/* Note on scaling...
+	 * assumes 1 guard bit in, gains (1 + tabidx) fraction bits
 	 *   i.e. gain 1, 2, or 3 fraction bits, for nSamps = 256, 512, 1024
 	 *   (left-shifting, since table scaled by 2 / sqrt(nSamps))
 	 * this offsets the fact that each extra pass in FFT gains one more int bit
 	 */
-	return;		
+	return;
 }
 
 /**************************************************************************************
@@ -138,7 +138,7 @@ static void PostMultiply(int tabidx, int *fft1)
 	int *fft2;
 	const int *csptr;
 
-	nmlt = nmltTab[tabidx];		
+	nmlt = nmltTab[tabidx];
 	csptr = cos1sin1tab;
 	skipFactor = postSkip[tabidx];
 	fft2 = fft1 + nmlt - 1;
@@ -174,12 +174,12 @@ static void PostMultiply(int tabidx, int *fft1)
 
 	}
 
-	/* Note on scaling... 
+	/* Note on scaling...
 	 * assumes 1 guard bit in, gains 2 int bits
-	 * max gain of abs(cos) + abs(sin) = sqrt(2) = 1.414, so current format 
+	 * max gain of abs(cos) + abs(sin) = sqrt(2) = 1.414, so current format
 	 *   guarantees 1 guard bit in output
 	 */
-	return;	
+	return;
 }
 
 /**************************************************************************************
@@ -204,16 +204,16 @@ static void PreMultiplyRescale(int tabidx, int *zbuf1, int es)
 	int *zbuf2;
 	const int *csptr;
 
-	nmlt = nmltTab[tabidx];		
+	nmlt = nmltTab[tabidx];
 	zbuf2 = zbuf1 + nmlt - 1;
 	csptr = cos4sin4tab + cos4sin4tabOffset[tabidx];
 
 	/* whole thing should fit in registers - verify that compiler does this */
 	for (i = nmlt >> 2; i != 0; i--) {
 		/* cps2 = (cos+sin), sin2 = sin, cms2 = (cos-sin) */
-		cps2a = *csptr++;	
+		cps2a = *csptr++;
 		sin2a = *csptr++;
-		cps2b = *csptr++;	
+		cps2b = *csptr++;
 		sin2b = *csptr++;
 
 		ar1 = *(zbuf1 + 0) >> es;
@@ -238,7 +238,7 @@ static void PreMultiplyRescale(int tabidx, int *zbuf1, int es)
 		*zbuf2-- = z1;
 
 	}
-	
+
 	/* see comments in PreMultiply() for notes on scaling */
 	return;
 }
@@ -266,7 +266,7 @@ static void PostMultiplyRescale(int tabidx, int *fft1, int es)
 	int *fft2;
 	const int *csptr;
 
-	nmlt = nmltTab[tabidx];		
+	nmlt = nmltTab[tabidx];
 	csptr = cos1sin1tab;
 	skipFactor = postSkip[tabidx];
 	fft2 = fft1 + nmlt - 1;
@@ -285,12 +285,12 @@ static void PostMultiplyRescale(int tabidx, int *fft1, int es)
 
 		/* gain 1 int bit from MULSHIFT32, and one since coeffs are stored as 0.5 * (cos+sin), 0.5*sin */
 		t = MULSHIFT32(sin2, ar1 + ai1);
-		z = t - MULSHIFT32(cs2, ai1);	
-		CLIP_2N_SHIFT(z, es);	 
+		z = t - MULSHIFT32(cs2, ai1);
+		CLIP_2N_SHIFT(z, es);
 		*fft2-- = z;
 		cs2 -= 2*sin2;
-		z = t + MULSHIFT32(cs2, ar1);	
-		CLIP_2N_SHIFT(z, es);	 
+		z = t + MULSHIFT32(cs2, ar1);
+		CLIP_2N_SHIFT(z, es);
 		*fft1++ = z;
 
 		cs2 = *csptr++;
@@ -300,19 +300,19 @@ static void PostMultiplyRescale(int tabidx, int *fft1, int es)
 		ar2 = *fft2;
 		ai2 = -ai2;
 		t = MULSHIFT32(sin2, ar2 + ai2);
-		z = t - MULSHIFT32(cs2, ai2);	
-		CLIP_2N_SHIFT(z, es);	 
+		z = t - MULSHIFT32(cs2, ai2);
+		CLIP_2N_SHIFT(z, es);
 		*fft2-- = z;
 		cs2 -= 2*sin2;
-		z = t + MULSHIFT32(cs2, ar2);	
-		CLIP_2N_SHIFT(z, es);	 
+		z = t + MULSHIFT32(cs2, ar2);
+		CLIP_2N_SHIFT(z, es);
 		*fft1++ = z;
 		cs2 += 2*sin2;
 
 	}
 
 	/* see comments in PostMultiply() for notes on scaling */
-	return;	
+	return;
 }
 
 /**************************************************************************************
@@ -330,7 +330,7 @@ static void PostMultiplyRescale(int tabidx, int *fft1, int es)
  *
  * Notes:       operates in-place, and generates nmlt output samples from nmlt input
  *                samples (doesn't do synthesis window which expands to 2*nmlt samples)
- *              if number of guard bits in input is < GBITS_IN_IMLT, the input is 
+ *              if number of guard bits in input is < GBITS_IN_IMLT, the input is
  *                scaled (>>) before the IMLT and rescaled (<<, with clipping) after
  *                the IMLT (rare)
  *              the output has FBITS_LOST_IMLT fewer fraction bits than the input

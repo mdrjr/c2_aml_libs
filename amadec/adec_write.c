@@ -124,7 +124,7 @@ int read_pcm_buffer(char * out, buffer_stream_t *bs, int size)
 		bs->nMutex=0;
 		ret=read_data(out,bs,size);
 		bs->nMutex=1;
-		
+
 	}
 	return ret;
 }

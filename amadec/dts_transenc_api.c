@@ -12,7 +12,7 @@
 #include <log-print.h>
 
 pcm51_encoded_info_t		dts_transenc_info;
-static int							dts_init_flag = 0;				
+static int							dts_init_flag = 0;
 char										*stream;						//input raw pcm
 unsigned char						*output;
 static int write_success_flag=1;
@@ -20,11 +20,11 @@ unsigned int 						input_size;
 unsigned int 						output_size;
 static int nNumFrmCoded;
 //sjw added ; param set by shaoshuai
-typedef struct  
+typedef struct
 {
 	    int (*enc_init)(pcm51_encoded_info_t dts_transenc_info, unsigned int *input_size, unsigned int *output_size);
 	    int (*enc_encode)(pcm51_encoded_info_t dts_transenc_info, char *stream, unsigned char *output, unsigned int output_size);
-	    int (*enc_release)();  
+	    int (*enc_release)();
 }ecoder_operations;
 
 static ecoder_operations enc_ops;
@@ -61,14 +61,14 @@ int dts_transenc_init()
 	    adec_print("==find libdtsenc.so  failed \n");
 	    goto err3;
 	    }
-	
+
 	rv = enc_ops.enc_init(dts_transenc_info, &input_size, &output_size);//encode init
        if(rv!=0)
         goto err4;
-       
+
 	stream = (char *)malloc( input_size ); //malloc input buf
 	output = (unsigned char *)malloc(output_size); //malloc output buf
-	
+
 	dts_init_flag = 1;
 
 	return dts_init_flag;
@@ -86,7 +86,7 @@ err4:
     iec958_deinit();//xujian
     close(fd_dtsenc);
     return -1;
-	    
+
 }
 
 int dts_transenc_process_frame()
@@ -99,20 +99,20 @@ int dts_transenc_process_frame()
                {
                     //adec_print("=====read data failed :%d input_size:%d  \n",rv,input_size);
                     if(iec958_check_958buf_level() == 0){
-						adec_print("transenc:insert zero pcm data \n"); 
+						adec_print("transenc:insert zero pcm data \n");
 						memset(stream,0,input_size);//insert zero pcm data when 958 hw buffer underrun
                     }
 					else{
                     	usleep(1000);
                     	return -1;
-					}	
+					}
                 }
                 #ifdef DUMP_FILE
                 FILE *fp1=fopen("/mnt/sda4/a.pcm","a+");
                 fwrite(stream,1,input_size,fp1);
                 fclose(fp1);
                 #endif
-                
+
         	rv = enc_ops.enc_encode(dts_transenc_info, stream, output, &output_size);//encode frame
         	#ifdef DUMP_FILE
                 FILE *fp2=fopen("/mnt/sda4/a.dts","a+");
@@ -125,10 +125,10 @@ int dts_transenc_process_frame()
 	if(rv==-1){
 	    write_success_flag=0;
 	    usleep(1000);
-	}	
+	}
 	else
 	    write_success_flag=1;
-	
+
 	//adec_print("===pack frame write 958 ret:%d size:%d  \n",rv,output_size);
 	return 1;
 }

@@ -209,12 +209,12 @@ int ammodule_match_check(const char* filefmtstr,const char* fmtsetting)
 }
 
 int  ammodule_simple_load_module(char* name){
-    int ret; 
+    int ret;
     struct ammodule_t *module;
     ret=ammodule_load_module(name,&module);
     if(ret==0){
-        ret = ammodule_open_module(module);	
+        ret = ammodule_open_module(module);
     }
     return ret;
-        
+
 }

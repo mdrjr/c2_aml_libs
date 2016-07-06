@@ -596,7 +596,7 @@ void * Decoder_Interface_init( void )
       return NULL;
    }*/
    s = &g_dec_interface_State;
-   
+
    s->decoder_State = Speech_Decode_Frame_init( );
 
    if ( s->decoder_State == NULL ) {

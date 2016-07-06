@@ -35,7 +35,7 @@ typedef struct
 } WB_dec_if_state;
 
 #ifdef ENABLE_CPU2_DECODER
-CPU2_DATA_START 
+CPU2_DATA_START
 #endif
 
 Word16 nb_of_param_first[NUM_OF_SPMODES]=

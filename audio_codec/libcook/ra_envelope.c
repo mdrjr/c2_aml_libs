@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: envelope.c,v 1.6 2005/04/27 19:20:50 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2002 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
@@ -74,7 +74,7 @@ int DecodeEnvelope(Gecko2Info *gi, int availbits, int ch)
 		return -1;
 
 	/* unpack first index */
-	code = GetBits(bsi, RMS0BITS, 1); 
+	code = GetBits(bsi, RMS0BITS, 1);
 	availbits -= RMS0BITS;
 	rmsIndex[0] = CODE2RMS(code);
 
@@ -87,18 +87,18 @@ int DecodeEnvelope(Gecko2Info *gi, int availbits, int ch)
 		/* for interleaved regions, choose a reasonable table */
 		if (r < 2 * gi->cplStart) {
 			rprime = r >> 1;
-			if (rprime < 1) 
+			if (rprime < 1)
 				rprime = 1;
 		} else {
 			rprime = r - gi->cplStart;
 		}
-		
+
 		/* above NUM_POWTABLES, always use the same Huffman table */
-		if (rprime > NUM_POWTABLES) 
+		if (rprime > NUM_POWTABLES)
 			rprime = NUM_POWTABLES;
 
 		cache = GetBits(bsi, MAX_HUFF_BITS, 0);
-		nbits = DecodeHuffmanScalar(huffTabPower, &huffTabPowerInfo[rprime-1], cache, &code);	
+		nbits = DecodeHuffmanScalar(huffTabPower, &huffTabPowerInfo[rprime-1], cache, &code);
 
 		/* ran out of bits coding power envelope - should not happen (encoder spec) */
 		if (nbits > availbits)

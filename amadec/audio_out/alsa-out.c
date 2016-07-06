@@ -197,19 +197,19 @@ static int set_params(alsa_param_t *alsa_params)
         adec_print("Unable to set  buffer  size \n");
         return err;
     }
-	
+
     err = snd_pcm_hw_params_set_period_size_near(alsa_params->handle, hwparams, &chunk_size, NULL);
     if (err < 0) {
         adec_print("Unable to set period size \n");
         return err;
     }
-#if 0	
+#if 0
     err = snd_pcm_hw_params_set_periods_near(alsa_params->handle, hwparams, &fragcount, NULL);
     if (err < 0) {
       adec_print("Unable to set periods \n");
       return err;
     }
-#endif	
+#endif
     err = snd_pcm_hw_params(alsa_params->handle, hwparams);
     if (err < 0) {
         adec_print("Unable to install hw params:");
@@ -478,8 +478,8 @@ static void *alsa_playback_loop(void *args)
     pthread_cond_init(&alsa_params->playback_cond, NULL);*/
 
     pthread_mutex_lock(&alsa_params->playback_mutex);
-    
-    while( !alsa_params->wait_flag && alsa_params->stop_flag == 0)	
+
+    while( !alsa_params->wait_flag && alsa_params->stop_flag == 0)
     {
         adec_print("pthread_cond_wait\n");
          pthread_cond_wait(&alsa_params->playback_cond, &alsa_params->playback_mutex);
@@ -543,7 +543,7 @@ int alsa_init(struct aml_audio_dec* audec)
         return -1;
     }
     memset(alsa_param, 0, sizeof(alsa_param_t));
-    
+
     if (audec->samplerate >= (88200 + 96000) / 2) {
         alsa_param->flag = 1;
         alsa_param->oversample = -1;
@@ -899,7 +899,7 @@ int dummy_alsa_control(char * id_string , long vol, int rw, long * value){
     unsigned int idx = 0, count;
     long tmp, min, max;
 
-    if ((err = snd_hctl_open(&hctl, sound_card_dev, 0)) < 0) { 
+    if ((err = snd_hctl_open(&hctl, sound_card_dev, 0)) < 0) {
         printf("Control %s open error: %s\n", sound_card_dev, snd_strerror(err));
         return err;
     }
@@ -917,10 +917,10 @@ int dummy_alsa_control(char * id_string , long vol, int rw, long * value){
     if ((err = snd_hctl_elem_info(elem, info)) < 0) {
         printf("Control %s snd_hctl_elem_info error: %s\n", sound_card_dev, snd_strerror(err));
         return err;
-    }    
+    }
     count = snd_ctl_elem_info_get_count(info);
     type = snd_ctl_elem_info_get_type(info);
-    
+
     for (idx = 0; idx < count; idx++) {
         switch (type) {
             case SND_CTL_ELEM_TYPE_BOOLEAN:
@@ -931,7 +931,7 @@ int dummy_alsa_control(char * id_string , long vol, int rw, long * value){
                     }
                     snd_ctl_elem_value_set_boolean(control, idx, tmp);
                     err = snd_hctl_elem_write(elem, control);
-                }else             	
+                }else
 		    *value = snd_ctl_elem_value_get_boolean(control, idx);
 		    break;
             case SND_CTL_ELEM_TYPE_INTEGER:
@@ -946,7 +946,7 @@ int dummy_alsa_control(char * id_string , long vol, int rw, long * value){
                         tmp = max;
                     snd_ctl_elem_value_set_integer(control, idx, tmp);
                     err = snd_hctl_elem_write(elem, control);
-                }else             	
+                }else
 	            *value = snd_ctl_elem_value_get_integer(control, idx);
 		    break;
             default:
@@ -959,7 +959,7 @@ int dummy_alsa_control(char * id_string , long vol, int rw, long * value){
             return err;
         }
     }
-    
+
     return 0;
 }
 /**

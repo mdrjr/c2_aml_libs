@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: gecko2codec.c,v 1.8 2005/04/27 19:20:50 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2002 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
@@ -228,7 +228,7 @@ void ra_debug_dump_decmlt(HGecko2Decoder hGecko2Decoder, int gb)
     Gecko2Info *gi;
     unsigned rd;
     unsigned ch, i;
-    
+
     gi = (Gecko2Info *)hGecko2Decoder;
     rd = READ_MPEG_REG(MREG_AUDIO_CTRL_REG5);
     ch = READ_MPEG_REG(TRACE_REG0);
@@ -249,7 +249,7 @@ void ra_debug_dump_overlap(HGecko2Decoder hGecko2Decoder, int gb)
     Gecko2Info *gi;
     unsigned rd;
     unsigned ch, i;
-    
+
     gi = (Gecko2Info *)hGecko2Decoder;
     rd = READ_MPEG_REG(MREG_AUDIO_CTRL_REG5);
     ch = READ_MPEG_REG(TRACE_REG0);
@@ -278,7 +278,7 @@ void ra_debug(HGecko2Decoder hGecko2Decoder)
     if ((READ_MPEG_REG(TRACE_CMD)&0x8000)==0){
         return;
     }
-    
+
     gi = (Gecko2Info *)hGecko2Decoder;
     rd = READ_MPEG_REG(MREG_AUDIO_CTRL_REG5);
     di = &gi->block[rd];
@@ -293,7 +293,7 @@ void ra_debug(HGecko2Decoder hGecko2Decoder)
                 if (FrameCount>=dbg_frame){
                     WRITE_MPEG_REG(TRACE_MASK, BP_NEW_FRAME|BP_DECODE_INFO/*|BP_BEFORE_INVERSE_TRANSFORM|BP_PREMULTIPLY|BP_BITREVERSE|BP_R8FIRSTPASS|BP_R4CORE*/|BP_POSTMULTIPLY|BP_GAIN_CHANGES|BP_DEBUG);
                 }
-                    
+
 				WRITE_MPEG_REG(TRACE_CMD, 0);
 				break;
             case BP_DECODE_INFO:
@@ -316,7 +316,7 @@ void ra_debug(HGecko2Decoder hGecko2Decoder)
                                 fprintf(pDumpFile, "%04x ", di->dgainc[ch][j].loc[i]&0xffff);
                             }
                             fprintf(pDumpFile, "\n");
-        
+
                             fprintf(pDumpFile, "\t\t\tgain:");
                             for (i = 0; i < di->dgainc[ch][j].nats; i++) {
                                 fprintf(pDumpFile, "%04x ", di->dgainc[ch][j].gain[i]&0xffff);
@@ -363,7 +363,7 @@ void ra_debug(HGecko2Decoder hGecko2Decoder)
 				else
     				ra_debug_dump_decmlt(gi, -4);
 				WRITE_MPEG_REG(TRACE_CMD, 0);
-                break;            
+                break;
             case BP_POSTMULTIPLY:
                 fprintf(pDumpFile, "\nAfter PostMultiply:");
 				ra_debug_dump_decmlt(gi, -7);
@@ -431,11 +431,11 @@ void ra_debug(HGecko2Decoder hGecko2Decoder)
  *
  * Return:      instance pointer, 0 if error (malloc fails, unsupported mode, etc.)
  *
- * Notes:       this implementation is fully reentrant and thread-safe - the 
+ * Notes:       this implementation is fully reentrant and thread-safe - the
  *                HGecko2Decoder instance pointer tracks all the state variables
  *                for each instance
  **************************************************************************************/
-HGecko2Decoder Gecko2InitDecoder(int nSamples, int nChannels, int nRegions, int nFrameBits, int sampRate, 
+HGecko2Decoder Gecko2InitDecoder(int nSamples, int nChannels, int nRegions, int nFrameBits, int sampRate,
 			int cplStart, int cplQbits,	int *codingDelay)
 {
 	Gecko2Info *gi;
@@ -449,7 +449,7 @@ HGecko2Decoder Gecko2InitDecoder(int nSamples, int nChannels, int nRegions, int 
 		return 0;
 	if (nRegions < 0 || nRegions > MAXREGNS)
 		return 0;
-	if (nFrameBits < 0 || cplStart < 0) 
+	if (nFrameBits < 0 || cplStart < 0)
 		return 0;
 	if (cplQbits && (cplQbits < 2 || cplQbits > 6))
 		return 0;
@@ -482,11 +482,11 @@ HGecko2Decoder Gecko2InitDecoder(int nSamples, int nChannels, int nRegions, int 
 		gi->cplStart = cplStart;
 		gi->cplQbits = cplQbits;
 		gi->rateBits = 5;
-		if (gi->nSamples > 256) 
+		if (gi->nSamples > 256)
 			gi->rateBits++;
-		if (gi->nSamples > 512) 
+		if (gi->nSamples > 512)
 			gi->rateBits++;
-	} else {	
+	} else {
 		/* mono or dual-mono */
 		gi->cplStart = 0;
 		gi->cplQbits = 0;
@@ -639,10 +639,10 @@ int GetDecodeInfo(HGecko2Decoder hGecko2Decoder)
  * Description: decode one frame of audio data
  *
  * Inputs:      HGecko2Decoder instance pointer returned by Gecko2InitDecoder()
- *              pointer to one encoded frame 
+ *              pointer to one encoded frame
  *                (nFrameBits / 8 bytes of data, byte-aligned)
  *              flag indicating lost frame (lostflag != 0 means lost)
- *              pointer to receive one decoded frame of PCM 
+ *              pointer to receive one decoded frame of PCM
  *
  * Outputs:     one frame (nSamples * nChannels 16-bit samples) of decoded PCM
  *
@@ -676,10 +676,10 @@ int Gecko2Decode(HGecko2Decoder hGecko2Decoder, unsigned char *codebuf, int lost
 				    Gecko2ClearBadFrame(gi, outbuf);
 				    return ERR_GECKO2_INVALID_SIDEINFO;
 			    }
-    
+
 			    /* reconstruct power envelope */
 			    CategorizeAndExpand(gi, availbits);
-    
+
 			    /* reconstruct full MLT, including stereo decoupling */
 			    gi->gbMin[0] = gi->gbMin[1] = DecodeTransform(gi, gi->db.decmlt[0], availbits, &gi->lfsr[0], 0);
 			    JointDecodeMLT(gi, gi->db.decmlt[0], gi->db.decmlt[1]);
@@ -692,19 +692,19 @@ int Gecko2Decode(HGecko2Decoder hGecko2Decoder, unsigned char *codebuf, int lost
 					    Gecko2ClearBadFrame(gi, outbuf);
 					    return ERR_GECKO2_INVALID_SIDEINFO;
 				    }
-    
+
 				    /* reconstruct power envelope */
 				    CategorizeAndExpand(gi, availbits);
-    
+
 				    /* reconstruct full MLT */
 				    gi->gbMin[ch] = DecodeTransform(gi, gi->db.decmlt[ch], availbits, &gi->lfsr[ch], ch);
-    
+
 				    /* zero out non-coded regions */
 				    for (i = gi->nRegions*NBINS; i < gi->nSamples; i++)
 					    gi->db.decmlt[ch][i] = 0;
 			    }
 		    }
-    
+
 #ifdef ENABLE_DUMP
             if (DumpMask&DUMP_GAIN) {
                 fprintf(pDumpFile, "Gain:\n");
@@ -717,7 +717,7 @@ int Gecko2Decode(HGecko2Decoder hGecko2Decoder, unsigned char *codebuf, int lost
                                 fprintf(pDumpFile, "%08x ", gi->dgainc[ch][j].loc[i]);
                             }
                             fprintf(pDumpFile, "\n");
-        
+
                             fprintf(pDumpFile, "\t\tgain:");
                             for (i = 0; i < gi->dgainc[ch][j].nats; i++) {
                                 fprintf(pDumpFile, "%08x ", gi->dgainc[ch][j].gain[i]);
@@ -743,17 +743,17 @@ int Gecko2Decode(HGecko2Decoder hGecko2Decoder, unsigned char *codebuf, int lost
 				    if ((i%10)==9) fprintf(pDumpFile, "\n\t");
                 }
                 fprintf(pDumpFile, "\n");
-    
+
                 for (ch = 0; ch < gi->nChannels; ch++) {
                     fprintf(pDumpFile, "\trmsMax[%d]=%08x\n", ch, gi->rmsMax[ch]);
-                }                
+                }
             }
             if (DumpMask&DUMP_HUFF) {
                 fprintf(pDumpFile, "Huffman:\n");
                 for (ch = 0; ch < gi->nChannels; ch++) {
                     fprintf(pDumpFile, "\tgbMin[%d]=%08x\n", ch, gi->gbMin[ch]);
-                }                
-            }                
+                }
+            }
 		    if (DumpMask&DUMP_QUANT) {
 			    fprintf(pDumpFile, "Dequant:\n");
                 for (ch = 0; ch < gi->nChannels; ch++) {
@@ -783,7 +783,7 @@ int Gecko2Decode(HGecko2Decoder hGecko2Decoder, unsigned char *codebuf, int lost
         {
             ra_debug(gi);
             gi->rd = READ_MPEG_REG(MREG_AUDIO_CTRL_REG5);
-        }        
+        }
 #endif
 #ifdef USE_C_DECODER
     	for (ch = 0; ch < gi->nChannels; ch++) {

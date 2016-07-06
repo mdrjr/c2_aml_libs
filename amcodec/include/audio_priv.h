@@ -7,7 +7,7 @@
 */
 /* Copyright (C) 2007-2011, Amlogic Inc.
 * All right reserved
-* 
+*
 */
 #ifndef CODEC_PRIV_H_
 #define CODEC_PRIV_H_

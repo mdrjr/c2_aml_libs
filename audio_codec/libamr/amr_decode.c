@@ -9,7 +9,7 @@
 #define amr_print(...) __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 #else
 #define amr_print  printf
-#endif 
+#endif
 #define DefaultReadSize  2*1024
 #define DefaultOutBufSize 16*1024
 
@@ -40,14 +40,14 @@ void amrnb_decode_frame(void* destate, short* pOutBuffer,short *outlen, char *in
 {
     enum Mode dec_mode;
     int read_size;
-    unsigned char analysis[32];   
+    unsigned char analysis[32];
     char *tpbuf;
     tpbuf = inbuf;
-	
+
     memset(analysis,0,32);
     //amr_read(analysis, 1);
     analysis[0] = *tpbuf++;
-	
+
     dec_mode = (analysis[0] >> 3) & 0x000F;
     read_size = amrnb_block_size[dec_mode];
 
@@ -62,14 +62,14 @@ void amrnb_decode_frame(void* destate, short* pOutBuffer,short *outlen, char *in
 }
 
 //note:maybe this decoder logic  has some problem and too old now ,but can not find where
-//   its souce comes from, so just let maitain current situations!!: 
+//   its souce comes from, so just let maitain current situations!!:
 void amrwb_decode_frame(void* destate, short* pOutBuffer,short *outlen, char *inbuf, int *consume)
 {
     unsigned char serial[61];
     short mode;
     char *tpbuf;
     tpbuf = inbuf;
-        
+
     static const short amrwb_block_size[16]= {18, 24, 33, 37, 41, 47, 51, 59, 61, 6, 6, 0, 0, 0, 1, 1};
     //amr_read(serial, 1);
     serial[0] = *tpbuf++;
@@ -108,7 +108,7 @@ int audio_dec_decode(audio_decoder_operations_t *adec_ops, char *outbuf, int *ou
         outputSample = 160*2;
     }
     amr_decode_frame_fun(destate, synth, &out_ret, inbuf, &consume);
-	
+
     if(out_ret<0){
         *outlen = 0;
         return consume;

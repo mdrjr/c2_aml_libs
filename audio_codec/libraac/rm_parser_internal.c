@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: rm_parser_internal.c,v 1.2.2.1 2005/05/04 18:21:36 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2005 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 #include <stdio.h>
@@ -610,7 +610,7 @@ HX_RESULT rm_parseri_unpack_all_logical_stream_hdrs(rm_parser_internal* pInt)
                         /*
                          * Unpack the logical stream. We don't have
                          * to worry about ulIndx being less than
-                         * ulNumLogicalStreamHdrs since we already 
+                         * ulNumLogicalStreamHdrs since we already
                          * guaranteed above that ulNumLogicalStreamHdrs
                          * was correct.
                          */
@@ -1035,7 +1035,7 @@ HX_RESULT rm_parseri_unpack_logical_multirate_type_spec(rm_parser_internal* pInt
     int i, j;
     UINT16 stream_num;
     UINT32 start_offset;
-    
+
     if (pInt->pMediaPropsHdr[index].type_spec)
     {
         memcpy(&num_stream, pInt->pMediaPropsHdr[index].type_spec+6, sizeof(UINT16));
@@ -1161,7 +1161,7 @@ HX_RESULT rm_parseri_setup_multirate_streams(rm_parser_internal* pInt)
 HX_RESULT rm_parseri_read_all_headers(rm_parser_internal* pInt)
 {
     HX_RESULT retVal = HXR_FAIL;
-	
+
     if (pInt)
     {
         /* Declare the chunk id local variable */
@@ -1173,7 +1173,7 @@ HX_RESULT rm_parseri_read_all_headers(rm_parser_internal* pInt)
         if (retVal == HXR_OK)
         {
             /*
-             * If we don't encounter a RM_HEADER_OBJECT at the 
+             * If we don't encounter a RM_HEADER_OBJECT at the
              * beginning of the file, then that's a problem.
              */
             if (ulID == RM_HEADER_OBJECT)
@@ -1606,7 +1606,7 @@ void rm_parseri_cleanup_rm_property(rm_parser_internal* pInt, rm_property* pProp
         /*
          * If this is a RM_PROPERTY_TYPE_BUFFER or RM_PROPERTY_TYPE_CSTRING
          * property, then the pValue is an allocated buffer. If this
-         * is an RM_PROPERTY_TYPE_UINT32 property, then pValue doesn't 
+         * is an RM_PROPERTY_TYPE_UINT32 property, then pValue doesn't
          * have any buffer associated with it.
          */
         if (pProp->pValue && pProp->ulType != RM_PROPERTY_TYPE_UINT32)
@@ -1663,7 +1663,7 @@ HX_RESULT rm_parseri_create_stream_structures(rm_parser_internal* pInt)
     if (pInt && pInt->ulNumStreams)
     {
         /*
-         * Compute the max stream number and the 
+         * Compute the max stream number and the
          * max duration across all streams.
          */
         UINT32 i                      = 0;
@@ -1699,7 +1699,7 @@ HX_RESULT rm_parseri_create_stream_structures(rm_parser_internal* pInt)
                 pInt->pulStreamNumMap[i] = RM_NO_STREAM_SET;
             }
             /*
-             * The stream number maps maps stream number to 
+             * The stream number maps maps stream number to
              * the index in the pMediaPropsHdr array.
              */
             for (i = 0; i < pInt->ulNumStreams; i++)
@@ -1764,7 +1764,7 @@ HX_RESULT rm_parseri_create_stream_structures(rm_parser_internal* pInt)
                     pInt->pStreamInfo[i].seekTable.pEntry =
                         (struct rm_seek_table_entry*) rm_parseri_malloc(pInt, ulSize);
                     if (pInt->pStreamInfo[i].seekTable.pEntry)
-                    {                    
+                    {
                         /* Zero out the memory */
                         memset(pInt->pStreamInfo[i].seekTable.pEntry, 0, ulSize);
                         /* Init the parameters */
@@ -1817,7 +1817,7 @@ HX_RESULT rm_parseri_examine_initial_packets(rm_parser_internal* pInt, UINT32 ul
                     /*
                      * Now we will look at the first few packet headers
                      * until either we have seen at least one packet
-                     * of each stream or we have verified that the 
+                     * of each stream or we have verified that the
                      * minimum timestamp across all streams is 0.
                      * We will loop as though we will look at all
                      * packets, but we will break out long before that.
@@ -1873,7 +1873,7 @@ HX_RESULT rm_parseri_examine_initial_packets(rm_parser_internal* pInt, UINT32 ul
                                 else
                                 {
                                     /*
-                                     * We need to keep reading packets, so 
+                                     * We need to keep reading packets, so
                                      * seek past the data of this packet.
                                      */
                                     rm_parseri_file_seek(pInt,
@@ -2095,13 +2095,13 @@ HX_RESULT rm_parseri_create_all_stream_headers(rm_parser_internal* pInt)
 HX_RESULT rm_parseri_create_stream_header(rm_parser_internal* pInt, UINT32 i, rm_stream_header* hdr)
 {
     HX_RESULT retVal = HXR_FAIL;
-	
+
     if (pInt && pInt->pMediaPropsHdr && i < pInt->ulNumStreams && hdr)
     {
         UINT32 ulNumProps = 0;
         UINT32 ulSize     = 0;
         /*
-         * Count the number of properties. Passing in 
+         * Count the number of properties. Passing in
          * HXNULL and 0 means just count and don't set
          * the properties
          */
@@ -2435,7 +2435,7 @@ UINT32 rm_parseri_count_set_stream_header_props(rm_parser_internal* pInt, UINT32
                 {
                     ulPreDecBufTime = ulPreroll;
                 }
-                /* 
+                /*
                  * If actual preroll is less than 1 sec, set preroll
                  * and PreDecBufTime to 1 sec more than ActualPreroll
                  */
@@ -2830,7 +2830,7 @@ HX_RESULT rm_parseri_read_next_packet(rm_parser_internal* pInt, rm_packet** ppPa
                     }
                     else
                     {
-                        /* 
+                        /*
                          * If this packet has the same timestamp as the previous
                          * packet we cannot switch on or switch off here.
                          */
@@ -3273,7 +3273,7 @@ HX_RESULT rm_parseri_search_seek_tables(rm_parser_internal* pInt, INT32 lStreamN
                                             UINT32* pulFoundTime, UINT32* pulFoundOffset, UINT32* pulFoundIndex)
 {
     HX_RESULT retVal = HXR_FAIL;
-    
+
     if (pInt && pulFoundTime && pulFoundOffset &&
         pInt->ulNumStreams && pInt->pStreamInfo)
     {
@@ -3453,7 +3453,7 @@ HX_RESULT rm_parseri_search_index_chunk(rm_parser_internal* pInt, UINT32 ulSeekT
                                 }
                             }
                         }
-                        /* 
+                        /*
                          * Set the next index header. If there are
                          * no more index chunks, next_index_hdr will
                          * be zero.
@@ -3480,7 +3480,7 @@ HX_RESULT rm_parseri_build_seek_table(rm_parser_internal* pInt)
     // not support seek without Interleaved Streams now
     if (pInt->ulInterleavedStreamsFlag==0)
         return HXR_FAIL;
-    
+
     if (pInt && pInt->propHdr.index_offset && pInt->pStreamInfo &&
         pInt->ulNumStreams)
     {
@@ -3554,7 +3554,7 @@ HX_RESULT rm_parseri_build_seek_table(rm_parser_internal* pInt)
                                 }
                             }
                         }
-                        /* 
+                        /*
                          * Set the next index header. If there are
                          * no more index chunks, next_index_hdr will
                          * be zero.

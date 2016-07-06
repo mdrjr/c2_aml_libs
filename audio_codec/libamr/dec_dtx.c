@@ -666,7 +666,7 @@ void D_DTX_exe(D_DTX_State *st, Word16 *exc2, Word16 new_state, Word16 isf[],
 
       /* safety guard against division by zero */
 	  if(tmp_int_length <= 0) {
-         tmp_int_length = 8; 
+         tmp_int_length = 8;
       }
       st->mem_true_sid_period_inv = D_UTIL_saturate((0x02000000 / (tmp_int_length << 10)));
       st->mem_since_last_sid = 0;

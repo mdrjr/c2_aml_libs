@@ -68,7 +68,7 @@
 #define RX_NO_DATA                  7
 
 #ifdef ENABLE_CPU2_DECODER
-CPU2_DATA_START 
+CPU2_DATA_START
 #endif
 
 /* One encoded frame (bytes) */

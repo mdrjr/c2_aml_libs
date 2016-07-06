@@ -30,7 +30,7 @@ DIRS=audio_ctl/ codec/
 LDFLAGS=  -O2  -L$(LIB_DIR)  -lm -lc  -shared -Wl,--shared -Wl,-soname,$(TARGET)$(LIB_VERSION)
 
 #INCLUDE=$(DIRS:%/=-I$(SRC)/%/include)
-INCLUDE=${SRCTREE}/include/ 
+INCLUDE=${SRCTREE}/include/
 #CFLAGS=-O0  -gdwarf-2  -g
 CFLAGS=-O2 -g  -I$(SRC)/include  -I${SRCTREE}/audio_ctl -I${SRCTREE}/codec -I${SRCTREE}/../amadec/include -fPIC
 
@@ -61,5 +61,5 @@ clean:$(CLRDIR)
 install:$(target_all)
 	-install  -m 755   $(TARGET)  $(INSTALL_DIR)
 	cp  -rf $(SRC)/include/*  $(HEADERS_DIR)/
-    
+
 

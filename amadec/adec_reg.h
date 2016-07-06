@@ -10,11 +10,11 @@
 // AIFIFO status register
 // Bit 13		//aififo request to dcu status
 // Bit 12		//dcu select status
-// Bit 11:5		//aififo word counter number 
+// Bit 11:5		//aififo word counter number
 // Bit 4:0		//how many bits left in the first pop register
 #define AIU_AIFIFO_STATUS                          0x1581
 // Same fucntion as the AIGBIT of AIFIFO in CDROM module
-// write to this register how many bits wanna pop, 
+// write to this register how many bits wanna pop,
 // and reading this register gets the corresponding bits data
 #define AIU_AIFIFO_GBIT                            0x1582
 // Same function as the AICLB of AIFIFO in CDROM module
@@ -24,11 +24,11 @@
 // AIFIFO DDR Interface
 // --------------------------------------------
 // The AIFIFO start pointer into DDR memory is a 32-bit number
-// The Start pointer will automatically be truncated to land on 
+// The Start pointer will automatically be truncated to land on
 // an 8-byte boundary.  That is, bits [2:0] = 0;
 #define AIU_MEM_AIFIFO_START_PTR                   0x1584
-// The current pointer points so some location between the START and END 
-// pointers.  The current pointer is a BYTE pointer.  That is, you can 
+// The current pointer points so some location between the START and END
+// pointers.  The current pointer is a BYTE pointer.  That is, you can
 // point to any BYTE address within the START/END range
 #define AIU_MEM_AIFIFO_CURR_PTR                    0x1585
 #define AIU_MEM_AIFIFO_END_PTR                     0x1586
@@ -39,11 +39,11 @@
 //                              level control.  If this bit is 0, then use bit[1] to control the enabling of filling
 // bit  [9]     Data Ready.     This bit is set when data can be popped
 // bit  [8]     fill busy       This bit will be high when we're fetching data from the DDR memory
-//                              To reset this module, set cntl_enable = 0, and then wait for busy = 0. 
+//                              To reset this module, set cntl_enable = 0, and then wait for busy = 0.
 //                              After that you can pulse cntl_init to start over
 // bit  [7]     cntl_endian_jic Just in case endian.  last minute byte swap of the data out of
 //                              the FIFO to getbit
-// bit  [6]     unused  
+// bit  [6]     unused
 // bits [5:3]   endian:         see $lib/rtl/ddr_endian.v
 // bit  [2]     cntl_empty_en   Set to 1 to enable reading the DDR memory FIFO and filling the pipeline to get-bit
 //                              Set cntl_empty_en = cntl_fill_en = 0 when pulsing cntl_init
@@ -68,6 +68,6 @@
 #define AIU_MEM_AIFIFO2_BUF_WRAP_COUNT             0x158e
 // bit 29:24 A_brst_num
 // bit 21:16 A_id
-// bit 15:0 level_hold 
+// bit 15:0 level_hold
 #define AIU_MEM_AIFIFO_MEM_CTL                     0x158f
 

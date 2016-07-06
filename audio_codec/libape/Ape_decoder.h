@@ -129,11 +129,11 @@ typedef struct{
     int error;
 }APE_COdec_Private_t;
 
-typedef struct 
+typedef struct
 {
     APE_Codec_Public_t   *public_data;
     APE_COdec_Private_t *private_data;
-    
+
 }APE_Decoder_t;
 typedef struct {
     unsigned pos;

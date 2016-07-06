@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: helix_types.h,v 1.1.1.1.2.1 2005/05/04 18:20:57 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2005 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 #ifndef HELIX_TYPES_H
@@ -42,7 +42,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif  /* #ifdef __cplusplus */
-    
+
 /*
  * INT8 Type definition
  *
@@ -58,7 +58,7 @@ typedef char INT8;
 
 #endif /* #ifndef INT8 */
 
-    
+
 /*
  * CHAR - signed 8-bit value
  */
@@ -292,7 +292,7 @@ typedef struct system_time
     UINT16 year;      /* year - 1900 or (year - HX_YEAR_OFFSET) */
     INT16 gmtDelta;   /* Greenwich Mean Time Delta in +/- hours */
 } HX_DATETIME;
-    
+
 HX_DATETIME HX_GET_DATETIME(void);
 
 #define HXEXPORT_PTR        *

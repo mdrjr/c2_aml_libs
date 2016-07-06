@@ -2,7 +2,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_SHARED_LIBRARIES +=  libcutils libc  liblog 
+LOCAL_SHARED_LIBRARIES +=  libcutils libc  liblog
 LOCAL_MODULE    := libpcm_wfd
 LOCAL_SRC_FILES := lpcm_decode.c
 #$(notdir $(wildcard $(LOCAL_PATH)/*.c))

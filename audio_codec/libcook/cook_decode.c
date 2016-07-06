@@ -27,7 +27,7 @@
 #define libcook_print(...) __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 #else
 #define libcook_print  printf
-#endif 
+#endif
 #define DefaultReadSize  32*1024
 #define DefaultOutBufSize 370*1024
 
@@ -116,20 +116,20 @@ int audio_dec_decode(audio_decoder_operations_t *adec_ops, char *outbuf, int *ou
             rm_parser_destroy_packet(ra_info.pParser, &ra_info.pPacket);
         }
         if (retVal != HXR_OK){
-        	libcook_print("cook_decode_frame£º add packet failed\n");	
+        	libcook_print("cook_decode_frame£º add packet failed\n");
 			break;
         }
 		if(cook_input.buf_len <= 2048)
 			break;
 	}
-	
+
 	*outlen = 0;
 	if(cook_output.buf_len > 0){
 		memcpy(outbuf, cook_output.buf, cook_output.buf_len);
 		(*outlen) = cook_output.buf_len;
 		cook_output.buf_len = 0;
 	}
-	
+
 	int ret = 0;
 	//ret = ra_dec_info.decoded_size + cook_input.cousume;
 	ret = cook_input.cousume;
@@ -144,13 +144,13 @@ static UINT32 rm_io_read(void* pUserRead, BYTE* pBuf, UINT32 ulBytesToRead)
     memcpy(pBuf,cur_read_ptr,ulBytesToRead);
     cur_read_ptr = cur_read_ptr + ulBytesToRead;
     if((unsigned)(cur_read_ptr - file_header) > AUDIO_EXTRA_DATA_SIZE){
-		//trans_err_code(DECODE_INIT_ERR);	
+		//trans_err_code(DECODE_INIT_ERR);
 		libcook_print("warning :: cook.read byte exceed the the buffer then sent,%d \n",(unsigned)(cur_read_ptr - file_header) );
 		while(1);
-		
-    }		
+
+    }
     return ulBytesToRead;
- 	
+
 }
 static void rm_io_seek(void* pUserRead, UINT32 ulOffset, UINT32 ulOrigin)
 {
@@ -161,14 +161,14 @@ static void rm_io_seek(void* pUserRead, UINT32 ulOffset, UINT32 ulOrigin)
         else if (ulOrigin == HX_SEEK_ORIGIN_END)
                 cur_read_ptr = sizeof(file_header)+(char *)pUserRead-ulOffset;
     	if((unsigned)(cur_read_ptr - file_header) > AUDIO_EXTRA_DATA_SIZE){
-		//trans_err_code(DECODE_INIT_ERR);	
+		//trans_err_code(DECODE_INIT_ERR);
 		libcook_print("warning :: cook.seek buffer pos exceed the the buffer then sent,%d \n",(unsigned)(cur_read_ptr - file_header) );
 		while(1);
-    	}	
+    	}
 
 }
 static unsigned rm_ab_read(void* pUserRead, BYTE* pBuf, UINT32 ulBytesToRead)
-{	
+{
 	int ret = 0;
 	//libcook_print("rm_ab_read, ulBytesToRead = %d\n", ulBytesToRead);
 	if(pBuf&&ulBytesToRead){
@@ -186,12 +186,12 @@ static unsigned rm_ab_read(void* pUserRead, BYTE* pBuf, UINT32 ulBytesToRead)
 	}
 	cook_input.cousume += ret;
 	cook_input.all_consume += ret;
-	return ret;	
+	return ret;
 }
 static void rm_ab_seek(void* pUserRead, UINT32 ulOffset, UINT32 ulOrigin)
 {
 	//libcook_print("rm_ab_seek, buf_len = %d\n",cook_input.buf_len);
-    int i;	
+    int i;
     if (ulOrigin == HX_SEEK_ORIGIN_CUR){
 		if(ulOffset <= cook_input.buf_len){
 			//memcpy(cook_input.buf, cook_input.buf + ulOffset, cook_input.buf_len - ulOffset);
@@ -255,7 +255,7 @@ static HX_RESULT _ra_block_available(void* pAvail, UINT32 ulSubStream, ra_block*
 	                                  &ulNumSamplesOut,
                                   	pBlock->ulDataFlags,
                                   	pBlock->ulTimestamp*90+1);
-			
+
 			if (retVal == HXR_OK){
 				 if (ulBytesConsumed){
 	                		ulBytesLeft -= ulBytesConsumed;
@@ -278,11 +278,11 @@ static HX_RESULT _ra_block_available(void* pAvail, UINT32 ulSubStream, ra_block*
 		ra_dec_info.decoded_size = ulBytesConsumed;
     }
 #if 0
-	FILE * fp1= fopen("/data/audio_out","a+"); 
-	if(fp1){ 
-		int flen=fwrite((char *)ra_dec_info.pOutBuf,1,len,fp1); 
+	FILE * fp1= fopen("/data/audio_out","a+");
+	if(fp1){
+		int flen=fwrite((char *)ra_dec_info.pOutBuf,1,len,fp1);
 		libcook_print("flen = %d---outlen=%d ", flen, len);
-		fclose(fp1); 
+		fclose(fp1);
 	}else{
 		libcook_print("could not open file:audio_out");
 	}
@@ -308,7 +308,7 @@ date_trans:
 	}
 	if(len > 0)
 		goto date_trans;
-#endif	
+#endif
 	//dsp_mailbox_send(1,M1B_IRQ4_DECODE_FINISH_FRAME,wlen,&cur_frame,sizeof(cur_frame));
     	return retVal;
 }
@@ -322,7 +322,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 	ra_depack *pRADpack = HXNULL;
 	ra_format_info *pRAInfo = HXNULL;
 	unsigned ulCodec4CC = 0;
-	int i;	
+	int i;
 	struct audio_info real_data;
 	libcook_print("\n\n[%s]BuildDate--%s  BuildTime--%s",__FUNCTION__,__DATE__,__TIME__);
 	real_data.bitrate = adec_ops->bps;
@@ -332,7 +332,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 
 	adec_ops->nInBufSize = DefaultReadSize;
 	adec_ops->nOutBufSize = DefaultOutBufSize;
-	
+
 	memset(real_data.extradata, 0, AUDIO_EXTRA_DATA_SIZE);
 	//libcook_print("%d,%d\n",real_data.extradata_size,adec_ops->extradata_size);
 	for(i = 0; i < real_data.extradata_size; i++){
@@ -376,18 +376,18 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 	if(cook_input.buf == NULL || cook_output.buf == NULL){
 		libcook_print("malloc buf failed\n");
 		return -1;
-	
+
 	}
 	/**********wait for implement*******/
 	//dsp_cache_wback((unsigned)file_header,AUDIO_EXTRA_DATA_SIZE);
 
 
 	/*clear up the decoder structure */
-	
-	memset(&ra_dec_info,0,sizeof(ra_decoder_info_t));	
+
+	memset(&ra_dec_info,0,sizeof(ra_decoder_info_t));
 	memset(&ra_info,0,sizeof(rm_info_t));
-	cur_read_ptr = file_header;	
-	
+	cur_read_ptr = file_header;
+
 	/* Create the parser struct */
 	pParser = rm_parser_create(NULL, rm_error);
 	if (!pParser)
@@ -396,14 +396,14 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 		return -1;
 	}
 	/* Set the stream into the parser */
-#if 0	
+#if 0
 	for(i = 0;i < AUDIO_EXTRA_DATA_SIZE/8;i++)
 	{
 	printk("%d header data  [0x%x],[0x%x],[0x%x],[0x%x],[0x%x],[0x%x],[0x%x],[0x%x]\n\t",i,\
 	file_header[i*8+0],file_header[i*8+1],file_header[i*8+2],file_header[i*8+3],\
 	file_header[i*8+4],file_header[i*8+5],file_header[i*8+6],file_header[i*8+7]);
 	}
-#endif	
+#endif
 	retVal = rm_parser_init_io(pParser, file_header, rm_io_read, rm_io_seek);
 	if (retVal != HXR_OK)
 	{
@@ -456,7 +456,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 					return -1;
 				}
 				/*
-				* Get the codec 4CC of substream 0. We 
+				* Get the codec 4CC of substream 0. We
 				* arbitrarily choose substream 0 here.
 				*/
 				ulCodec4CC = ra_depack_get_codec_4cc(pRADpack, 0);
@@ -466,7 +466,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 					ra_info.pRaInfo = pRAInfo;
 
 				}
-				else if ((ulCodec4CC == 0x72616163)||(ulCodec4CC == 0x72616370)) 
+				else if ((ulCodec4CC == 0x72616163)||(ulCodec4CC == 0x72616370))
 				/* raac racp */
 				{
 					retVal = ra_depack_get_codec_init_info(pRADpack, 0, &pRAInfo);
@@ -492,10 +492,10 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 			rm_parser_destroy(&pParser);
 		}
 		libcook_print("[cook decode],rm_parser_init_io failed,errid %d\n",retVal);
-		return -1;		
-	}		
+		return -1;
+	}
 	ra_info.pParser = pParser;
-	rm_parser_set_stream(&pParser, 0); 
+	rm_parser_set_stream(&pParser, 0);
 	rm_parser_file_seek(pParser, 0);
 	ra_dec_info.pDecode = ra_decode_create(HXNULL, rm_error);
 	if (retVal != HXR_OK){
@@ -507,14 +507,14 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 			rm_parser_destroy(&pParser);
 		}
 		libcook_print("[cook decode],ra_decode_create failed,errid %d\n",retVal);
-		return -1;		
+		return -1;
 	}
 	ra_dec_info.ulStatus = RADEC_PLAY;
 	ra_dec_info.ulTotalSample = 0;
 	ra_dec_info.ulTotalSamplePlayed = 0;
 	UINT32 ulMaxSamples = 0;
 	if (ra_dec_info.pOutBuf)
-	{    
+	{
 		ra_decode_reset(ra_dec_info.pDecode,
 		(UINT16*)ra_dec_info.pOutBuf,
 		ra_dec_info.ulOutBufSize / 2,
@@ -530,7 +530,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 			rm_parser_destroy(&pParser);
 		}
 		libcook_print("[cook decode],ra_decode_init failed,errid %d\n",retVal);
-		return -1;		
+		return -1;
 	}
 	if (ra_dec_info.pOutBuf)
 	{
@@ -563,7 +563,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 				return -1;
 			}
 		}
-			
+
 	}
 
 	return 0;
@@ -588,9 +588,9 @@ static void ra_depack_cleanup(void)
     }
     if(ra_info.pParser)
    	 rm_parser_destroy(&ra_info.pParser);
-    memset(&ra_info,0,sizeof(ra_info));	
+    memset(&ra_info,0,sizeof(ra_info));
 }
-    
+
 
 //static int cook_decode_release(void)
 int audio_dec_release(audio_decoder_operations_t *adec_ops)
@@ -603,7 +603,7 @@ int audio_dec_release(audio_decoder_operations_t *adec_ops)
 		free(cook_output.buf);
 		cook_output.buf = NULL;
 	}
-	
+
 	ra_decode_destroy(ra_dec_info.pDecode);
 	ra_dec_info.pDecode = HXNULL;
     if (ra_dec_info.pOutBuf)

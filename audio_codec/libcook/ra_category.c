@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: category.c,v 1.4 2005/04/27 19:20:50 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2002 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
@@ -44,12 +44,12 @@
  *
  * This is Ken's super-fast version
  *  - uses incrementally updated heaps
- *  - 3x speedup vs. original 
+ *  - 3x speedup vs. original
  *
  * Discussion of calculating the categories:
- *   This is a symmetrical operation, so the decoder goes through 
+ *   This is a symmetrical operation, so the decoder goes through
  *     the same process as the encoder when computing the categorizations.
- *   The decoder first calculates a max bits/fine quantizer initial 
+ *   The decoder first calculates a max bits/fine quantizer initial
  *     categorization based on a perceptual masking model. Then it
  *     builds them all and chooses the one given by rateCode,
  *     which is extracted from the bitstream.
@@ -58,7 +58,7 @@
  *   NCATZNS = (1 << RATEBITS) = max number of categorizations we can try
  *
  *   cat runs from 0 to 7. Lower number means finer quantization.
- *   expbits_tab[i] tells us how many bits we should expect to spend 
+ *   expbits_tab[i] tells us how many bits we should expect to spend
  *     coding a region with cat = i
  **************************************************************************************/
 
@@ -88,7 +88,7 @@ static const int expbits_tab[8] = { 52, 47, 43, 37, 29, 22, 16, 0 };
 void CategorizeAndExpand(Gecko2Info *gi, int availbits)
 {
 	int r, n, k, val;
-	int offset, delta, cat;	
+	int offset, delta, cat;
 	int expbits, maxbits, minbits;
 	int maxptr, minptr;
 	int nminheap = 0, nmaxheap = 0;
@@ -102,7 +102,7 @@ void CategorizeAndExpand(Gecko2Info *gi, int availbits)
 	int *catbuf = gi->db.catbuf;
 	int rateCode = gi->rateCode;
 
-	/* it's okay not to zero-init maxheap/minheap[1 ... MAXCREGN] 
+	/* it's okay not to zero-init maxheap/minheap[1 ... MAXCREGN]
 	 * we don't read maxheap/minheap[1+] without putting something in them first
 	 */
 	maxheap[0] = 0x7fffffff;	/* upheap sentinel */
@@ -195,7 +195,7 @@ void CategorizeAndExpand(Gecko2Info *gi, int availbits)
 			/* if average is low, add one with more bits */
 			if (!nminheap) {
 				/* printf("all quants at min\n"); */
-				break;	
+				break;
 			}
 			r = minheap[1] & 0xffff;
 
@@ -230,7 +230,7 @@ void CategorizeAndExpand(Gecko2Info *gi, int availbits)
 			/* average is high, add one with less bits */
 			if (!nmaxheap) {
 				/* printf("all quants at max\n"); */
-				break;	
+				break;
 			}
 			r = maxheap[1] & 0xffff;
 
@@ -270,7 +270,7 @@ void CategorizeAndExpand(Gecko2Info *gi, int availbits)
 	/* make sure rateCode is not greater than number of changes in list */
 	ASSERT(rateCode <= (minptr - maxptr));
 
-	/* expand categories using change list, starting at max cat 
+	/* expand categories using change list, starting at max cat
      * we change one region at a time (cat++ = coarser quantizer)
 	 */
 	cp = &changes[maxptr];

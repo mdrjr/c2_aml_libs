@@ -53,10 +53,10 @@
 
 #include "helix_types.h"
 /*
- * These should cause all callers and callees of the md5_ 
+ * These should cause all callers and callees of the md5_
  * function names to use a unique Helix specific name space
- * of HX_md5_xxx. This will facilitate the inclusion of our 
- * code into code bases that also use the md5_ functions. 
+ * of HX_md5_xxx. This will facilitate the inclusion of our
+ * code into code bases that also use the md5_ functions.
  */
 
 #define md5_init    HX_md5_init
@@ -87,7 +87,7 @@ typedef struct md5_state_s {
 } md5_state_t;
 
 #ifdef __cplusplus
-extern "C" 
+extern "C"
 {
 #endif
 

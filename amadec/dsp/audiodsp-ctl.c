@@ -40,7 +40,7 @@ firmware_s_t firmware_list[] = {
     {13, MCODEC_FMT_VORBIS, "audiodsp_codec_vorbis.bin"},
     {14, MCODEC_FMT_AAC_LATM, "audiodsp_codec_aac.bin"},
     {15, MCODEC_FMT_APE, "audiodsp_codec_ape.bin"},
-    
+
 };
 
 /**
@@ -219,7 +219,7 @@ int audiodsp_start(aml_audio_dec_t *audec)
     } else {
         ioctl(dsp_ops->dsp_file_fd, AUDIODSP_SET_PCM_BUF_SIZE, 32*1024);
     }
-    
+
     m_fmt = switch_audiodsp(audec->format);
     adec_print("[%s:%d]  audio_fmt=%d\n", __FUNCTION__, __LINE__, m_fmt);
 
@@ -234,7 +234,7 @@ int audiodsp_start(aml_audio_dec_t *audec)
         return -3;
     }
 
-    if(audec->need_stop){ //in case  stop command comes now  
+    if(audec->need_stop){ //in case  stop command comes now
         ioctl(dsp_ops->dsp_file_fd, AUDIODSP_STOP, 0);
         return -5;
     }
@@ -245,19 +245,19 @@ int audiodsp_start(aml_audio_dec_t *audec)
         do{
             ret = ioctl(dsp_ops->dsp_file_fd, AUDIODSP_WAIT_FORMAT, 0);
 	    if(ret!=0 && !audec->need_stop){
-                err_count++;		
+                err_count++;
                 usleep(1000*20);
-                if (err_count > PARSER_WAIT_MAX){ 
-	             ioctl(dsp_ops->dsp_file_fd, AUDIODSP_STOP, 0);//audiodsp_start failed,should stop audiodsp 								
+                if (err_count > PARSER_WAIT_MAX){
+	             ioctl(dsp_ops->dsp_file_fd, AUDIODSP_STOP, 0);//audiodsp_start failed,should stop audiodsp
 	             adec_print("[%s:%d] audio dsp not ready for decode PCM in 2s\n", __FUNCTION__, __LINE__);
-                    return -4;	
-                    }				
+                    return -4;
+                    }
 	    }
         }while(!audec->need_stop && (ret!=0));
     }
-	
+
     if (ret != 0) {
-	 ioctl(dsp_ops->dsp_file_fd, AUDIODSP_STOP, 0);//audiodsp_start failed,should stop audiodsp 					
+	 ioctl(dsp_ops->dsp_file_fd, AUDIODSP_STOP, 0);//audiodsp_start failed,should stop audiodsp
         return -4;
     }
 

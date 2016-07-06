@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: rv_decode.h,v 1.1.1.1.2.2 2005/05/04 18:20:57 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2005 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 #ifndef RV_DECODE_H__
@@ -100,7 +100,7 @@ typedef struct rv_decode_struct
     UINT32                     pDimensions[2*(8+1)];
         /* Table of encoded dimensions, including RPR sizes.              */
 
-    UINT32                     ulOutSize;             
+    UINT32                     ulOutSize;
         /* The maximum size of the output frame in bytes.                 */
 
     UINT32                     ulECCMask;
@@ -115,16 +115,16 @@ typedef struct rv_decode_struct
     rv_format_info            *pBitstreamHeader;
         /* The bitstream header.                                          */
 
-    rv_frame                  *pInputFrame;      
+    rv_frame                  *pInputFrame;
         /* Pointer to the input frame struct.                             */
 
-    void                      *pDecodeState;        
+    void                      *pDecodeState;
         /* Pointer to decoder backend state.                              */
 
-    rv_backend                *pDecode; 
+    rv_backend                *pDecode;
         /* Decoder backend function pointers.                             */
 
-    rv_backend_init_params     pInitParams;    
+    rv_backend_init_params     pInitParams;
         /* Initialization parameters for the decoder backend.             */
 
     rv_backend_in_params       pInputParams;

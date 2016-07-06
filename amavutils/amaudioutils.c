@@ -36,7 +36,7 @@ typedef enum
 static int set_audiodsp_frelevel(int m1_flag, int coeff)
 {
 	int val;
-	if(m1_flag)	{		
+	if(m1_flag)	{
 		val = amsysfs_get_sysfs_int16(AUDIODSP_CODEC_MIPS_IN);
 		if(val > 0 && coeff > 0){
 			val = coeff * val;
@@ -56,10 +56,10 @@ static int set_audiodsp_frelevel(int m1_flag, int coeff)
 
 int amaudio_utils_set_dsp_freqlevel(audiodsp_freqlevel_t level, int val)
 {
-	int m1_cpu_flag = 0;	
-	
+	int m1_cpu_flag = 0;
+
 	LOG_FUNCTION_NAME
-		
+
 	switch (level)
 	{
 		case AUDIO_DSP_FREQ_NONE:
@@ -80,5 +80,5 @@ int amaudio_utils_set_dsp_freqlevel(audiodsp_freqlevel_t level, int val)
 	}
 
 	return 0;
-	
+
 }

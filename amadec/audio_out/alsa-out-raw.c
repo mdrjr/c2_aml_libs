@@ -221,19 +221,19 @@ static int set_params_raw(alsa_param_t *alsa_params)
         adec_print("Unable to set  buffer  size \n");
         return err;
     }
-	
+
     err = snd_pcm_hw_params_set_period_size_near(alsa_params->handle, hwparams, &chunk_size, NULL);
     if (err < 0) {
         adec_print("Unable to set period size \n");
         return err;
     }
-#if 0	
+#if 0
     err = snd_pcm_hw_params_set_periods_near(alsa_params->handle, hwparams, &fragcount, NULL);
     if (err < 0) {
       adec_print("Unable to set periods \n");
       return err;
     }
-#endif	
+#endif
     err = snd_pcm_hw_params(alsa_params->handle, hwparams);
     if (err < 0) {
         adec_print("Unable to install hw params:");
@@ -306,7 +306,7 @@ static size_t pcm_write_raw(alsa_param_t * alsa_param, u_char * data, size_t cou
             count = chunk_size;
         }
     */
-    while (count > 0) {		
+    while (count > 0) {
         r = writei_func(alsa_param->handle, data, count);
 
         if (r == -EINTR) {
@@ -366,8 +366,8 @@ static void *alsa_playback_raw_loop(void *args)
     pthread_cond_init(&alsa_params->playback_cond, NULL);*/
 
     pthread_mutex_lock(&alsa_params->playback_mutex);
-    
-    while( !alsa_params->wait_flag )	
+
+    while( !alsa_params->wait_flag )
     {
         adec_print("yvonnepthread_cond_wait\n");
          pthread_cond_wait(&alsa_params->playback_cond, &alsa_params->playback_mutex);
@@ -448,7 +448,7 @@ int alsa_init_raw(struct aml_audio_dec* audec)
         return -1;
     }
     memset(alsa_param, 0, sizeof(alsa_param_t));
-    
+
     if (audec->samplerate >= (88200 + 96000) / 2) {
         alsa_param->flag = 1;
         alsa_param->oversample = -1;
@@ -740,7 +740,7 @@ int dummy_alsa_control_raw(char * id_string , long vol, int rw, long * value){
     adec_print("card = %d, port = %d\n", card, port);
     sprintf(dev, "hw:%d,%d", (card >= 0) ? card : 0, (port >= 0) ? port : 0);
 
-    if ((err = snd_hctl_open(&hctl, dev, 0)) < 0) { 
+    if ((err = snd_hctl_open(&hctl, dev, 0)) < 0) {
         printf("Control %s open error: %s\n", dev, snd_strerror(err));
         return err;
     }
@@ -758,10 +758,10 @@ int dummy_alsa_control_raw(char * id_string , long vol, int rw, long * value){
     if ((err = snd_hctl_elem_info(elem, info)) < 0) {
         printf("Control %s snd_hctl_elem_info error: %s\n", dev, snd_strerror(err));
         return err;
-    }    
+    }
     count = snd_ctl_elem_info_get_count(info);
     type = snd_ctl_elem_info_get_type(info);
-    
+
     for (idx = 0; idx < count; idx++) {
         switch (type) {
             case SND_CTL_ELEM_TYPE_BOOLEAN:
@@ -772,7 +772,7 @@ int dummy_alsa_control_raw(char * id_string , long vol, int rw, long * value){
                     }
                     snd_ctl_elem_value_set_boolean(control, idx, tmp);
                     err = snd_hctl_elem_write(elem, control);
-                }else             	
+                }else
             *value = snd_ctl_elem_value_get_boolean(control, idx);
             break;
             case SND_CTL_ELEM_TYPE_INTEGER:
@@ -787,7 +787,7 @@ int dummy_alsa_control_raw(char * id_string , long vol, int rw, long * value){
                         tmp = max;
                     snd_ctl_elem_value_set_integer(control, idx, tmp);
                     err = snd_hctl_elem_write(elem, control);
-                }else             	
+                }else
                 *value = snd_ctl_elem_value_get_integer(control, idx);
             break;
             default:
@@ -800,7 +800,7 @@ int dummy_alsa_control_raw(char * id_string , long vol, int rw, long * value){
             return err;
         }
     }
-    
+
     return 0;
 }
 /**

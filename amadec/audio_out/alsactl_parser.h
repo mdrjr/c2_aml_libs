@@ -1,5 +1,5 @@
 typedef struct alsactl_setting{
-char ctlname[1024]; //for master playback volume control name 
+char ctlname[1024]; //for master playback volume control name
 int  minvalue;  //mute control name
 int  maxvalue;
 int is_parsed;

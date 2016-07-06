@@ -17,7 +17,7 @@ typedef struct buffer_stream_st{
 	int bInited;
 	int nMutex;
     int data_width;
-    int channels;	
+    int channels;
 	int samplerate;
 	int format;
 }buffer_stream_t;

@@ -16,9 +16,9 @@ typedef struct
     UINT32				ulTotalSamplePlayed;
     UINT32              ulStatus;
     UINT32              input_buffer_size;
-    BYTE*		     input_buf;	
+    BYTE*		     input_buf;
     UINT32	            decoded_size;
-	
+
 } raac_decoder_info_t;
 
 typedef struct

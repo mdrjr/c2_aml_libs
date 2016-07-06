@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: rv_depack_internal.c,v 1.1.1.1.2.1 2005/05/04 18:21:20 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2005 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 #include <stdio.h>
@@ -241,7 +241,7 @@ HX_RESULT rv_depacki_unpack_opaque_data(rv_depack_internal* pInt,
                 if (pInt->bStreamSwitchable)
                 {
                     /*
-                     * If this is a multistream header, then there 
+                     * If this is a multistream header, then there
                      * is a 4-byte length in front of every substream header
                      */
                     if (ulLen >= 4)
@@ -697,28 +697,28 @@ HX_RESULT rv_depacki_parse_frame_header(rv_depack_internal* pInt,
                             /* No relative timestamps */
                             ulOrigPacketTimeStamp = pPacket->ulTime + pInt->ulZeroTimeOffset;
                             /*
-                             * Because of a bug in the original Write14or30() which didn't mask 
+                             * Because of a bug in the original Write14or30() which didn't mask
                              * the high bytes of the timestamp before |ing them with the flags,
-                             * it's possible to read frame headers that are screwed up.  If the 
+                             * it's possible to read frame headers that are screwed up.  If the
                              * application using this class sets the timestamp of the network packet
-                             * before unpacking the header, we can determine if this header is 
+                             * before unpacking the header, we can determine if this header is
                              * screwed up and fix it.
                              */
                             /*
                              * If the time stamp returned is less than the packet timestamp
-                             * something is screwed up.  If the packet timestamp is > 14 bits, 
-                             * the frame timestamp is < the packet timestamp and the packet 
-                             * timestamp is < 14 bits then the Write14or30 bug described above 
+                             * something is screwed up.  If the packet timestamp is > 14 bits,
+                             * the frame timestamp is < the packet timestamp and the packet
+                             * timestamp is < 14 bits then the Write14or30 bug described above
                              * may have occured.  It's possible for rollover to occur and trigger
                              * this so we check for that too.  If the bug occured, we want to read 30 bits.
                              */
-                            if (ulOrigPacketTimeStamp > RM_MAX_UINT14 && 
-                                ulOrigPacketTimeStamp > pFrameHdr->ulTimestamp && 
+                            if (ulOrigPacketTimeStamp > RM_MAX_UINT14 &&
+                                ulOrigPacketTimeStamp > pFrameHdr->ulTimestamp &&
                                 pFrameHdr->ulTimestamp < RM_MAX_UINT14 &&
                                 /*
                                  * check for rollover.  If we assume ulOrigPacketTimeStamp is from before
                                  * rollover and m_ulTimeStamp is from after, the left hand expression below
-                                 * should be a small number because m_ulPacketTimeSamp will be close to 
+                                 * should be a small number because m_ulPacketTimeSamp will be close to
                                  * MAX_UINT30 and m_ulTimeStamp will be close to 0.  I chose 60 seconds
                                  * since two frames 60 seconds appart shouldn't be in the same packet
                                  * due to latency considerations in the encoder.  JEFFA 4/28/99
@@ -731,21 +731,21 @@ HX_RESULT rv_depacki_parse_frame_header(rv_depack_internal* pInt,
                                 /* Now read 32 bits instead */
                                 pFrameHdr->ulTimestamp = rm_unpack32(ppBuf, pulLen);
                             }
-                            
+
                             /* Clip the timestamp at 30 bits */
                             ulClippedPacketTS = (ulOrigPacketTimeStamp & RM_MAX_UINT30);
-                            /* 
+                            /*
                              * Much code in the system assumes full 32 bit typestamps; reconstruct
                              * them here. We assume child timestamps are no more than 2^30 - 1 away
                              */
-                            ulDelta = (pFrameHdr->ulTimestamp >= ulClippedPacketTS ? 
-                                       pFrameHdr->ulTimestamp - ulClippedPacketTS : 
+                            ulDelta = (pFrameHdr->ulTimestamp >= ulClippedPacketTS ?
+                                       pFrameHdr->ulTimestamp - ulClippedPacketTS :
                                        RM_MAX_UINT30 - ulClippedPacketTS + pFrameHdr->ulTimestamp);
                             pFrameHdr->ulTimestamp = ulOrigPacketTimeStamp + ulDelta;
                             /* If we have a zero time offset, we need to offset this timestamp */
                             pFrameHdr->ulTimestamp -= pInt->ulZeroTimeOffset;
 
-                            /* 
+                            /*
                              * Ensure that we have not caused the timestamp to fall behind
                              * the packet timestamp when we have subtracted zero time offset
                              */
@@ -887,9 +887,9 @@ HX_RESULT rv_depacki_handle_partial(rv_depack_internal* pInt,
                 pInt->pCurFrame->pSegment[i].bIsValid = TRUE;
                 pInt->pCurFrame->pSegment[i].ulOffset = pFrameHdr->ulPartialFrameOffset;
                 /*
-                 * Set the offset for the segment after this one and all other 
+                 * Set the offset for the segment after this one and all other
                  * segments until we find a valid one or we run out of segments.
-                 * This allows a codec to know where missing data would go for 
+                 * This allows a codec to know where missing data would go for
                  * single loss.  For multiple loss in a row the offset is set
                  * to the same offset since the size of the missing segments
                  * isn't known.
@@ -1113,7 +1113,7 @@ HX_RESULT rv_depacki_create_frame(rv_depack_internal* pInt,
                      * to be labelled as a keyframe. If this packet has a
                      * last-partial frame followed by multiple frames, then
                      * we don't want ANY of the multiple frames to be labelled
-                     * as a keyframe. To implement this logic, we can do 
+                     * as a keyframe. To implement this logic, we can do
                      * the following check: if this is a multiple frames header
                      * AND that header did not start at the beginning of the packet,
                      * then we need to clear the keyframe flag.
@@ -1131,7 +1131,7 @@ HX_RESULT rv_depacki_create_frame(rv_depack_internal* pInt,
                         /*
                          * The sequence number in the RV frame is only
                          * one byte, so every 256 frames, it rolls over
-                         * from 255 back to 0. Check to see if we've 
+                         * from 255 back to 0. Check to see if we've
                          * rolled over with this frame.
                          */
                         if (pFrameHdr->ulSeqNum < pInt->ulLastSeqNumIn)

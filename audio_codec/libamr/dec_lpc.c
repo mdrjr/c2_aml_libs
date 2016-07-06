@@ -247,7 +247,7 @@ static void D_LPC_isp_pol_get(Word16 *isp, Word32 *f, Word32 n, Word16 k16)
  * Returns:
  *    void
  */
-void D_LPC_isp_a_conversion(Word16 isp[], Word16 a[], Word32 adaptive_scaling, 
+void D_LPC_isp_a_conversion(Word16 isp[], Word16 a[], Word32 adaptive_scaling,
                             Word16 m)
 {
    Word32 j, i, nc, tmax, q, q_sug, r;
@@ -324,7 +324,7 @@ void D_LPC_isp_a_conversion(Word16 isp[], Word16 a[], Word32 adaptive_scaling,
       t0 = f1[i] + f2[i];   /* f1[i] + f2[i] */
       tmax |= labs(t0);
       a[i] = (Word16)((t0 + 0x800) >> 12);   /* from Q23 to Q12 and * 0.5 */
-      
+
       /* a[j] = 0.5*(f1[i] - f2[i]); */
       t0 = (f1[i] - f2[i]);   /* f1[i] - f2[i] */
       tmax |= labs(t0);
@@ -342,7 +342,7 @@ void D_LPC_isp_a_conversion(Word16 isp[], Word16 a[], Word32 adaptive_scaling,
        q = 0;                           /* adaptive scaling disabled */
     }
 
-    if (q > 0) 
+    if (q > 0)
     {
       q_sug = 12 + q;
       r = 1 << (q_sug - 1);
@@ -352,20 +352,20 @@ void D_LPC_isp_a_conversion(Word16 isp[], Word16 a[], Word32 adaptive_scaling,
           /* a[i] = 0.5*(f1[i] + f2[i]); */
           t0 = f1[i] + f2[i];          /* f1[i] + f2[i]             */
           a[i] = (Word16)((t0 + r) >> q_sug); /* from Q23 to Q12 and * 0.5 */
-          
+
           /* a[j] = 0.5*(f1[i] - f2[i]); */
           t0 = f1[i] - f2[i];          /* f1[i] - f2[i]             */
           a[j] = (Word16)((t0 + r) >> q_sug); /* from Q23 to Q12 and * 0.5 */
         }
-      a[0] = (Word16)(a[0] >> q);             
-    } 
-    else 
+      a[0] = (Word16)(a[0] >> q);
+    }
+    else
     {
       q_sug = 12;
       r = 1 << (q_sug - 1);
-      q     = 0;                          
+      q     = 0;
     }
-   
+
    /* a[NC] = 0.5*f1[NC]*(1.0 + isp[M-1]); */
    D_UTIL_l_extract(f1[nc], &hi, &lo);
    t0 = D_UTIL_mpy_32_16(hi, lo, isp[m - 1]);

@@ -63,7 +63,7 @@
 #include <android/log.h>
 #define  LOG_TAG    "MadDecoder"
 #define audio_codec_print(...) __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
-#endif 
+#endif
 #else
 #define audio_codec_print printf
 #endif
@@ -741,7 +741,7 @@ struct mad_stream *stream)
 * use this routine if high-quality output is desired.
 */
 
-static 
+static
 	signed int scale(mad_fixed_t sample)
 {
 	/* round */
@@ -799,7 +799,7 @@ struct mad_pcm *pcm)
         		pcm_out_data[1] = sample_r >> 8;
         		pcm_out_data += 2;
 		}
-		
+
 	}
 
 	return MAD_FLOW_CONTINUE;
@@ -819,12 +819,12 @@ struct mad_frame *frame)
 {
 	struct buffer *buffer = data;
 	int tagsize;
-	switch (stream->error) 
+	switch (stream->error)
 	{
 	case MAD_ERROR_LOSTSYNC:
 		tagsize = id3_tag_query(stream->this_frame,
 			stream->bufend - stream->this_frame);
-		if (tagsize > 0) 
+		if (tagsize > 0)
 		{
 			stream->skiplen = tagsize;
 
@@ -908,7 +908,7 @@ int audio_dec_init(
 		error_func = decoder.error_func;
 		//error_data = decoder->cb_data;
 	}
-	else 
+	else
 	{
 		error_func = error_default;
 		error_data = &bad_last_frame;
@@ -924,7 +924,7 @@ int audio_dec_init(
 	mad_synth_init(synth);
 
 	mad_stream_options(stream, decoder.options);
-    
+
 #ifndef _WIN32
     adec_ops->nInBufSize = 5*1024;
     adec_ops->nOutBufSize = 500*1024;
@@ -936,7 +936,7 @@ int audio_dec_init(
 
 #ifndef _WIN32
 int audio_dec_getinfo(audio_decoder_operations_t *adec_ops, void *pAudioInfo)
-{   
+{
     return 0;
 }
 #endif

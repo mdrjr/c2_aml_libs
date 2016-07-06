@@ -7,7 +7,7 @@
 */
 /* Copyright (C) 2007-2011, Amlogic Inc.
 * All right reserved
-* 
+*
 */
 #ifndef CODEC_TYPE_H_
 #define CODEC_TYPE_H_
@@ -97,12 +97,12 @@ unsigned int noblock:
 	int switch_audio_flag;		//<switch audio flag switching(1) else(0)
 } codec_para_t;
 
-typedef struct 
+typedef struct
 {
-    signed char id;      
+    signed char id;
     unsigned char width;
     unsigned char height;
-	unsigned char type;    
+	unsigned char type;
 }subtitle_info_t;
 #define MAX_SUB_NUM			(32)
 
@@ -123,7 +123,7 @@ typedef struct {
     int extradata_size;      ///< extra data size
     char extradata[AUDIO_EXTRA_DATA_SIZE];
 	int SessionID;
-	int dspdec_not_supported;//check some profile that audiodsp decoder can not support,we switch to arm decoder	
+	int dspdec_not_supported;//check some profile that audiodsp decoder can not support,we switch to arm decoder
 	int droppcm_flag;				// drop pcm flag, if switch audio (1)
 } arm_audio_info;
 

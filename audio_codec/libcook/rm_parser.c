@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: rm_parser.c,v 1.1.1.1.2.1 2005/05/04 18:21:36 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2005 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 #include <stdio.h>
@@ -52,7 +52,7 @@
  * reading of headers. The buffer will get increased
  * in size if we encounter a header bigger than this
  * size. Therefore, we would like to pick a reasonable
- * size so that the we don't have lots of little 
+ * size so that the we don't have lots of little
  * allocations. This size should be the maximum
  * of the expected size of the headers in the .rm file.
  *
@@ -338,7 +338,7 @@ UINT32 rm_parser_get_data_size(rm_parser* pParser)
     }
 
     return ulRet;
-}    
+}
 
 const char* rm_parser_get_title(rm_parser* pParser)
 {
@@ -613,7 +613,7 @@ HX_RESULT rm_parser_build_seek_table(rm_parser* pParser)
         retVal = rm_parseri_build_seek_table(pInt);
     }
 
-    return retVal; 
+    return retVal;
 }
 
 HX_RESULT rm_parser_seek_in_seek_table(rm_parser* pParser, INT32 lStreamNumber, UINT32 ulSeekTime, INT32 lDirection, UINT32* pulFoundTime, UINT32* pulDataOffset, UINT32* pulIndex)
@@ -628,7 +628,7 @@ HX_RESULT rm_parser_seek_in_seek_table(rm_parser* pParser, INT32 lStreamNumber, 
         retVal = rm_parseri_search_seek_tables(pInt, lStreamNumber, ulSeekTime, lDirection, pulFoundTime, pulDataOffset, pulIndex);
     }
 
-    return retVal; 
+    return retVal;
 }
 
 void rm_parser_file_seek(rm_parser* pParser, UINT32 ulOffset)

@@ -10,8 +10,8 @@
 struct item {
     struct list_head list;
     unsigned long item_data;
-    unsigned long extdata[1];	
-    /*can be more space on alloc..*/	
+    unsigned long extdata[1];
+    /*can be more space on alloc..*/
 };
 
 struct itemlist {
@@ -69,7 +69,7 @@ struct item * itemlist_get_tail(struct itemlist *itemlist);
 struct item * itemlist_peek_head(struct itemlist *itemlist);
 struct item * itemlist_peek_tail(struct itemlist *itemlist);
 struct item *  itemlist_get_match_item(struct itemlist *itemlist, unsigned long data);
-struct item *  itemlist_find_match_item(struct itemlist *itemlist, unsigned long data); 
+struct item *  itemlist_find_match_item(struct itemlist *itemlist, unsigned long data);
 int itemlist_del_match_data_item(struct itemlist *itemlist, unsigned long data);
 int itemlist_have_match_data(struct itemlist *itemlist, unsigned long data);
 
@@ -81,7 +81,7 @@ int itemlist_get_tail_data(struct itemlist *itemlist, unsigned long *data);
 int itemlist_peek_head_data(struct itemlist *itemlist, unsigned long *data);
 int itemlist_peek_tail_data(struct itemlist *itemlist, unsigned long *data);
 int itemlist_clean_data(struct itemlist *itemlist, data_free_fun free_fun);
-struct item *  itemlist_find_match_item_ex(struct itemlist *itemlist,struct item *tomatch,item_is_match_fun match,int reveser); 
+struct item *  itemlist_find_match_item_ex(struct itemlist *itemlist,struct item *tomatch,item_is_match_fun match,int reveser);
 int itemlist_item_insert(struct itemlist *itemlist, struct itemlist *position,struct itemlist *newitem,int flags);
 int  itemlist_print(struct itemlist *itemlist,printitem_fun print);
 #endif

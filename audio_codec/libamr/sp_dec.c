@@ -1943,7 +1943,7 @@ Az1 = Az;
    /* Subframe 2 */
    Lsp_Az( lsp_mid, Az );
    Az += MP1;
-	  
+
    for ( i = 0; i < 10; i++ ) {
       lsp[i] = ( lsp_mid[i] >> 1 ) + ( lsp_new[i] >> 1 );
    }
@@ -4726,7 +4726,7 @@ static void Decoder_amr( Decoder_amrState *st, enum Mode mode, Word16 parm[],
    }
    else {
       D_plsf_5( st->lsfState, bfi, parm, lsp_mid, lsp_new );
-      
+
       /* Advance synthesis parameters pointer */
       parm += 5;
       Int_lpc_1and3( st->lsp_old, lsp_mid, lsp_new, A_t );
@@ -5727,7 +5727,7 @@ static void Decoder_amr_exit( Decoder_amrState **state )
    tlsf_free( ( *state )->lsp_avg_st );
    tlsf_free( ( *state )->dtxDecoderState );
 */
-   /* deallocate memory 
+   /* deallocate memory
    tlsf_free( *state );*/
    *state = NULL;
    return;
@@ -5847,7 +5847,7 @@ static int Decoder_amr_init( Decoder_amrState **state )
    }
    *state = NULL;
 
-   /* allocate memory 
+   /* allocate memory
    if ( ( s = ( Decoder_amrState * ) tlsf_malloc( sizeof( Decoder_amrState ) ) ) ==
          NULL ) {
       fprintf( stderr, "Decoder_amr_init: can not malloc state structure\n" );
@@ -5856,7 +5856,7 @@ static int Decoder_amr_init( Decoder_amrState **state )
 s = &g_Decoder_amrState;
 
    /* DPlsf_init */
-   /* allocate memory 
+   /* allocate memory
    if ( ( s->lsfState = ( D_plsfState * ) tlsf_malloc( sizeof( D_plsfState ) ) ) ==
          NULL ) {
       fprintf( stderr, "DPlsf_init: can not malloc state structure\n" );
@@ -5865,7 +5865,7 @@ s = &g_Decoder_amrState;
 s->lsfState = &g_D_plsfState;
 
    /* ecGainPitchInit */
-   /* allocate memory 
+   /* allocate memory
    if ( ( s->ec_gain_p_st = ( ec_gain_pitchState * ) tlsf_malloc( sizeof(
          ec_gain_pitchState ) ) ) == NULL ) {
       fprintf( stderr, "ecGainPitchInit: can not malloc state structure\n" );
@@ -5874,7 +5874,7 @@ s->lsfState = &g_D_plsfState;
 s->ec_gain_p_st = &g_ec_gain_pitchState;
 
    /* ecGainCodeInit */
-   /* allocate memory 
+   /* allocate memory
    if ( ( s->ec_gain_c_st = ( ec_gain_codeState * ) tlsf_malloc( sizeof(
          ec_gain_codeState ) ) ) == NULL ) {
       fprintf( stderr, "ecGainCodeInit: can not malloc state structure\n" );
@@ -5882,7 +5882,7 @@ s->ec_gain_p_st = &g_ec_gain_pitchState;
    }*/
 s->ec_gain_c_st = &g_ec_gain_codeState;
    /* gcPredInit */
-   /* allocate memory 
+   /* allocate memory
    if ( ( s->pred_state = ( gc_predState * ) tlsf_malloc( sizeof( gc_predState ) ) )
          == NULL ) {
       fprintf( stderr, "gcPredInit: can not malloc state structure\n" );
@@ -5890,7 +5890,7 @@ s->ec_gain_c_st = &g_ec_gain_codeState;
    }*/
 s->pred_state = &g_gc_predState;
    /* Cb_gain_averageInit */
-   /* allocate memory 
+   /* allocate memory
    if ( ( s->Cb_gain_averState = ( Cb_gain_averageState * ) tlsf_malloc( sizeof(
          Cb_gain_averageState ) ) ) == NULL ) {
       fprintf( stderr, "Cb_gain_averageInit: can not malloc state structure\n" )
@@ -5905,7 +5905,7 @@ s->pred_state = &g_gc_predState;
    s->Cb_gain_averState->hangCount = 0;
 
    /* lsp_avgInit */
-   /* allocate memory 
+   /* allocate memory
    if ( ( s->lsp_avg_st = ( lsp_avgState * ) tlsf_malloc( sizeof( lsp_avgState ) ) )
          == NULL ) {
       fprintf( stderr, "lsp_avgInit: can not malloc state structure\n" );
@@ -5913,7 +5913,7 @@ s->pred_state = &g_gc_predState;
    }*/
 s->lsp_avg_st = &g_lsp_avgState;
    /* Bgn_scdInit */
-   /* allocate memory 
+   /* allocate memory
    if ( ( s->background_state = ( Bgn_scdState * ) tlsf_malloc( sizeof( Bgn_scdState
          ) ) ) == NULL ) {
       fprintf( stderr, "Bgn_scdInit: can not malloc state structure\n" );
@@ -5921,7 +5921,7 @@ s->lsp_avg_st = &g_lsp_avgState;
    }*/
 s->background_state = &g_Bgn_scdState;
    /* phDispInit */
-   /* allocate memory 
+   /* allocate memory
    if ( ( s->ph_disp_st = ( ph_dispState * ) tlsf_malloc( sizeof( ph_dispState ) ) )
          == NULL ) {
       fprintf( stderr, "phDispInit: can not malloc state structure\n" );
@@ -5929,7 +5929,7 @@ s->background_state = &g_Bgn_scdState;
    }*/
 s->ph_disp_st = &g_ph_dispState;
    /* dtxDecInit */
-   /* allocate memory 
+   /* allocate memory
    if ( ( s->dtxDecoderState = ( dtx_decState * ) tlsf_malloc( sizeof( dtx_decState )
          ) ) == NULL ) {
       fprintf( stderr, "dtxDecInit: can not malloc state structure\n" );
@@ -5995,7 +5995,7 @@ static int Post_Filter_init( Post_FilterState **state )
    }
    *state = NULL;
 
-   /* allocate memory 
+   /* allocate memory
    if ( ( s = ( Post_FilterState * ) tlsf_malloc( sizeof( Post_FilterState ) ) ) ==
          NULL ) {
       fprintf( stderr, "F057:can not malloc filter structure\n" );
@@ -6004,7 +6004,7 @@ static int Post_Filter_init( Post_FilterState **state )
    s = &g_Post_FilterState;
    s->agc_state = NULL;
 
-   /* allocate memory 
+   /* allocate memory
    if ( ( s->agc_state = ( agcState * ) tlsf_malloc( sizeof( agcState ) ) ) == NULL )
    {
       fprintf( stderr, "agcInit: can not malloc state structure\n" );
@@ -6041,7 +6041,7 @@ static int Post_Process_init( Post_ProcessState **state )
    }
    *state = NULL;
 
-   /* allocate memory 
+   /* allocate memory
    if ( ( s = ( Post_ProcessState * ) tlsf_malloc( sizeof( Post_ProcessState ) ) ) ==
          NULL ) {
       fprintf( stderr, "Post_Process_init: can not malloc state structure\n" );
@@ -6129,7 +6129,7 @@ void * Speech_Decode_Frame_init( )
 {
    Speech_Decode_FrameState * s;
 
-   /* allocate memory 
+   /* allocate memory
    if ( ( s = ( Speech_Decode_FrameState * ) tlsf_malloc( sizeof(
          Speech_Decode_FrameState ) ) ) == NULL ) {
       fprintf( stderr, "Speech_Decode_Frame_init: can not malloc state "

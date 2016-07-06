@@ -34,7 +34,7 @@
 #error No platform defined. See valid options in gecko2codec.h.
 #endif
 
-#ifdef __cplusplus 
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -52,7 +52,7 @@ HGecko2Decoder Gecko2InitDecoder(int nSamples, int nChannels, int nRegions, int 
 void Gecko2FreeDecoder(HGecko2Decoder hGecko2Decoder);
 int Gecko2Decode(HGecko2Decoder hGecko2Decoder, unsigned char *codebuf, int lostflag, short *outbuf, unsigned timestamp);
 
-#ifdef __cplusplus 
+#ifdef __cplusplus
 }
 #endif
 

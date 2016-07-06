@@ -111,7 +111,7 @@ static const char *file_ext[] =
 
 //=================func====================
 /*
-    param: 
+    param:
     b:buffer need to fill
     in_buf:src buf
     inbuf_size: src buf size
@@ -161,7 +161,7 @@ static int fill_buffer(aac_buffer *b, char *in_buf, long *inbuf_size, long *inbu
         }
     }
     else if (b->bytes_consumed == -1)//first fill
-    {  
+    {
         if(*inbuf_size< FAAD_MIN_STREAMSIZE*MAX_CHANNELS)
              nDefaultAACBufSize=*inbuf_size;
         else
@@ -390,11 +390,11 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
          return -1;
     }
     audio_codec_print("[%s %d]gFaadCxt.b.buffer: space/%d",__FUNCTION__,__LINE__,FAAD_MIN_STREAMSIZE*MAX_CHANNELS);
-    
+
     adec_ops->nInBufSize=768*adec_ops->channels;
     memset((gFaadCxt.b).buffer, 0, FAAD_MIN_STREAMSIZE*MAX_CHANNELS);
     (gFaadCxt.b).bytes_consumed = -1; //init
-    
+
     adec_ops->nOutBufSize=DefaultOutBufSize;
     gChannels=adec_ops->channels;
     gSampleRate=adec_ops->samplerate;
@@ -512,10 +512,10 @@ int audio_dec_decode(audio_decoder_operations_t *adec_ops, char *outbuf, int *ou
             return 0;
         }
     }
-    
+
 
     fill_buffer(&(gFaadCxt.b), in_buf, &inbuf_size, &inbuf_consumed);
-    
+
     NeAACDecStruct* hDecoder = (NeAACDecStruct*)(gFaadCxt.hDecoder);
     if(hDecoder->adts_header_present)
     {
@@ -525,7 +525,7 @@ int audio_dec_decode(audio_decoder_operations_t *adec_ops, char *outbuf, int *ou
         if(nSeekNum)
             audio_codec_print("==adts case  seek :%d byte %02x %02x \n",nSeekNum,*(gFaadCxt.b.buffer),*(gFaadCxt.b.buffer+1));
     }
- 
+
 	if ((inbuf_size < FAAD_MIN_STREAMSIZE*adec_ops->channels)||(outmaxlen < (*outlen + 8192)))
 	{
 		return inbuf_consumed;
@@ -541,11 +541,11 @@ int audio_dec_decode(audio_decoder_operations_t *adec_ops, char *outbuf, int *ou
     {
     gSampleRate=frameInfo.samplerate;
     gChannels=frameInfo.channels;
-    
+
     if( (outmaxlen-(*outlen)) >= (2*frameInfo.samples)){
 		    memcpy(outbuf+(*outlen), sample_buffer, 2*frameInfo.samples);
 		    *outlen+=2*frameInfo.samples;
-		   error_count = 0;	
+		   error_count = 0;
         }else{
             audio_codec_print("[%s %d]WARNING: no enough space used for pcm!\n",__FUNCTION__,__LINE__);
         }

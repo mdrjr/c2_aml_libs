@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: sqvh.c,v 1.6 2005/04/27 19:20:50 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2002 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
@@ -63,12 +63,12 @@ static const int vpr_tab[7] = {10, 10, 10, 5, 5, 4, 4};	/* number of vectors in 
  * Return:      number of bits left in bitstream, -1 if ran out of bits
  *
  * Notes:       the alphabet of decoded symbols has been remapped from the
- *                floating-pt reference, to replace the Horner-method polynomial 
+ *                floating-pt reference, to replace the Horner-method polynomial
  *                evaluation with shift-and-mask (i.e. change of basis to replace
  *                1/(kmax+1) with 1/(2^n) for unpacking vectorized codes)
- *              uses byte-cache Huffman decoder and conditional logic which is 
+ *              uses byte-cache Huffman decoder and conditional logic which is
  *                ARM-friendly
- *              this has been carefully arranged to compile well with ADS, so if you 
+ *              this has been carefully arranged to compile well with ADS, so if you
  *                change anything, make sure you study the assembly code carefully!
  *              consider fusing with loop over all nRegions (rather than function call
  *                per loop) to avoid refilling cache each call
@@ -104,15 +104,15 @@ static int DecodeHuffmanVectors(BitStreamInfo *bsi, int cat, int *k, int bitsLef
 		/* refill cache - assumes cachedBits <= 24 */
 		if (bitsLeft >= 8) {
 			/* load 1 new byte into left-justified cache */
-			cache |= (unsigned int)((*buf++) ^ pkkey[key++]) << (24 - cachedBits);	
+			cache |= (unsigned int)((*buf++) ^ pkkey[key++]) << (24 - cachedBits);
 			key &= 0x03;
 			cachedBits += 8;
 			bitsLeft -= 8;
 		} else {
 			/* last time through, pad cache with zeros and drain cache */
-			if (cachedBits + bitsLeft <= 0)	
+			if (cachedBits + bitsLeft <= 0)
 				return -1;
-			if (bitsLeft > 0)	cache |= (unsigned int)((*buf++) ^ pkkey[key++]) << (24 - cachedBits);	
+			if (bitsLeft > 0)	cache |= (unsigned int)((*buf++) ^ pkkey[key++]) << (24 - cachedBits);
 			key &= 0x03;
 			cachedBits += bitsLeft;
 			bitsLeft = 0;
@@ -144,14 +144,14 @@ static int DecodeHuffmanVectors(BitStreamInfo *bsi, int cat, int *k, int bitsLef
 			cache <<= nBits;
 
 			vPacked = (int)map[total + (cw >> 16)];
-			
+
 			/* sign bits */
 			nBits = (vPacked >> 12) & 0x0f;
 			cachedBits -= nBits;
 			if (cachedBits < padBits)
 				return -1;
 
-			/* should create good asm with conditional instruction execution on ARM 
+			/* should create good asm with conditional instruction execution on ARM
 			 * format of vPacked:
 			 *   bits 12-15 = number of sign bits
 			 *   4 bits/coef for cat = 0, 1, 2 (bits 0-3, 4-7)
@@ -180,11 +180,11 @@ static int DecodeHuffmanVectors(BitStreamInfo *bsi, int cat, int *k, int bitsLef
 	return startBits - bitsLeft - (cachedBits - padBits);
 }
 
-/* Q28 - first column (0's) are dither 
+/* Q28 - first column (0's) are dither
  *   rows ..... cat = [0, 7]
  *   columns .. k =   [0, kmax_tab[cat]]
  *   qcOffset[cat] is starting index for k = 0
- * 
+ *
  * qcTab[0] scaled by 1.0
  * qcTab[1] scaled by sqrt(2)
  *
@@ -196,24 +196,24 @@ static int DecodeHuffmanVectors(BitStreamInfo *bsi, int cat, int *k, int bitsLef
 static const int qcTab[2][14 + 10 + 7 + 5 + 4 + 3 + 2 + 1] = {
 	{
 	/* quant_centroid_tab * 1.0 */
-	0x00000000, 0x0645a1c8, 0x0c2d0e50, 0x11eb8520, 0x17a1cac0, 0x1d4fdf40, 0x22ed9180, 0x28a7ef80, 0x2e49ba40, 0x33eb8500, 0x39916880, 0x3f126e80, 0x449ba600, 0x4b958100, 
-	0x00000000, 0x08b43960, 0x10f5c280, 0x19020c40, 0x21168740, 0x2922d100, 0x3126e980, 0x38fdf3c0, 0x411eb880, 0x49eb8500, 
-	0x00000000, 0x0bef9db0, 0x176c8b40, 0x22e147c0, 0x2e1cac00, 0x39581080, 0x450e5600, 
-	0x00000000, 0x10189380, 0x20000000, 0x2fe35400, 0x3fc28f40, 
-	0x00000000, 0x1522d0e0, 0x2b3f7d00, 0x3fba5e40, 
-	0x02d413cc, 0x1a831260, 0x37db22c0, 
-	0x04000000, 0x1f6c8b40, 
+	0x00000000, 0x0645a1c8, 0x0c2d0e50, 0x11eb8520, 0x17a1cac0, 0x1d4fdf40, 0x22ed9180, 0x28a7ef80, 0x2e49ba40, 0x33eb8500, 0x39916880, 0x3f126e80, 0x449ba600, 0x4b958100,
+	0x00000000, 0x08b43960, 0x10f5c280, 0x19020c40, 0x21168740, 0x2922d100, 0x3126e980, 0x38fdf3c0, 0x411eb880, 0x49eb8500,
+	0x00000000, 0x0bef9db0, 0x176c8b40, 0x22e147c0, 0x2e1cac00, 0x39581080, 0x450e5600,
+	0x00000000, 0x10189380, 0x20000000, 0x2fe35400, 0x3fc28f40,
+	0x00000000, 0x1522d0e0, 0x2b3f7d00, 0x3fba5e40,
+	0x02d413cc, 0x1a831260, 0x37db22c0,
+	0x04000000, 0x1f6c8b40,
 	0x0b504f33
 	},
 	{
 	/* quant_centroid_tab * sqrt(2) */
-	0x00000000, 0x08deb4dc, 0x11382ec8, 0x1957bba7, 0x216bb2a8, 0x297413e1, 0x31654988, 0x397f0b29, 0x41760b9f, 0x496d0c14, 0x5169d7b1, 0x593280ab, 0x6106bff4, 0x6ae454b2, 
-	0x00000000, 0x0c4f2f4d, 0x17fc2cf0, 0x235ddce6, 0x2ecb22d2, 0x3a2cd2c9, 0x4582ecca, 0x50994ee6, 0x5c17f595, 0x6889e5e1, 
-	0x00000000, 0x10e14b25, 0x212064ce, 0x3153e8c5, 0x413653ba, 0x5118bf09, 0x61a8f143, 
-	0x00000000, 0x16c35fec, 0x2d413ccc, 0x43b94edf, 0x5a2b95ca, 
-	0x00000000, 0x1de40c9b, 0x3d2972e9, 0x5a20002f, 
-	0x04000000, 0x257e5e73, 0x4efe081d, 
-	0x05a82799, 0x2c70b401, 
+	0x00000000, 0x08deb4dc, 0x11382ec8, 0x1957bba7, 0x216bb2a8, 0x297413e1, 0x31654988, 0x397f0b29, 0x41760b9f, 0x496d0c14, 0x5169d7b1, 0x593280ab, 0x6106bff4, 0x6ae454b2,
+	0x00000000, 0x0c4f2f4d, 0x17fc2cf0, 0x235ddce6, 0x2ecb22d2, 0x3a2cd2c9, 0x4582ecca, 0x50994ee6, 0x5c17f595, 0x6889e5e1,
+	0x00000000, 0x10e14b25, 0x212064ce, 0x3153e8c5, 0x413653ba, 0x5118bf09, 0x61a8f143,
+	0x00000000, 0x16c35fec, 0x2d413ccc, 0x43b94edf, 0x5a2b95ca,
+	0x00000000, 0x1de40c9b, 0x3d2972e9, 0x5a20002f,
+	0x04000000, 0x257e5e73, 0x4efe081d,
+	0x05a82799, 0x2c70b401,
 	0x10000000
 	},
 };
@@ -243,7 +243,7 @@ static int ScalarDequant(int *buf, int cat, const int *dqTab, int shift, int *lf
 {
 	int i, k;
 	int dq, sign, lfsr;
-	
+
 	lfsr = *lfsrInit;
 
 	/* multiply dequantized value (from centroid table) or the dither value (if quantized coeff == 0)
@@ -253,14 +253,14 @@ static int ScalarDequant(int *buf, int cat, const int *dqTab, int shift, int *lf
 	 *   buf[i] = quant_centroid_tab[cat][buf[i]] * pow(2, DQ_FRACBITS_OUT + scale / 2.0)
 	 *
 	 * example (for testing with Q28 qcTab):
-	 *   fixdeqnt = (int)((double)qcTab[0][qcOffset[cat] + k] / (double)(1 << 28) * pow(2, DQ_FRACBITS_OUT + scale / 2.0)); 
+	 *   fixdeqnt = (int)((double)qcTab[0][qcOffset[cat] + k] / (double)(1 << 28) * pow(2, DQ_FRACBITS_OUT + scale / 2.0));
 	 *	 *buf++ = fixdeqnt * (sign ? -1 : 1);
-	 * 
+	 *
 	 * output format = Q(FBITS_OUT_DQ) = Q12 (currently)
 	 */
 	for (i = NBINS; i != 0; i--) {
 		k = *buf;
-		if (k == 0 || cat == 7) { 
+		if (k == 0 || cat == 7) {
 			/* update the LFSR, producing a random sign */
 			sign = (lfsr >> 31);
 			lfsr = (lfsr << 1) ^ (sign & FEEDBACK);
@@ -300,8 +300,8 @@ static int ScalarDequant(int *buf, int cat, const int *dqTab, int shift, int *lf
  *
  * Return:      minimum number of guard bits in coefficients
  *
- * Notes:       for joint stereo, does in-place deinterleaving into left and right 
- *                halves of mlt buffer 
+ * Notes:       for joint stereo, does in-place deinterleaving into left and right
+ *                halves of mlt buffer
  *                (left starts at mlt[0], right starts at mlt[MAXNSAMP])
  **************************************************************************************/
 int DecodeTransform(Gecko2Info *gi, int *mlt, int availbits, int *lfsrInit, int ch)
@@ -321,7 +321,7 @@ int DecodeTransform(Gecko2Info *gi, int *mlt, int availbits, int *lfsrInit, int 
 		else
 			dest = mlt + NBINS*(r - gi->cplStart);
 
-		if (catbuf[r] < 7) {	
+		if (catbuf[r] < 7) {
 			/* cat == 7 means region was not coded, and dequantizer will just add power-normalized dither */
 			bitsUsed = DecodeHuffmanVectors(bsi, catbuf[r], dest, availbits);
 			if (bitsUsed < 0 || bitsUsed > availbits)
@@ -335,7 +335,7 @@ int DecodeTransform(Gecko2Info *gi, int *mlt, int availbits, int *lfsrInit, int 
 	for (     ; r < gi->cRegions; r++)
 		catbuf[r] = 7;
 
-	/* for very large coefficients, we override the default format with fewer fraction bits, to avoid saturation 
+	/* for very large coefficients, we override the default format with fewer fraction bits, to avoid saturation
 	 * range of rmsIndex = [-31, 63] (from encoder)
 	 */
 	fbits = FBITS_OUT_DQ;

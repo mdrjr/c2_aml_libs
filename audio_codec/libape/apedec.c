@@ -132,8 +132,8 @@ APE_Decoder_t* ape_decoder_new(void* ape_head_context)
     memset(decoder->private_data,0,sizeof(APE_COdec_Private_t));
 
     decoder->public_data->current_decoding_frame = 0;
-    decoder->public_data->ape_header_context = ape_head_context; 
-    
+    decoder->public_data->ape_header_context = ape_head_context;
+
 	return decoder;
 }
 
@@ -246,7 +246,7 @@ static inline void range_dec_normalize(APE_COdec_Private_t * ctx)
         ctx->ptr++;
         ctx->rc.low    = (ctx->rc.low << 8)    | ((ctx->rc.buffer >> 1) & 0xFF);
         ctx->rc.range  <<= 8;
-        if(ctx->rc.range == 0)//in error condition.if==0,no chance return,so added 
+        if(ctx->rc.range == 0)//in error condition.if==0,no chance return,so added
             return;
     }
 }
@@ -661,7 +661,7 @@ static void init_filter(APE_COdec_Private_t * ctx, APEFilter *f, int16_t * buf, 
 static int32_t scalarproduct_int16_c(int16_t * v1, int16_t * v2, int order, int shift)
 {
     int res = 0;
-	
+
 #if !(defined  __ARM_HAVE_NEON)
     while (order--)
         res += (*v1++ * *v2++)/* >> shift*/;
@@ -669,7 +669,7 @@ static int32_t scalarproduct_int16_c(int16_t * v1, int16_t * v2, int order, int 
 	int j=order/4;
 	int k=order%4;
 	int32x4_t neonres=vdupq_n_s32(0);
-	
+
 	while(j--) {
 		neonres = vmlal_s16(neonres, vld1_s16(v1),vld1_s16(v2));
 		v1+=4;
@@ -690,11 +690,11 @@ static void add_int16_c(int16_t * v1, int16_t * v2, int order)
 #if !(defined  __ARM_HAVE_NEON)
     while (order--)
        *v1++ += *v2++;
-#else	
+#else
 	int j=order/8;
 	int k=order%8;
 	int16x8_t neonv1;
-	
+
 	while(j--) {
 		neonv1 = vaddq_s16(vld1q_s16(v1), vld1q_s16(v2));
 		vst1q_s16(v1, neonv1);
@@ -717,7 +717,7 @@ static void sub_int16_c(int16_t * v1, int16_t * v2, int order)
 	int j=order/8;
 	int k=order%8;
 	int16x8_t neonv1;
-	
+
 	while(j--) {
 		neonv1 = vsubq_s16(vld1q_s16(v1), vld1q_s16(v2));
 		vst1q_s16(v1, neonv1);
@@ -924,7 +924,7 @@ APE_Decode_status_t ape_decode_frame(APE_Decoder_t * avctx,  \
             s->data = dsp_realloc(s->data, (buf_size + 3) & ~3);
         else
             s->data = dsp_malloc((buf_size + 3) & ~3);
-	if(!s->data) 
+	if(!s->data)
 	    printf("malloc for input frame failed,enlarge the mem pool!\r\n");
         bswap_buf((uint32_t*)s->data, (const uint32_t*)buf, buf_size >> 2);
         s->ptr = s->last_ptr = s->data;//the current data position
@@ -995,7 +995,7 @@ APE_Decode_status_t ape_decode_frame(APE_Decoder_t * avctx,  \
 //confirmed one frame
 int audio_dec_decode(audio_decoder_operations_t *adec_ops, char *outbuf, int *outlen, char *inbuf, int inlen)
 {
-    unsigned char buffer[5];    
+    unsigned char buffer[5];
     unsigned  current_framesize=0;
     char extra_data = 8;
     unsigned int first_read = 0;
@@ -1008,7 +1008,7 @@ int audio_dec_decode(audio_decoder_operations_t *adec_ops, char *outbuf, int *ou
             int buffersize_remain = current_framesize;
             unsigned char * read_buf_ptr = apeiobuf.readPtr;
             apeiobuf.bytesLeft+=current_framesize;
-            apedec->public_data->current_decoding_frame++;  
+            apedec->public_data->current_decoding_frame++;
      }
 
     if(apeiobuf.bytesLeft)
@@ -1018,7 +1018,7 @@ int audio_dec_decode(audio_decoder_operations_t *adec_ops, char *outbuf, int *ou
                                 &apeiobuf.thislop_decoded_size,\
                                 apeiobuf.readPtr,apeiobuf.bytesLeft))!= APE_DECODE_ONE_FRAME_FINISH)
             {
-              audio_codec_print("apeiobuf.thislop_decoded_size=%d\n",apeiobuf.thislop_decoded_size);             
+              audio_codec_print("apeiobuf.thislop_decoded_size=%d\n",apeiobuf.thislop_decoded_size);
                 if(apeiobuf.thislop_decoded_size <= 0)
                 {
                     audio_codec_print("error id:%d happened when decoding ape frame\n",err);
@@ -1066,11 +1066,11 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
 	headinfo.formatflags=((*(adec_ops->extradata+5))<<8)|(*(adec_ops->extradata+4));
         /*pass the ape header info to the decoder instance**/
         apedec = ape_decoder_new((void*)&headinfo);
-        
+
     }
-    if (!apedec) 
+    if (!apedec)
     {
-        audio_codec_print("%s: FATAL ERROR creating the decoder instance\n","ape"); 
+        audio_codec_print("%s: FATAL ERROR creating the decoder instance\n","ape");
         return -1;
     }
     if(ape_decode_init(apedec)!= APE_DECODE_INIT_FINISH)
@@ -1081,7 +1081,7 @@ int audio_dec_init(audio_decoder_operations_t *adec_ops)
     adec_ops->nInBufSize=DefaultReadSize;
     adec_ops->nOutBufSize=DefaultOutBufSize;
     audio_codec_print("ape_Init.\n");
-    return 0;	
+    return 0;
 }
 int audio_dec_release(audio_decoder_operations_t *adec_ops)
 {

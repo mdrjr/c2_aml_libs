@@ -22,7 +22,7 @@ typedef struct _audio_info {
 
 /* audio decoder operation*/
 typedef struct audio_decoder_operations audio_decoder_operations_t;
-struct audio_decoder_operations 
+struct audio_decoder_operations
 {
 	    const char * name;
 	    int nAudioDecoderType;

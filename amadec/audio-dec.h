@@ -35,7 +35,7 @@ ADEC_BEGIN_DECLS
 
 //for ffmpeg audio decode
 #define AMSTREAM_IOC_MAGIC  'S'
-#define AMSTREAM_IOC_APTS_LOOKUP    _IOR((AMSTREAM_IOC_MAGIC), 0x81, int)  
+#define AMSTREAM_IOC_APTS_LOOKUP    _IOR((AMSTREAM_IOC_MAGIC), 0x81, int)
 #define GET_FIRST_APTS_FLAG    _IOR((AMSTREAM_IOC_MAGIC), 0x82, int)
 //-----------------------------------------------
 //copy from file: "../amcodec/include/amports/amstream.h"
@@ -109,7 +109,7 @@ struct aml_audio_dec {
     int decoded_nb_frames;
     int avsync_threshold;
     float volume; //left or main volume
-    float volume_ext; //right	
+    float volume_ext; //right
     //codec_para_t *pcodec;
     hw_command_t soundtrack;
     audio_out_operations_t aout_ops;
@@ -120,7 +120,7 @@ struct aml_audio_dec {
     char extradata[AUDIO_EXTRA_DATA_SIZE];
 	int SessionID;
 	int format_changed_flag;
-	unsigned dspdec_not_supported;//check some profile that audiodsp decoder can not support,we switch to arm decoder	
+	unsigned dspdec_not_supported;//check some profile that audiodsp decoder can not support,we switch to arm decoder
 	int droppcm_flag;				// drop pcm flag, if switch audio (1)
 	int no_first_apts;				// if can't get the first apts (1), default (0)
 	int StageFrightCodecEnableType;
@@ -147,7 +147,7 @@ struct aml_audio_dec {
     int pcm_cache_size;
     Package_List pack_list;
     StartCode start_code;
-    
+
     void *arm_omx_codec;
     fp_arm_omx_codec_init       parm_omx_codec_init;
     fp_arm_omx_codec_read       parm_omx_codec_read ;
@@ -172,7 +172,7 @@ typedef struct {
     int extradata_size;      ///< extra data size
     char extradata[AUDIO_EXTRA_DATA_SIZE];
 	int SessionID;
-	int dspdec_not_supported;//check some profile that audiodsp decoder can not support,we switch to arm decoder	
+	int dspdec_not_supported;//check some profile that audiodsp decoder can not support,we switch to arm decoder
 	int droppcm_flag;				// drop pcm flag, if switch audio (1)
 } arm_audio_info;
 
@@ -224,7 +224,7 @@ struct adec_status {
 #define    ACODEC_FMT_VORBIS     18
 #define    ACODEC_FMT_AAC_LATM    19
 #define    ACODEC_FMT_APE    20
-#define    ACODEC_FMT_EAC3    21 
+#define    ACODEC_FMT_EAC3    21
 #define    ACODEC_FMT_WIFIDISPLAY 22
 
 

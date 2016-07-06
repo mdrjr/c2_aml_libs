@@ -17,7 +17,7 @@ install:all
 	install $(INSTALL_FLAGS) $(TARGET) $(TARGET_DIR)/bin
 
 distclean:clean
-    
+
 clean:
 	rm esplayer *.o
 

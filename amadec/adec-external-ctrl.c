@@ -39,7 +39,7 @@ int audio_decode_init(void **handle, arm_audio_info *a_ainfo)
         adec_print("Existing an audio dec instance!Need not to create it !");
         return -1;
     }
-		
+
     audec = (aml_audio_dec_t *)malloc(sizeof(aml_audio_dec_t));
     if (audec == NULL) {
         adec_print("malloc failed! not enough memory !");
@@ -55,7 +55,7 @@ int audio_decode_init(void **handle, arm_audio_info *a_ainfo)
     audec->extradata_size=a_ainfo->extradata_size;
 	audec->SessionID=a_ainfo->SessionID;
 	audec->dspdec_not_supported = a_ainfo->dspdec_not_supported;
-	audec->droppcm_flag = 0;	
+	audec->droppcm_flag = 0;
 	audec->bitrate=a_ainfo->bitrate;
 	audec->block_align=a_ainfo->block_align;
 	audec->codec_id=a_ainfo->codec_id;
@@ -65,7 +65,7 @@ int audio_decode_init(void **handle, arm_audio_info *a_ainfo)
 	}
     if(a_ainfo->extradata_size>0&&a_ainfo->extradata_size<=AUDIO_EXTRA_DATA_SIZE)
         memcpy((char*)audec->extradata,(char*)a_ainfo->extradata,a_ainfo->extradata_size);
-    audec->adsp_ops.audec=(void *)audec;    
+    audec->adsp_ops.audec=(void *)audec;
 //	adec_print("audio_decode_init  pcodec = %d, pcodec->ctxCodec = %d!\n", pcodec, pcodec->ctxCodec);
     ret = audiodec_init(audec);
     if (ret) {
@@ -251,16 +251,16 @@ int dummy_decode_set_mute(int en)
     if (en &&mute_ctl.is_parsed)
         //dummy_alsa_control("switch playback mute", 0, 1, NULL);//mute
         dummy_alsa_control(mute_ctl.ctlname, 0, 1, NULL);//mute
-    else if(mute_ctl.is_parsed) 
-        //dummy_alsa_control("switch playback mute", 1, 1, NULL); //unmute       
-        dummy_alsa_control(mute_ctl.ctlname, 1, 1, NULL); //unmute       
-    return 0;	
+    else if(mute_ctl.is_parsed)
+        //dummy_alsa_control("switch playback mute", 1, 1, NULL); //unmute
+        dummy_alsa_control(mute_ctl.ctlname, 1, 1, NULL); //unmute
+    return 0;
 }
 
 /**
  * \brief get audio volume
  * \param vol volume value
- * \return 0 on success otherwise 
+ * \return 0 on success otherwise
  */
 int dummy_decode_set_volume(int vol)
 {
@@ -271,7 +271,7 @@ int dummy_decode_set_volume(int vol)
 	    vol = playback_ctl.maxvalue;
 	if(playback_ctl.is_parsed)
 	dummy_alsa_control(playback_ctl.ctlname , vol, 1, NULL);
-	return 0;	
+	return 0;
 }
 int dummy_decode_get_volume(int *vol)
 {
@@ -282,8 +282,8 @@ int dummy_decode_get_volume(int *vol)
 	    *vol = playback_ctl.minvalue;
 	else if(*vol > playback_ctl.maxvalue)
 	    *vol = playback_ctl.maxvalue;
-	return 0;	
-}		
+	return 0;
+}
 /**
  * \brief mute audio output
  * \param handle pointer to player private data
@@ -337,7 +337,7 @@ int audio_decode_set_volume(void *handle, float vol)
         cmd->ctrl_cmd = CMD_SET_VOL;
         cmd->value.volume = vol;
 	 audec->volume = vol;
-        cmd->has_arg = 1;	
+        cmd->has_arg = 1;
         ret = adec_send_message(audec, cmd);
     } else {
         adec_print("message alloc failed, no memory!");
@@ -444,7 +444,7 @@ int audio_channels_swap(void *handle)
 
     cmd = adec_message_alloc();
     if (cmd) {
-	 audec->soundtrack = HW_CHANNELS_SWAP;	 
+	 audec->soundtrack = HW_CHANNELS_SWAP;
         cmd->ctrl_cmd = CMD_CHANL_SWAP;
         ret = adec_send_message(audec, cmd);
     } else {
@@ -636,7 +636,7 @@ int audio_get_soundtrack(void *handle, int* strack )
 
     *strack= audec->soundtrack;
 
-    return ret;    
+    return ret;
 }
 
 int audio_get_pcm_level(void* handle)

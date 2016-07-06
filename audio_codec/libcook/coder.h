@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: coder.h,v 1.9 2005/04/27 19:20:50 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2002 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
@@ -92,7 +92,7 @@
 
 #define MAXNCHAN		2
 #define MAXNSAMP		1024
-#define MAXREGNS		(MAXNSAMP/NBINS)	
+#define MAXREGNS		(MAXNSAMP/NBINS)
 
 #define MAXDECBUF		4
 
@@ -203,7 +203,7 @@ typedef struct _Gecko2Info {
 	/* transform info */
 	int rateCode;
 	int rmsMax[MAXNCHAN];
-	
+
 	/* bitstream info */
 	BitStreamInfo bsi;
 
@@ -219,7 +219,7 @@ typedef struct _Gecko2Info {
 
 	/* data buffers */
 	DecBufs db;
-	
+
 	/* decode info management */
 	int rd;
 	int wr;
@@ -236,7 +236,7 @@ unsigned int GetBits(BitStreamInfo *bsi, int nBits, int advanceFlag);
 void AdvanceBitstream(BitStreamInfo *bsi, int nBits);
 
 /* huffman decoding */
-int DecodeHuffmanScalar(const unsigned short *huffTab, const HuffInfo *huffTabInfo, int bitBuf, int *val);	
+int DecodeHuffmanScalar(const unsigned short *huffTab, const HuffInfo *huffTabInfo, int bitBuf, int *val);
 
 /* gain control parameter decoding */
 int DecodeGainInfo(Gecko2Info *gi, GAINC *gainc, int availbits);
@@ -261,7 +261,7 @@ void DecWindowNoAttacks(int tabidx, int *buf1, int *overlap, short *pcm1, int nC
 
 /* bitpack.c */
 extern const unsigned char pkkey[4];
-	
+
 /* hufftabs.c */
 #define HUFFTAB_COUPLE_OFFSET		2
 

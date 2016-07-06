@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: assembly.h,v 1.13 2005/04/27 19:20:50 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2002 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 /**************************************************************************************
@@ -42,9 +42,9 @@
  *
  * assembly.h - inline assembly language functions and prototypes
  *
- * MULSHIFT32(x, y) 		signed multiply of two 32-bit integers (x and y), 
+ * MULSHIFT32(x, y) 		signed multiply of two 32-bit integers (x and y),
  *                            returns top 32-bits of 64-bit result
- * CLIPTOSHORT(x)			convert 32-bit integer to 16-bit short, 
+ * CLIPTOSHORT(x)			convert 32-bit integer to 16-bit short,
  *                            clipping to [-32768, 32767]
  * FASTABS(x)               branchless absolute value of signed integer x
  * CLZ(x)                   count leading zeros on signed integer x
@@ -86,7 +86,7 @@ static __inline short CLIPTOSHORT(int x)
 	return (short)x;
 }
 
-static __inline int FASTABS(int x) 
+static __inline int FASTABS(int x)
 {
 	int sign;
 
@@ -108,7 +108,7 @@ static __inline int CLZ(int x)
 	while (!(x & 0x80000000)) {
 		numZeros++;
 		x <<= 1;
-	} 
+	}
 
 	return numZeros;
 }

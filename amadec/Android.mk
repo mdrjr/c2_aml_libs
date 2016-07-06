@@ -15,7 +15,7 @@ LOCAL_C_INCLUDES:= \
 
 
 ifneq (0, $(shell expr $(PLATFORM_VERSION) \>= 4.3))
-    LOCAL_CFLAGS += -DANDROID_VERSION_JBMR2_UP=1  -DUSE_ARM_AUDIO_DEC	
+    LOCAL_CFLAGS += -DANDROID_VERSION_JBMR2_UP=1  -DUSE_ARM_AUDIO_DEC
 endif
 
 ifneq (0, $(shell expr $(PLATFORM_VERSION) \> 4.1.0))
@@ -112,7 +112,7 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_ARM_MODE := arm
 
 LOCAL_SHARED_LIBRARIES += libutils libmedia libz libbinder libdl libcutils libc libstagefright \
-                          libstagefright_omx  libstagefright_yuv libmedia_native liblog 
+                          libstagefright_omx  libstagefright_yuv libmedia_native liblog
 LOCAL_PRELINK_MODULE := false
 LOCAL_MODULE_TAGS := optional
 

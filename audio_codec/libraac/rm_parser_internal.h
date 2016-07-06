@@ -1,10 +1,10 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Source last modified: $Id: rm_parser_internal.h,v 1.2.2.1 2005/05/04 18:21:36 hubbe Exp $
- * 
+ *
  * REALNETWORKS CONFIDENTIAL--NOT FOR DISTRIBUTION IN SOURCE CODE FORM
  * Portions Copyright (c) 1995-2005 RealNetworks, Inc.
  * All Rights Reserved.
- * 
+ *
  * The contents of this file, and the files included with this file,
  * are subject to the current version of the Real Format Source Code
  * Porting and Optimization License, available at
@@ -17,22 +17,22 @@
  * source code of this file. Please see the Real Format Source Code
  * Porting and Optimization License for the rights, obligations and
  * limitations governing use of the contents of the file.
- * 
+ *
  * RealNetworks is the developer of the Original Code and owns the
  * copyrights in the portions it created.
- * 
+ *
  * This file, and the files included with this file, is distributed and
  * made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL
  * SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT
  * OR NON-INFRINGEMENT.
- * 
+ *
  * Technology Compatibility Kit Test Suite(s) Location:
  * https://rarvcode-tck.helixcommunity.org
- * 
+ *
  * Contributor(s):
- * 
+ *
  * ***** END LICENSE BLOCK ***** */
 
 #ifndef RM_PARSER_INTERNAL_H
@@ -59,14 +59,14 @@ extern "C" {
 
 #define RM_NO_STREAM_SET           0xFFFFFFFF
 #define RM_INDEX_MIN_ENTRIES               32
-#define RM_INDEX_MAX_ENTRIES             2048    
+#define RM_INDEX_MAX_ENTRIES             2048
 #define RM_INDEX_MIN_TIME_GRANULARITY      50  /* in milliseconds */
 #define RM_INDEX_MAX_TIME_GRANULARITY   15000  /* in milliseconds */
 
 /*
  * We explicitly define the size for structs
  * to be read. That's because we can't use sizeof()
- * to determine how much to read since struct 
+ * to determine how much to read since struct
  * alignment will make that value different.
  */
 #define RM_PARSER_GENERIC_HDR_SIZE       10
@@ -167,7 +167,7 @@ struct rm_name_value_map
 struct rm_logical_stream_hdr
 {
     UINT32  size;                    /* size of header in file */
-    UINT16  version;                 /* struct version */ 
+    UINT16  version;                 /* struct version */
     UINT16  num_physical_streams;    /* number of actual streams */
     UINT16* physical_stream_num;     /* array of stream numbers */
     UINT32* data_offsets;            /* array of offsets to stream packets */
@@ -181,7 +181,7 @@ struct rm_logical_stream_hdr
 struct rm_meta_data_hdr
 {
     UINT32 size;                     /* size of header in file */
-    UINT16 version;                  /* struct version */  
+    UINT16 version;                  /* struct version */
     UINT16 num_props;                /* number of name value properties */
     struct rm_name_value_map* props; /* array of name value properties */
 };
@@ -230,7 +230,7 @@ struct rm_pkt_hdr
     UINT16 stream_num;          /* stream number */
     UINT32 timestamp;           /* packet timestamp */
     UINT16 flags;               /* keyframe, etc. */
-    BYTE   header_len;           
+    BYTE   header_len;
 };
 
 struct rm_pkt_hdr1
