@@ -2,8 +2,8 @@
 
 
 dir_mk=$(Q)echo "MAKE $(1)";\
-	$(MAKE) -C ${1} -f ${SRCTREE}/depends.mk;\
-	$(MAKE) -C ${1} -f ${SRCTREE}/dir.mk
+	$(MAKE) -C ${1} -f ${SRCTREE}/depends.mk CFLAGS="$(CFLAGS)";\
+	$(MAKE) -C ${1} -f ${SRCTREE}/dir.mk CFLAGS="$(CFLAGS)"
 
 c_mk=$(Q)echo "CC  $(1)";\
 		$(CC) $(CFLAGS)  $(EXT_CFLAGS) -c  $(1)

@@ -8,13 +8,13 @@ TARGET=libamavutils.so
 
 INSTALL_DIR=${LIB_DIR}/aml_libs
 
-LDFLAGS += -shared -lpthread -lm -lrt
+override LDFLAGS += -shared -lpthread -lm -lrt
 
 TOPDIR=$(shell pwd)
 SRC?=$(TOPDIR)
 
-CFLAGS+=-O2 -fPIC -g
-CFLAGS+=-I$(SRC) -I$(SRC)/include -I$(SRC)/../amcodec/include -L${LIB_DIR} -I$(HEADERS_DIR)
+override CFLAGS+=-O2 -fPIC -g
+override CFLAGS+=-I$(SRC) -I$(SRC)/include -I$(SRC)/../amcodec/include -L${LIB_DIR} -I$(HEADERS_DIR)
 
 
 

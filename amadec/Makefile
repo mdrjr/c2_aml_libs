@@ -10,14 +10,14 @@ TARGET=libamadec.so
 
 INSTALL_DIR=$(LIB_DIR)/aml_libs
 
-LDFLAGS += -shared -lpthread -lm -lasound -lrt
+override LDFLAGS += -shared -lpthread -lm -lasound -lrt
 
 TOPDIR=$(shell pwd)
 SRC?=$(TOPDIR)
 
-CFLAGS+=-O2 -fPIC -g
-CFLAGS+=-I$(SRC) -I$(SRC)/include -I$(SRC)/../amavutils/include -I$(SRC)/../amplayer/player/include -I${HEADERS_DIR} -L${LIB_DIR}
-CFLAGS+=-DALSA_OUT
+override CFLAGS+=-O2 -fPIC -g
+override CFLAGS+=-I$(SRC) -I$(SRC)/include -I$(SRC)/../amavutils/include -I$(SRC)/../amplayer/player/include -I${HEADERS_DIR} -L${LIB_DIR}
+override CFLAGS+=-DALSA_OUT
 
 ifdef DOLBY_UDC
     CFLAGS+=-DDOLBY_USE_ARMDEC
