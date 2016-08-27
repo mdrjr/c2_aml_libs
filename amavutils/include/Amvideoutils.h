@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
+
 #define HDMI_HDCP_PASS           (1)
 #define HDMI_HDCP_FAILED      (0)
 #define HDMI_NOCONNECT        (-1)
