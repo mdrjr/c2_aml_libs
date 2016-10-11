@@ -12,6 +12,7 @@
 #define AUDIO_DEC_H
 
 #include<pthread.h>
+#include <stdint.h>
 
 #include <audio-out.h>
 #include <audiodsp.h>
