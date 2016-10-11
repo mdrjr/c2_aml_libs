@@ -60,6 +60,6 @@ clean:$(CLRDIR)
 
 install:$(target_all)
 	-install  -m 755   $(TARGET)  $(INSTALL_DIR)
-	cp  -rf $(SRC)/include/*  $(HEADERS_DIR)/
+	cp  -rf $(SRC)/include/  $(HEADERS_DIR)/amcodec
 
 
